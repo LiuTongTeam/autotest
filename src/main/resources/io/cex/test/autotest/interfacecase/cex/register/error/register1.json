@@ -1,0 +1,10 @@
+{
+  "comment": "用户已注册",
+  "body": {
+    "loginPwd": "123qweQWE",
+    "identifier": "16602829192",
+    "mobileArea": "86",
+    "verifyCode": "123456"
+  },
+  "assert":"USER EXISTS"
+}
