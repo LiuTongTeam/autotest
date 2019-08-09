@@ -9,8 +9,6 @@ import io.cex.test.framework.httputil.OkHttpClientManager;
 import io.cex.test.framework.jsonutil.JsonFileUtil;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
-import org.apache.poi.openxml4j.opc.PackagingURIHelper;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -28,12 +26,16 @@ public class BaseCase {
     //接口参数
     public static final String randomPhone = RandomUtil.getRandomPhoneNum();
     public static final String pwd = "Aa123456";
+    public static final String securityPwd = "Aa12345678";
     public static final String area = "86";
     public static final String lang = "en-US";
     public static final String countryId = "40";
     public static final String certificateType = "0";
     public static final String DEVICESOURCE = "native";
     public static final String DEVICEID = "A5A6F0c6B90638A2F-e195d43830A5e9979906e5A0A8A-9330A0B3ADBBB9d93-AFF5dBcF9-A4c749-AB10-4EB49EABF9E7-85315174-34961239";
+    public static final String bossUserName = "admin";
+    public static final String bossLoginPwd = "admin";
+
     //认证图片路径
     public static final String fileUrl = "http://172.29.16.161/";
     //cex接口url
@@ -41,8 +43,11 @@ public class BaseCase {
     public static final String registerUrl = "/user/register";
     public static final String upLoadFileUrl = "/user/file/upload/file";
     public static final String identityUrl = "/user/authenticate/submit/identity";
+    public static final String securityPwdUrl = "/user/password/set/securityPwd";
     //boss接口url
     public static final String bossLoginUrl = "/boss/account/login";
+    public static final String firstTrial = "/boss/cex/audit/firstTrial";
+    public static final String reviewing = "/boss/cex/audit/reviewing";
     /**
     * @desc 数据初始化
     **/
@@ -165,6 +170,11 @@ public class BaseCase {
 
     }
 
+    /**
+    * @desc BOSS login工具,返回token
+    * @param  accountId 用户名
+     * @param pwd 密码
+    **/
     public static String userBossLogin(String accountId, String pwd){
         String bossToken = null;
         JSONObject object = new JSONObject();
@@ -180,7 +190,7 @@ public class BaseCase {
             }
         }catch (IOException e){
             e.printStackTrace();
-            log.error("--------------BOSS login ERROR");
+            log.error("--------------Server connect failed");
         }        return bossToken;
     }
 

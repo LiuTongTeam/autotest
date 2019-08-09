@@ -21,8 +21,8 @@ import java.io.IOException;
  **/
 @Slf4j
 public class CoreProcessTest extends BaseCase{
-    String token = null;
-    String certificate_no = null;
+    private String token = null;
+    private String certificate_no = null;
     @BeforeClass
     public void beforeClazz(){
         //初始化header数据
@@ -41,22 +41,24 @@ public class CoreProcessTest extends BaseCase{
                 "application/json", header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
         log.info("-------------register response is:"+rspjson.toJSONString());
-        AssertTool.isContainsExpect("success",rspjson.get("msg").toString());
+        AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
     }
     @Test(dependsOnMethods = "testRegister",description = "登陆")
     public void testLogin(){
 
         token = BaseCase.userCexLogin(randomPhone,pwd,area);
         AssertTool.assertNotEquals(null,token);
-        log.info("------------token:"+token);
+        log.info("------------cex token:"+token);
     }
 
 
     @Test(dependsOnMethods = "testLogin",description = "身份认证")
     public void testIdentity() throws IOException{
+        //认证姓名随机字符串
         String userName = RandomUtil.generateString(10);
         JSONObject object = new JSONObject();
         object.put("countryId",countryId);
+        //图片ID由上传文件接口返回
         object.put("backId",BaseCase.uploadFile(fileUrl,token,"1.jpeg"));
         object.put("frontId",BaseCase.uploadFile(fileUrl,token,"2.jpg"));
         object.put("userName", userName);
@@ -68,12 +70,62 @@ public class CoreProcessTest extends BaseCase{
         Response response = OkHttpClientManager.post(ip+identityUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
-        System.out.printf("-------------Identity response is:"+rspjson);
-        AssertTool.isContainsExpect("success",rspjson.get("msg").toString());
+        log.info("-------------Identity response is:"+rspjson);
+        AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
         //从数据库中获取身份认证ID
         String sql = String.format("SELECT certificate_no FROM member_certification_record WHERE first_name = '%s';",userName);
         DataBaseManager dataBaseManager = new DataBaseManager();
         certificate_no = JSON.parseObject(dataBaseManager.executeSingleQuery(sql,mysql).getString(0)).getString("certificate_no");
+        log.info("------certificate_no is:"+certificate_no+"\n");
+    }
+
+    @Test(dependsOnMethods = "testIdentity", description = "身份认证初审通过")
+    public void testFirstTrial() throws IOException{
+        //boss登陆token放入header
+        header.put("Boss-Token",BaseCase.userBossLogin(bossUserName,bossLoginPwd));
+        log.info("-----boss token is :"+header.get("Boss-Token").toString());
+        //组装初审接口入参
+        JSONObject object = new JSONObject();
+        object.put("auditStatus","1");
+        object.put("auditType","USER_CERT_AUTH");
+        object.put("bid",certificate_no);
+        //调用初审接口
+        Response response = OkHttpClientManager.post(boss_ip+firstTrial, object.toJSONString(),
+                "application/json", header);
+        JSONObject rspjson = JSON.parseObject(response.body().string());
+        log.info("-------------Identity first trial response is:"+rspjson);
+        AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
+    }
+
+    @Test(dependsOnMethods = "testFirstTrial", description = "身份认证复审通过")
+    public void testReviewing() throws IOException{
+        header.put("Boss-Token",BaseCase.userBossLogin(bossUserName,bossLoginPwd));
+        log.info("-----boss token is :"+header.get("Boss-Token").toString());
+        //组装复审接口入参
+        JSONObject object = new JSONObject();
+        object.put("auditType","USER_CERT_AUTH");
+        object.put("auditStatus","1");
+        object.put("bid",certificate_no);
+        //调用复审接口
+        Response response = OkHttpClientManager.post(boss_ip+reviewing, object.toJSONString(),
+                "application/json", header);
+        JSONObject rspjson = JSON.parseObject(response.body().string());
+        log.info("-------------Identity reviewing response is:"+rspjson);
+        AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
+    }
+
+    @Test(dependsOnMethods = "testReviewing", description = "设置资金密码")
+    public void testSecurityPwd() throws IOException{
+        JSONObject object = new JSONObject();
+        object.put("securityPwd",securityPwd);
+        object.put("verifyCode","111111");
+        jsonbody.put("data",object);
+        header.put("CEXTOKEN",token);
+        Response response = OkHttpClientManager.post(ip+securityPwdUrl, jsonbody.toJSONString(),
+                "application/json", header);
+        JSONObject rspjson = JSON.parseObject(response.body().string());
+        log.info("-------------SecurityPwd response is:"+rspjson);
+        AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
     }
 
 
