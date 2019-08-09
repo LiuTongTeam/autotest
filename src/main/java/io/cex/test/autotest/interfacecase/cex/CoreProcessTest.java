@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import io.cex.test.framework.assertutil.AssertTool;
 import io.cex.test.framework.common.RandomUtil;
+import io.cex.test.framework.dbutil.DataBaseManager;
 import io.cex.test.framework.httputil.OkHttpClientManager;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
@@ -21,6 +22,7 @@ import java.io.IOException;
 @Slf4j
 public class CoreProcessTest extends BaseCase{
     String token = null;
+    String certificate_no = null;
     @BeforeClass
     public void beforeClazz(){
         //初始化header数据
@@ -44,7 +46,7 @@ public class CoreProcessTest extends BaseCase{
     @Test(dependsOnMethods = "testRegister",description = "登陆")
     public void testLogin(){
 
-        token = BaseCase.userLogin(randomPhone,pwd,area);
+        token = BaseCase.userCexLogin(randomPhone,pwd,area);
         AssertTool.assertNotEquals(null,token);
         log.info("------------token:"+token);
     }
@@ -52,11 +54,12 @@ public class CoreProcessTest extends BaseCase{
 
     @Test(dependsOnMethods = "testLogin",description = "身份认证")
     public void testIdentity() throws IOException{
+        String userName = RandomUtil.generateString(10);
         JSONObject object = new JSONObject();
         object.put("countryId",countryId);
         object.put("backId",BaseCase.uploadFile(fileUrl,token,"1.jpeg"));
         object.put("frontId",BaseCase.uploadFile(fileUrl,token,"2.jpg"));
-        object.put("userName", RandomUtil.generateString(10));
+        object.put("userName", userName);
         object.put("certificateNo",RandomUtil.generateLong(18));
         object.put("personId",BaseCase.uploadFile(fileUrl,token,"3.png"));
         object.put("certificateType",certificateType);
@@ -67,6 +70,10 @@ public class CoreProcessTest extends BaseCase{
         JSONObject rspjson = JSON.parseObject(response.body().string());
         System.out.printf("-------------Identity response is:"+rspjson);
         AssertTool.isContainsExpect("success",rspjson.get("msg").toString());
+        //从数据库中获取身份认证ID
+        String sql = String.format("SELECT certificate_no FROM member_certification_record WHERE first_name = '%s';",userName);
+        DataBaseManager dataBaseManager = new DataBaseManager();
+        certificate_no = JSON.parseObject(dataBaseManager.executeSingleQuery(sql,mysql).getString(0)).getString("certificate_no");
     }
 
 

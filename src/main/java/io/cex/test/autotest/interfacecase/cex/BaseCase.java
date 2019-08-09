@@ -19,6 +19,7 @@ import java.util.HashMap;
 public class BaseCase {
     //测试环境信息
     public static final String ip = "http://139.9.55.125/apis";
+    public static final String boss_ip = "https://cex-boss-test.up.top";
     //数据库连接信息
     public static final String mysql = "jdbc:mysql://172.29.19.71:3306/cex?useUnicode=true&characterEncoding=UTF8&user=root&password=48rm@hd2o3EX";
     //http header
@@ -35,11 +36,13 @@ public class BaseCase {
     public static final String DEVICEID = "A5A6F0c6B90638A2F-e195d43830A5e9979906e5A0A8A-9330A0B3ADBBB9d93-AFF5dBcF9-A4c749-AB10-4EB49EABF9E7-85315174-34961239";
     //认证图片路径
     public static final String fileUrl = "http://172.29.16.161/";
-    //接口url
+    //cex接口url
     public static final String loginUrl = "/user/login";
     public static final String registerUrl = "/user/register";
     public static final String upLoadFileUrl = "/user/file/upload/file";
     public static final String identityUrl = "/user/authenticate/submit/identity";
+    //boss接口url
+    public static final String bossLoginUrl = "/boss/account/login";
     /**
     * @desc 数据初始化
     **/
@@ -51,13 +54,13 @@ public class BaseCase {
     }
 
     /**
-     * @desc login工具,返回token
+     * @desc CEX login工具,返回token
      * @param user 用户名
      * @param pwd 密码
      * @param area 区号
      * @return token
      **/
-    public static String userLogin(String user,String pwd,String area){
+    public static String userCexLogin(String user,String pwd,String area){
         dataInit();
         JSONObject object = new JSONObject();
         object.put("loginPwd",pwd);
@@ -161,4 +164,24 @@ public class BaseCase {
         }
 
     }
+
+    public static String userBossLogin(String accountId, String pwd){
+        String bossToken = null;
+        JSONObject object = new JSONObject();
+        object.put("accountId", accountId);
+        object.put("password", pwd);
+        try {
+            String response = OkHttpClientManager.postAsString(boss_ip+bossLoginUrl,object.toJSONString());
+            try {
+                bossToken = JsonFileUtil.jsonToMap(JSONObject.parseObject(response),new HashMap<String, Object>()).get("token").toString();;
+            }catch (Exception e){
+                e.printStackTrace();
+                log.error("-----------BOSS login ERROR, response is "+ response);
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+            log.error("--------------BOSS login ERROR");
+        }        return bossToken;
+    }
+
 }
