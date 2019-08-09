@@ -46,6 +46,8 @@ public class RegisterTest extends BaseCase{
     public void testRegisterError(Map<?,?> param) throws IOException {
         dataInit();
         JSONObject object = JSON.parseObject(param.get("body").toString());
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("lang",lang);
         jsonbody.put("data",object);
         Response response = OkHttpClientManager.post(ip+registerUrl, jsonbody.toJSONString(),
                 "application/json", header);

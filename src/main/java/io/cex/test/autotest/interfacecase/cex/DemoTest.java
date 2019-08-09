@@ -30,7 +30,7 @@ public class DemoTest extends BaseCase{
     @Test(dataProvider = "provideTransferData")
     public void testReadFileDemo(Map<?,?> param){
         JSONObject object = JSON.parseObject(param.get("body").toString());
-        System.out.printf("读取json中内容为："+object.toJSONString());
+        System.out.printf("读取json中内容为："+object.toJSONString()+"\n");
     }
 
     /**

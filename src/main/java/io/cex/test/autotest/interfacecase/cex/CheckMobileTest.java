@@ -6,15 +6,15 @@ import io.cex.test.framework.assertutil.AssertTool;
 import io.cex.test.framework.httputil.OkHttpClientManager;
 import io.cex.test.framework.jsonutil.JsonFileUtil;
 import okhttp3.Response;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CheckMobile extends BaseCase{
+public class CheckMobileTest extends BaseCase{
     /**
      * @desc 异常用例的数据驱动
      * @param
@@ -30,9 +30,11 @@ public class CheckMobile extends BaseCase{
      * @param
      **/
     @Test(dataProvider = "provideCheckMobileErrorData")
-    public void testRegisterError(Map<?,?> param) throws IOException {
+    public void testCheckMobileError(Map<?,?> param) throws IOException {
         dataInit();
         JSONObject object = JSON.parseObject(param.get("body").toString());
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("lang",lang);
         jsonbody.put("data",object);
         Response response = OkHttpClientManager.post(ip+CheckMobileUrl, jsonbody.toJSONString(),
                 "application/json", header);
