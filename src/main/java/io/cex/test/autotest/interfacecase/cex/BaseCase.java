@@ -44,6 +44,7 @@ public class BaseCase {
     public static final String upLoadFileUrl = "/user/file/upload/file";
     public static final String identityUrl = "/user/authenticate/submit/identity";
     public static final String securityPwdUrl = "/user/password/set/securityPwd";
+    public static final String CheckMobileUrl = "/user/message/check/mobile";
     //boss接口url
     public static final String bossLoginUrl = "/boss/account/login";
     public static final String firstTrial = "/boss/cex/audit/firstTrial";
