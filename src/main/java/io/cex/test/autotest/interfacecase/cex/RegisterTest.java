@@ -39,7 +39,7 @@ public class RegisterTest extends BaseCase{
         return arrymap;
     }
     /**
-    * @desc 异常用例
+    * @desc 异常用例1
     * @param
     **/
     @Test(dataProvider = "provideRegisterErrorData")

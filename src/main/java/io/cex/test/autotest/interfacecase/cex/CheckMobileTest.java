@@ -40,4 +40,26 @@ public class CheckMobileTest extends BaseCase{
         JSONObject rspjson = JSON.parseObject(response.body().string());
         AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("code").toString());
     }
+    /**
+     * 给一个系统没有注册的账号，检查返回是否成功
+     */
+    @DataProvider(parallel=true)
+    public Object[][] provideCheckMobileData(Method method){
+        String path = "./src/main/resources/io/cex/test/autotest/interfacecase/cex/CheckMobile/CheckMobile.json";
+        HashMap<String, String>[][] arrymap = (HashMap<String, String>[][]) JsonFileUtil.jsonFileToArry(path);
+        return arrymap;
+    }
+
+    @Test(dataProvider = "provideCheckMobileData")
+    public void testCheckMobile(Map<?,?> param) throws IOException {
+        dataInit();
+        JSONObject object = JSON.parseObject(param.get("body").toString());
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("lang",lang);
+        jsonbody.put("data",object);
+        Response response = OkHttpClientManager.post(ip+CheckMobileUrl, jsonbody.toJSONString(),
+                "application/json", dataInit());
+        JSONObject rspjson = JSON.parseObject(response.body().string());
+        AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("code").toString());
+    }
 }
