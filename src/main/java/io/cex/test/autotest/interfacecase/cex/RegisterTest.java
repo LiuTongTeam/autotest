@@ -44,13 +44,12 @@ public class RegisterTest extends BaseCase{
     **/
     @Test(dataProvider = "provideRegisterErrorData")
     public void testRegisterError(Map<?,?> param) throws IOException {
-        dataInit();
         JSONObject object = JSON.parseObject(param.get("body").toString());
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
         Response response = OkHttpClientManager.post(ip+registerUrl, jsonbody.toJSONString(),
-                "application/json", header);
+                "application/json", dataInit());
         JSONObject rspjson = JSON.parseObject(response.body().string());
         AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("msg").toString());
     }
@@ -71,13 +70,14 @@ public class RegisterTest extends BaseCase{
     **/
     @Test(dataProvider = "provideRegisterData")
     public void testRegister(Map<?,?> param) throws IOException {
-        dataInit();
         JSONObject object = JSON.parseObject(param.get("body").toString());
         object.put("identifier",randomPhone);
+        JSONObject jsonbody = new JSONObject();
         jsonbody.put("data",object);
+        jsonbody.put("lang",lang);
         System.out.printf("json:"+jsonbody.toJSONString());
         Response response = OkHttpClientManager.post(ip+registerUrl, jsonbody.toJSONString(),
-                "application/json", header);
+                "application/json", dataInit());
         JSONObject rspjson = JSON.parseObject(response.body().string());
         AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("msg").toString());
     }

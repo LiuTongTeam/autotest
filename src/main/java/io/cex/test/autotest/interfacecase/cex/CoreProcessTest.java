@@ -13,6 +13,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * @author shenqingyan
@@ -36,7 +37,10 @@ public class CoreProcessTest extends BaseCase{
         object.put("loginPwd",pwd);
         object.put("mobileArea",area);
         object.put("verifyCode","111111");
+        JSONObject jsonbody = new JSONObject();
         jsonbody.put("data",object);
+        jsonbody.put("lang",lang);
+        HashMap header = dataInit();
         Response response = OkHttpClientManager.post(ip+registerUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
@@ -65,7 +69,10 @@ public class CoreProcessTest extends BaseCase{
         object.put("certificateNo",RandomUtil.generateLong(18));
         object.put("personId",BaseCase.uploadFile(fileUrl,token,"3.png"));
         object.put("certificateType",certificateType);
+        JSONObject jsonbody = new JSONObject();
         jsonbody.put("data",object);
+        jsonbody.put("lang",lang);
+        HashMap header = dataInit();
         header.put("CEXTOKEN",token);
         Response response = OkHttpClientManager.post(ip+identityUrl, jsonbody.toJSONString(),
                 "application/json", header);
@@ -82,6 +89,7 @@ public class CoreProcessTest extends BaseCase{
     @Test(dependsOnMethods = "testIdentity", description = "身份认证初审通过")
     public void testFirstTrial() throws IOException{
         //boss登陆token放入header
+        HashMap header = dataInit();
         header.put("Boss-Token",BaseCase.userBossLogin(bossUserName,bossLoginPwd));
         log.info("-----boss token is :"+header.get("Boss-Token").toString());
         //组装初审接口入参
@@ -99,6 +107,7 @@ public class CoreProcessTest extends BaseCase{
 
     @Test(dependsOnMethods = "testFirstTrial", description = "身份认证复审通过")
     public void testReviewing() throws IOException{
+        HashMap header = dataInit();
         header.put("Boss-Token",BaseCase.userBossLogin(bossUserName,bossLoginPwd));
         log.info("-----boss token is :"+header.get("Boss-Token").toString());
         //组装复审接口入参
@@ -119,7 +128,10 @@ public class CoreProcessTest extends BaseCase{
         JSONObject object = new JSONObject();
         object.put("securityPwd",securityPwd);
         object.put("verifyCode","111111");
+        JSONObject jsonbody = new JSONObject();
         jsonbody.put("data",object);
+        jsonbody.put("lang",lang);
+        HashMap header = dataInit();
         header.put("CEXTOKEN",token);
         Response response = OkHttpClientManager.post(ip+securityPwdUrl, jsonbody.toJSONString(),
                 "application/json", header);
@@ -127,6 +139,5 @@ public class CoreProcessTest extends BaseCase{
         log.info("-------------SecurityPwd response is:"+rspjson);
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
     }
-
 
 }

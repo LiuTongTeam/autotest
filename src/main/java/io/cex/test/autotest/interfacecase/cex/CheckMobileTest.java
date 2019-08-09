@@ -31,13 +31,12 @@ public class CheckMobileTest extends BaseCase{
      **/
     @Test(dataProvider = "provideCheckMobileErrorData")
     public void testCheckMobileError(Map<?,?> param) throws IOException {
-        dataInit();
         JSONObject object = JSON.parseObject(param.get("body").toString());
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
         Response response = OkHttpClientManager.post(ip+CheckMobileUrl, jsonbody.toJSONString(),
-                "application/json", header);
+                "application/json", BaseCase.dataInit());
         JSONObject rspjson = JSON.parseObject(response.body().string());
         AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("code").toString());
     }

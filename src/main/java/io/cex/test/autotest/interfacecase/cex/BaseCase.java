@@ -20,9 +20,7 @@ public class BaseCase {
     public static final String boss_ip = "https://cex-boss-test.up.top";
     //数据库连接信息
     public static final String mysql = "jdbc:mysql://172.29.19.71:3306/cex?useUnicode=true&characterEncoding=UTF8&user=root&password=48rm@hd2o3EX";
-    //http header
-    public static final HashMap header = new HashMap<String, String>();
-    public static JSONObject jsonbody = new JSONObject();
+
     //接口参数
     public static final String randomPhone = RandomUtil.getRandomPhoneNum();
     public static final String pwd = "Aa123456";
@@ -52,11 +50,12 @@ public class BaseCase {
     /**
     * @desc 数据初始化
     **/
-    public static void dataInit(){
+    public static HashMap dataInit(){
+        HashMap header = new HashMap<String, String>();
         header.put("DEVICEID",DEVICEID);
         header.put("DEVICESOURCE",DEVICESOURCE);
         header.put("Lang",lang);
-        jsonbody.put("lang",lang);
+        return header;
     }
 
     /**
@@ -73,10 +72,12 @@ public class BaseCase {
         object.put("identifier",user);
         object.put("mobileArea",area);
         object.put("verifyCode","111111");
+        JSONObject jsonbody = new JSONObject();
         jsonbody.put("data",object);
+        jsonbody.put("lang",lang);
         try {
             Response response = OkHttpClientManager.post(ip+loginUrl, jsonbody.toJSONString(),
-                    "application/json", header);
+                    "application/json", dataInit());
             if (response.code()==200){
                 JSONObject rspjson = JSON.parseObject(response.body().string());
                 if (rspjson.get("code").equals("000000")){
@@ -110,10 +111,12 @@ public class BaseCase {
         object.put("invitationCode",inviteCode);
         object.put("mobileArea",area);
         object.put("verifyCode","123456");
+        JSONObject jsonbody = new JSONObject();
         jsonbody.put("data",object);
+        jsonbody.put("lang",lang);
         try {
             Response response = OkHttpClientManager.post(ip+registerUrl, jsonbody.toJSONString(),
-                    "application/json", header);
+                    "application/json", dataInit());
             if (response.code()==200){
                 JSONObject rspjson = JSON.parseObject(response.body().string());
                 if (rspjson.get("code").equals("000000")){
