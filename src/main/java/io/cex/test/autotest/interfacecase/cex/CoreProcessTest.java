@@ -140,4 +140,57 @@ public class CoreProcessTest extends BaseCase{
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
     }
 
+    @Test(dependsOnMethods = "testSecurityPwd", description = "充币")
+    public void testDeposit1() throws InterruptedException{
+        String address = BaseCase.getAddress(randomPhone,pwd,depositCurrency);
+        String rspCode = withDraw(presetUsersecurityPwd,address,BaseCase.userCexLogin(presetUser,presetUserPwd,area),depositAmount,depositCurrency);
+        AssertTool.isContainsExpect("000000",rspCode);
+        String sql = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhone,depositCurrency);
+        log.info("--------Deposit sql is:"+sql);
+        Thread.sleep(60000);
+        AssertTool.isContainsExpect("{\"amount\":\"20.000000000000000000000000000000\"}",mysql,sql);
+    }
+
+    @Test(dependsOnMethods = "testDeposit1", description = "充币")
+    public void testDeposit2() throws InterruptedException{
+        String address = BaseCase.getAddress(randomPhone,pwd,buyCurrency);
+        String rspCode = withDraw(presetUsersecurityPwd,address,BaseCase.userCexLogin(presetUser,presetUserPwd,area),depositAmount,buyCurrency);
+        AssertTool.isContainsExpect("000000",rspCode);
+        String sql = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhone,buyCurrency);
+        log.info("--------Deposit KOFO sql is:"+sql);
+        Thread.sleep(60000);
+        AssertTool.isContainsExpect("{\"amount\":\"20.000000000000000000000000000000\"}",mysql,sql);
+    }
+
+    @Test(dependsOnMethods = "testDeposit2", description = "充币")
+    public void testDeposit3() throws InterruptedException{
+        String address = BaseCase.getAddress(randomPhone,pwd,sellCurrency);
+        String rspCode = withDraw(presetUsersecurityPwd,address,BaseCase.userCexLogin(presetUser,presetUserPwd,area),depositAmount,sellCurrency);
+        AssertTool.isContainsExpect("000000",rspCode);
+        String sql = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhone,sellCurrency);
+        log.info("--------Deposit USDT sql is:"+sql);
+        Thread.sleep(60000);
+        AssertTool.isContainsExpect("{\"amount\":\"20.000000000000000000000000000000\"}",mysql,sql);
+    }
+
+    @Test(dependsOnMethods = "testDeposit3", description = "提币数量超过账户剩余数量")
+    public void testWithdrawFail(){
+        String address = BaseCase.getAddress(presetUser,presetUserPwd,depositCurrency);
+        token = BaseCase.userCexLogin(randomPhone,pwd,area);
+        String rspCode = withDraw(securityPwd,address,token,"25",depositCurrency);
+        AssertTool.isContainsExpect("100113",rspCode);
+    }
+
+    @Test(dependsOnMethods = "testWithdrawFail", description = "提币成功")
+    public void testWithdraw() throws InterruptedException{
+        String address = BaseCase.getAddress(presetUser,presetUserPwd,depositCurrency);
+        String rspCode = withDraw(securityPwd,address,token,"15",depositCurrency);
+        AssertTool.isContainsExpect("000000",rspCode);
+        String sql = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhone,depositCurrency);
+        log.info("--------Deposit USDT sql is:"+sql);
+        Thread.sleep(60000);
+        AssertTool.isContainsExpect("{\"amount\":\"5.000000000000000000000000000000\"}",mysql,sql);
+    }
+
+
 }
