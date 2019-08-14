@@ -43,7 +43,7 @@ public class BaseCase {
     public static final String identityUrl = "/user/authenticate/submit/identity";
     public static final String securityPwdUrl = "/user/password/set/securityPwd";
     public static final String CheckMobileUrl = "/user/message/check/mobile";
-    public static final String CheckLoginUrl = "/user/message/check/mobile";
+    public static final String CheckLoginUrl = "/user/checkLogin";
 
     //boss接口url
     public static final String bossLoginUrl = "/boss/account/login";
