@@ -1,0 +1,9 @@
+{
+  "comment": "检查正确的邮箱登录和正确的登录密码，邮箱登录地区可以为空，返回成功",
+  "body": {
+    "mobileArea":"",
+    "identifier":"24244855@qq.com",
+    "loginPwd":"afdd0b4ad2ec172c586e2150770fbf9e"
+  },
+  "assert":"000000"
+}

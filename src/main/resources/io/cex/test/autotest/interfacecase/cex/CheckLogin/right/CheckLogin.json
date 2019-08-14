@@ -1,0 +1,9 @@
+{
+  "comment": "检查正确的手机账户和正确的登录密码，返回成功",
+  "body": {
+    "mobileArea":"86",
+    "identifier":"18780050294",
+    "loginPwd":"afdd0b4ad2ec172c586e2150770fbf9e"
+  },
+  "assert":"000000"
+}

@@ -23,15 +23,8 @@ public class BaseCase {
 
     //接口参数
     public static final String randomPhone = RandomUtil.getRandomPhoneNum();
-    public static final String presetUser = "24244855@qq.com";
-    public static final String presetUserPwd = "afdd0b4ad2ec172c586e2150770fbf9e";
-    public static final String presetUsersecurityPwd = "f3d3d3667220886d7a1a3f1eb9335d91";
     public static final String pwd = "Aa123456";
     public static final String securityPwd = "Aa12345678";
-    public static final String depositCurrency = "IDA";
-    public static final String buyCurrency = "KOFO";
-    public static final String sellCurrency = "USDT";
-    public static final String depositAmount = "20";
     public static final String area = "86";
     public static final String lang = "en-US";
     public static final String countryId = "40";
@@ -41,7 +34,7 @@ public class BaseCase {
     public static final String bossUserName = "admin";
     public static final String bossLoginPwd = "admin";
 
-    //认证图片存放路径
+    //认证图片路径
     public static final String fileUrl = "http://172.29.16.161/";
     //cex接口url
     public static final String loginUrl = "/user/login";
@@ -50,8 +43,8 @@ public class BaseCase {
     public static final String identityUrl = "/user/authenticate/submit/identity";
     public static final String securityPwdUrl = "/user/password/set/securityPwd";
     public static final String CheckMobileUrl = "/user/message/check/mobile";
-    public static final String rechargeAddrUrl = "/user/wallet/query/rechargeAddr";
-    public static final String withdrawUrl = "/user/withdraw/submit/withdraw";
+    public static final String CheckLoginUrl = "/user/message/check/mobile";
+
     //boss接口url
     public static final String bossLoginUrl = "/boss/account/login";
     public static final String firstTrial = "/boss/cex/audit/firstTrial";
@@ -207,78 +200,4 @@ public class BaseCase {
         }        return bossToken;
     }
 
-    /**
-    * @desc 获取用户对应currency的充币地址
-    * @param  user 用户名
-     * @param pwd 密码
-     * @param currency 币种
-     * @return 地址
-    **/
-    public static String getAddress(String user ,String pwd,String currency){
-        String address = null;
-        JSONObject object = new JSONObject();
-        object.put("currency",currency);
-        JSONObject jsonbody = new JSONObject();
-        jsonbody.put("data",object);
-        jsonbody.put("lang",lang);
-        HashMap header = dataInit();
-        String token = userCexLogin(user,pwd,"86");
-        header.put("CEXTOKEN",token);
-        try {
-            Response response = OkHttpClientManager.post(ip+rechargeAddrUrl,jsonbody.toJSONString(),"application/json",header);
-            if (response.code()==200){
-                JSONObject rspjson = JSON.parseObject(response.body().string());
-                if (rspjson.get("code").equals("000000")){
-                    System.out.printf("------------Get address success"+"body:"+rspjson.toJSONString()+"\n");
-                    return JsonFileUtil.jsonToMap(rspjson,new HashMap<String, Object>()).get("rechargeAddress").toString();
-                }else {
-                    log.error("----------------Get address failed, trace id is:"+rspjson.get("traceId")+"\n");
-                    return null;
-                }
-            }else {
-                log.error("----------------Server connect failed"+response.body()+"\n");
-                return null;
-            }
-
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        return address;
-    }
-
-    public static String withDraw(String securityPwd, String walletAddress,String token, String amount,String currency){
-        JSONObject object = new JSONObject();
-        object.put("amount",amount);
-        object.put("currency",currency);
-        object.put("verifyCode1","111111");
-        object.put("walletAddress",walletAddress);
-        object.put("securityPwd",securityPwd);
-        object.put("verifyCode2","");
-        JSONObject jsonbody = new JSONObject();
-        jsonbody.put("lang",lang);
-        jsonbody.put("data",object);
-        HashMap header = dataInit();
-        header.put("CEXTOKEN",token);
-        try {
-            Response response = OkHttpClientManager.post(ip+withdrawUrl,jsonbody.toJSONString(),"application/json",header);
-            if (response.code()==200){
-                JSONObject rspjson = JSON.parseObject(response.body().string());
-                log.info("-------------Withdraw IDA  response is:"+rspjson);
-                return rspjson.get("code").toString();
-            }else {
-                log.error("----------------Server connect failed"+response.body()+"\n");
-
-            }
-
-        }catch (IOException e){
-            e.printStackTrace();
-            return null;
-        }
-        return null;
-    }
-
 }
-
-
-
-

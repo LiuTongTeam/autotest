@@ -1,0 +1,9 @@
+{
+  "comment": "密码为空",
+  "body": {
+    "mobileArea":"86",
+    "identifier":"18780050294",
+    "loginPwd":""
+  },
+  "assert":"100006"
+}
