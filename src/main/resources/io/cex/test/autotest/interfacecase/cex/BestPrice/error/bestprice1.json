@@ -1,0 +1,8 @@
+{
+  "comment": "买卖方向为空",
+  "body": {
+    "action":"",
+    "symbol":"KOFO/USDT"
+  },
+  "assert":"100006"
+}

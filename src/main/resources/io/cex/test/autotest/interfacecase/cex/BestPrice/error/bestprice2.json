@@ -1,0 +1,8 @@
+{
+  "comment": "交易对为为空",
+  "body": {
+    "action":"BUY",
+    "symbol":""
+  },
+  "assert":"000000"
+}

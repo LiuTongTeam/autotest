@@ -54,6 +54,7 @@ public class BaseCase {
     public static final String CheckLoginUrl = "/user/checkLogin";
     public static final String rechargeAddrUrl = "/user/wallet/query/rechargeAddr";
     public static final String withdrawUrl = "/user/withdraw/submit/withdraw";
+    public static final String BestPriceUrl = "/order/query/marketBestPrice";
 
 
     //boss接口url
