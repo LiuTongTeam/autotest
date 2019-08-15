@@ -8,6 +8,7 @@ import io.cex.test.framework.common.RandomUtil;
 import io.cex.test.framework.testng.Retry;
 import io.cex.test.framework.dbutil.DataBaseManager;
 import io.cex.test.framework.httputil.OkHttpClientManager;
+import io.qameta.allure.*;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import org.testng.annotations.BeforeClass;
@@ -23,16 +24,17 @@ import java.util.Map;
  * @desc 主流程测试类
  **/
 @Slf4j
+@Feature("主流程")
 public class CoreProcessTest extends BaseCase{
     private String token = null;
     private String certificate_no = null;
     private String randomPhone = null;
-    @BeforeClass
+    @BeforeClass(description = "初始化header数据")
     public void beforeClazz(){
         //初始化header数据
         dataInit();
     }
-
+    @Severity(SeverityLevel.CRITICAL)
     @Test(description = "注册", retryAnalyzer = Retry.class)
     public void testRegister() throws IOException {
         randomPhone = RandomUtil.getRandomPhoneNum();
@@ -49,17 +51,20 @@ public class CoreProcessTest extends BaseCase{
                 "application/json", header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
         log.info("-------------register response is:"+rspjson.toJSONString());
+        Allure.addAttachment("入参：",jsonbody.toJSONString());
+        Allure.addAttachment("出参：",response.body().string());
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
     }
+    @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testRegister",description = "登陆")
     public void testLogin(){
-
         token = BaseCase.userCexLogin(randomPhone,pwd,area);
         AssertTool.assertNotEquals(null,token);
         log.info("------------cex token:"+token);
+        Allure.addAttachment("登陆token：",token);
     }
-
-
+    @Story("实名认证")
+    @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testLogin",description = "身份认证")
     public void testIdentity() throws IOException{
         //认证姓名随机字符串
@@ -82,6 +87,8 @@ public class CoreProcessTest extends BaseCase{
                 "application/json", header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
         log.info("-------------Identity response is:"+rspjson);
+        Allure.addAttachment("入参：",jsonbody.toJSONString());
+        Allure.addAttachment("出参：",response.body().string());
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
         //从数据库中获取身份认证ID
         String sql = String.format("SELECT certificate_no FROM member_certification_record WHERE first_name = '%s';",userName);
@@ -89,7 +96,8 @@ public class CoreProcessTest extends BaseCase{
         certificate_no = JSON.parseObject(dataBaseManager.executeSingleQuery(sql,mysql).getString(0)).getString("certificate_no");
         log.info("------certificate_no is:"+certificate_no+"\n");
     }
-
+    @Story("实名认证")
+    @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testIdentity", description = "身份认证初审通过")
     public void testFirstTrial() throws IOException{
         //boss登陆token放入header
@@ -106,9 +114,12 @@ public class CoreProcessTest extends BaseCase{
                 "application/json", header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
         log.info("-------------Identity first trial response is:"+rspjson);
+        Allure.addAttachment("入参：",object.toJSONString());
+        Allure.addAttachment("出参：",response.body().string());
         AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
     }
-
+    @Story("实名认证")
+    @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testFirstTrial", description = "身份认证复审通过")
     public void testReviewing() throws IOException{
         HashMap header = dataInit();
@@ -123,10 +134,12 @@ public class CoreProcessTest extends BaseCase{
         Response response = OkHttpClientManager.post(boss_ip+reviewing, object.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
+        Allure.addAttachment("入参：",object.toJSONString());
+        Allure.addAttachment("出参：",response.body().string());
         log.info("-------------Identity reviewing response is:"+rspjson);
         AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
     }
-
+    @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testReviewing", description = "设置资金密码")
     public void testSecurityPwd() throws IOException{
         JSONObject object = new JSONObject();
@@ -140,10 +153,13 @@ public class CoreProcessTest extends BaseCase{
         Response response = OkHttpClientManager.post(ip+securityPwdUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
+        Allure.addAttachment("入参：",jsonbody.toJSONString());
+        Allure.addAttachment("出参：",response.body().string());
         log.info("-------------SecurityPwd response is:"+rspjson);
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
     }
-
+    @Story("充提币")
+    @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testSecurityPwd", description = "充币")
     public void testDeposit1() throws InterruptedException{
         String address = BaseCase.getAddress(randomPhone,pwd,depositCurrency);
@@ -154,7 +170,8 @@ public class CoreProcessTest extends BaseCase{
         Thread.sleep(60000);
         AssertTool.isContainsExpect("{\"amount\":\"20.000000000000000000000000000000\"}",mysql,sql);
     }
-
+    @Story("充提币")
+    @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testDeposit1", description = "充币")
     public void testDeposit2() throws InterruptedException{
         String address = BaseCase.getAddress(randomPhone,pwd,buyCurrency);
@@ -165,7 +182,8 @@ public class CoreProcessTest extends BaseCase{
         Thread.sleep(60000);
         AssertTool.isContainsExpect("{\"amount\":\"20.000000000000000000000000000000\"}",mysql,sql);
     }
-
+    @Story("充提币")
+    @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testDeposit2", description = "充币")
     public void testDeposit3() throws InterruptedException{
         String address = BaseCase.getAddress(randomPhone,pwd,sellCurrency);
@@ -176,7 +194,8 @@ public class CoreProcessTest extends BaseCase{
         Thread.sleep(60000);
         AssertTool.isContainsExpect("{\"amount\":\"20.000000000000000000000000000000\"}",mysql,sql);
     }
-
+    @Story("充提币")
+    @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testDeposit3", description = "提币数量超过账户剩余数量")
     public void testWithdrawFail(){
         String address = BaseCase.getAddress(presetUser,presetUserPwd,depositCurrency);
@@ -184,7 +203,8 @@ public class CoreProcessTest extends BaseCase{
         String rspCode = withDraw(securityPwd,address,token,"25",depositCurrency);
         AssertTool.isContainsExpect("100113",rspCode);
     }
-
+    @Story("充提币")
+    @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testWithdrawFail", description = "提币成功")
     public void testWithdraw() throws InterruptedException{
         String address = BaseCase.getAddress(presetUser,presetUserPwd,depositCurrency);
@@ -196,6 +216,8 @@ public class CoreProcessTest extends BaseCase{
         AssertTool.isContainsExpect("{\"amount\":\"5.000000000000000000000000000000\"}",mysql,sql);
     }
 
+    @Story("交易")
+    @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testWithdraw",description = "下单")
     public void testOrder(){
         String symbol = String.format("%s/%s",buyCurrency,sellCurrency);

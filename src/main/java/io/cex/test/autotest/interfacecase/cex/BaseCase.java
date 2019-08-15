@@ -7,6 +7,7 @@ import io.cex.test.framework.common.FileUtil;
 import io.cex.test.framework.common.RandomUtil;
 import io.cex.test.framework.httputil.OkHttpClientManager;
 import io.cex.test.framework.jsonutil.JsonFileUtil;
+import io.qameta.allure.Allure;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import java.io.File;
