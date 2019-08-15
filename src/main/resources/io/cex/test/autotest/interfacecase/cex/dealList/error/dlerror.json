@@ -1,0 +1,7 @@
+{
+  "comment": "交易对不存在",
+  "body": {
+    "symbol":"KO/USDT"
+  },
+  "assert":"100091"
+}

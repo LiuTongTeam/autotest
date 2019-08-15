@@ -55,6 +55,7 @@ public class BaseCase {
     public static final String withdrawUrl = "/user/withdraw/submit/withdraw";
     public static final String orderUrl = "/user/order/create/order";
     public static final String BestPriceUrl = "/order/query/marketBestPrice";
+    public static final String dealListUrl = "/order/query/dealList";
     public static final String queryAssetUrl = "/user/asset/query/asset";
 
 
