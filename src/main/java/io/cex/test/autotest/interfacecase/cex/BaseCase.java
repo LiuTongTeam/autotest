@@ -23,7 +23,6 @@ public class BaseCase {
     public static final String mysql = "jdbc:mysql://172.29.19.71:3306/cex?useUnicode=true&characterEncoding=UTF8&user=root&password=48rm@hd2o3EX";
 
     //接口参数
-    public static final String randomPhone = RandomUtil.getRandomPhoneNum();
     public static final String presetUser = "24244855@qq.com";
     public static final String presetUserPwd = "afdd0b4ad2ec172c586e2150770fbf9e";
     public static final String presetUsersecurityPwd = "f3d3d3667220886d7a1a3f1eb9335d91";
@@ -54,7 +53,9 @@ public class BaseCase {
     public static final String CheckLoginUrl = "/user/checkLogin";
     public static final String rechargeAddrUrl = "/user/wallet/query/rechargeAddr";
     public static final String withdrawUrl = "/user/withdraw/submit/withdraw";
+    public static final String orderUrl = "/user/order/create/order";
     public static final String BestPriceUrl = "/order/query/marketBestPrice";
+    public static final String queryAssetUrl = "/user/asset/query/asset";
 
 
     //boss接口url
@@ -228,7 +229,7 @@ public class BaseCase {
         jsonbody.put("data",object);
         jsonbody.put("lang",lang);
         HashMap header = dataInit();
-        String token = userCexLogin(user,pwd,"86");
+        String token = userCexLogin(user,pwd,area);
         header.put("CEXTOKEN",token);
         try {
             Response response = OkHttpClientManager.post(ip+rechargeAddrUrl,jsonbody.toJSONString(),"application/json",header);
@@ -312,9 +313,56 @@ public class BaseCase {
         HashMap header = dataInit();
         header.put("CEXTOKEN",token);
         HashMap result = new HashMap();
+        try {
+            Response response = OkHttpClientManager.post(ip + orderUrl, jsonbody.toJSONString(), "application/json", header);
+            if (response.code() == 200) {
+                JSONObject rspjson = JSON.parseObject(response.body().string());
+                log.info("-------------Order response is:" + rspjson);
+                result.put("code", rspjson.get("code").toString());
+                if (result.get("code").equals("000000")) {
+                    log.info("------------Order success");
+                    result.put("orderNo", JsonFileUtil.jsonToMap(rspjson, new HashMap<String, Object>()).get("orderNo").toString());
+                    return result;
+                } else {
+                    log.error("----------------Server connect failed" + response.body() + "\n");
+                }
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+            return result;
+        }
         return result;
 
     }
+
+    /**
+    * @desc 获取资产信息
+    * @param
+    **/
+    public static HashMap queryAsset(String token){
+        HashMap result = new HashMap();
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("lang",lang);
+        HashMap header = dataInit();
+        header.put("CEXTOKEN",token);
+        try {
+            Response response = OkHttpClientManager.post(ip + queryAssetUrl,jsonbody.toJSONString(),"application/json", header);
+            if (response.code() == 200) {
+                JSONObject rspjson = JSON.parseObject(response.body().string());
+                System.out.printf("-------------Order response is:" + rspjson);
+                return null;
+            }else {
+                log.error("----------------Server connect failed" + response.body() + "\n");
+                return null;
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+
 }
 
 

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import io.cex.test.framework.assertutil.AssertTool;
 import io.cex.test.framework.common.RandomUtil;
+import io.cex.test.framework.testng.Retry;
 import io.cex.test.framework.dbutil.DataBaseManager;
 import io.cex.test.framework.httputil.OkHttpClientManager;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author shenqingyan
@@ -24,14 +26,16 @@ import java.util.HashMap;
 public class CoreProcessTest extends BaseCase{
     private String token = null;
     private String certificate_no = null;
+    private String randomPhone = null;
     @BeforeClass
     public void beforeClazz(){
         //初始化header数据
         dataInit();
     }
 
-    @Test(description = "注册")
+    @Test(description = "注册", retryAnalyzer = Retry.class)
     public void testRegister() throws IOException {
+        randomPhone = RandomUtil.getRandomPhoneNum();
         JSONObject object = new JSONObject();
         object.put("identifier",randomPhone);
         object.put("loginPwd",pwd);
@@ -192,5 +196,10 @@ public class CoreProcessTest extends BaseCase{
         AssertTool.isContainsExpect("{\"amount\":\"5.000000000000000000000000000000\"}",mysql,sql);
     }
 
-
+    @Test(dependsOnMethods = "testWithdraw",description = "下单")
+    public void testOrder(){
+        String symbol = String.format("%s/%s",buyCurrency,sellCurrency);
+        Map result = order(symbol,"BUY","MKT","5","5","5",token);
+        AssertTool.isContainsExpect("000000",result.get("code").toString());
+    }
 }

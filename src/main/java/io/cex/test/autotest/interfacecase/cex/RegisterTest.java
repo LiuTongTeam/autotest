@@ -4,6 +4,7 @@ package io.cex.test.autotest.interfacecase.cex;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import io.cex.test.framework.assertutil.AssertTool;
+import io.cex.test.framework.common.RandomUtil;
 import io.cex.test.framework.httputil.OkHttpClientManager;
 import io.cex.test.framework.jsonutil.JsonFileUtil;
 import okhttp3.Response;
@@ -70,6 +71,7 @@ public class RegisterTest extends BaseCase{
     **/
     @Test(dataProvider = "provideRegisterData")
     public void testRegister(Map<?,?> param) throws IOException {
+        String randomPhone = RandomUtil.getRandomPhoneNum();
         JSONObject object = JSON.parseObject(param.get("body").toString());
         object.put("identifier",randomPhone);
         JSONObject jsonbody = new JSONObject();
