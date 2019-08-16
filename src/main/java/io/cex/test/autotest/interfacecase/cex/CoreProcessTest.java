@@ -52,7 +52,7 @@ public class CoreProcessTest extends BaseCase{
         JSONObject rspjson = JSON.parseObject(response.body().string());
         log.info("-------------register response is:"+rspjson.toJSONString());
         Allure.addAttachment("入参：",jsonbody.toJSONString());
-        Allure.addAttachment("出参：",response.body().string());
+        Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
     }
     @Severity(SeverityLevel.CRITICAL)
@@ -88,7 +88,7 @@ public class CoreProcessTest extends BaseCase{
         JSONObject rspjson = JSON.parseObject(response.body().string());
         log.info("-------------Identity response is:"+rspjson);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
-        Allure.addAttachment("出参：",response.body().string());
+        Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
         //从数据库中获取身份认证ID
         String sql = String.format("SELECT certificate_no FROM member_certification_record WHERE first_name = '%s';",userName);
@@ -115,7 +115,7 @@ public class CoreProcessTest extends BaseCase{
         JSONObject rspjson = JSON.parseObject(response.body().string());
         log.info("-------------Identity first trial response is:"+rspjson);
         Allure.addAttachment("入参：",object.toJSONString());
-        Allure.addAttachment("出参：",response.body().string());
+        Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
     }
     @Story("实名认证")
@@ -135,7 +135,7 @@ public class CoreProcessTest extends BaseCase{
                 "application/json", header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
         Allure.addAttachment("入参：",object.toJSONString());
-        Allure.addAttachment("出参：",response.body().string());
+        Allure.addAttachment("出参：",rspjson.toJSONString());
         log.info("-------------Identity reviewing response is:"+rspjson);
         AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
     }
@@ -154,7 +154,7 @@ public class CoreProcessTest extends BaseCase{
                 "application/json", header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
         Allure.addAttachment("入参：",jsonbody.toJSONString());
-        Allure.addAttachment("出参：",response.body().string());
+        Allure.addAttachment("出参：",rspjson.toJSONString());
         log.info("-------------SecurityPwd response is:"+rspjson);
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
     }

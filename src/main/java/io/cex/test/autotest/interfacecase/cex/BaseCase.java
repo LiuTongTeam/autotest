@@ -92,11 +92,13 @@ public class BaseCase {
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data",object);
         jsonbody.put("lang",lang);
+        Allure.addAttachment("CEX登陆入参：",jsonbody.toJSONString());
         try {
             Response response = OkHttpClientManager.post(ip+loginUrl, jsonbody.toJSONString(),
                     "application/json", dataInit());
             if (response.code()==200){
                 JSONObject rspjson = JSON.parseObject(response.body().string());
+                Allure.addAttachment("CEX登陆出参：",rspjson.toJSONString());
                 if (rspjson.get("code").equals("000000")){
                     log.info("-------------Login success"+"body:"+rspjson.toJSONString()+"\n");
                     return JsonFileUtil.jsonToMap(rspjson,new HashMap<String, Object>()).get("token").toString();
@@ -131,11 +133,13 @@ public class BaseCase {
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data",object);
         jsonbody.put("lang",lang);
+        Allure.addAttachment("注册入参：",jsonbody.toJSONString());
         try {
             Response response = OkHttpClientManager.post(ip+registerUrl, jsonbody.toJSONString(),
                     "application/json", dataInit());
             if (response.code()==200){
                 JSONObject rspjson = JSON.parseObject(response.body().string());
+                Allure.addAttachment("注册出参：",rspjson.toJSONString());
                 if (rspjson.get("code").equals("000000")){
                     log.info("-------------Regist success"+"body:"+rspjson.toJSONString()+"\n");
                 }else {
@@ -171,6 +175,7 @@ public class BaseCase {
             if (response.code()==200) {
                // System.out.println("body:"+response.body().string()+"header"+response.headers().toString());
                 JSONObject rspjson = JSON.parseObject(response.body().string());
+                Allure.addAttachment("上传文件出参：",rspjson.toJSONString());
                 if (rspjson.get("code").equals("000000")) {
                     log.info("-------------Upload File success" + "body:"+rspjson.toJSONString()+ "\n");
                     id = rspjson.getString("data");
@@ -201,9 +206,11 @@ public class BaseCase {
         JSONObject object = new JSONObject();
         object.put("accountId", accountId);
         object.put("password", pwd);
+        Allure.addAttachment("BOSS登陆入参：",object.toJSONString());
         try {
             String response = OkHttpClientManager.postAsString(boss_ip+bossLoginUrl,object.toJSONString());
             try {
+                Allure.addAttachment("BOSS登陆出参：",response);
                 bossToken = JsonFileUtil.jsonToMap(JSONObject.parseObject(response),new HashMap<String, Object>()).get("token").toString();
             }catch (Exception e){
                 e.printStackTrace();
@@ -233,10 +240,12 @@ public class BaseCase {
         HashMap header = dataInit();
         String token = userCexLogin(user,pwd,area);
         header.put("CEXTOKEN",token);
+        Allure.addAttachment("获取充币地址入参：",jsonbody.toJSONString());
         try {
             Response response = OkHttpClientManager.post(ip+rechargeAddrUrl,jsonbody.toJSONString(),"application/json",header);
             if (response.code()==200){
                 JSONObject rspjson = JSON.parseObject(response.body().string());
+                Allure.addAttachment("获取充币地址出参：",rspjson.toJSONString());
                 if (rspjson.get("code").equals("000000")){
                     log.info("------------Get address success"+"body:"+rspjson.toJSONString()+"\n");
                     return JsonFileUtil.jsonToMap(rspjson,new HashMap<String, Object>()).get("rechargeAddress").toString();
@@ -276,11 +285,14 @@ public class BaseCase {
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
         HashMap header = dataInit();
+        Allure.addAttachment("提币入参：",jsonbody.toJSONString());
         header.put("CEXTOKEN",token);
+
         try {
             Response response = OkHttpClientManager.post(ip+withdrawUrl,jsonbody.toJSONString(),"application/json",header);
             if (response.code()==200){
                 JSONObject rspjson = JSON.parseObject(response.body().string());
+                Allure.addAttachment("提币出参：",rspjson.toJSONString());
                 log.info("-------------Withdraw response is:"+rspjson);
                 return rspjson.get("code").toString();
             }else {
@@ -312,6 +324,7 @@ public class BaseCase {
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
+        Allure.addAttachment("下单入参：",jsonbody.toJSONString());
         HashMap header = dataInit();
         header.put("CEXTOKEN",token);
         HashMap result = new HashMap();
@@ -319,6 +332,7 @@ public class BaseCase {
             Response response = OkHttpClientManager.post(ip + orderUrl, jsonbody.toJSONString(), "application/json", header);
             if (response.code() == 200) {
                 JSONObject rspjson = JSON.parseObject(response.body().string());
+                Allure.addAttachment("下单出参：",rspjson.toJSONString());
                 log.info("-------------Order response is:" + rspjson);
                 result.put("code", rspjson.get("code").toString());
                 if (result.get("code").equals("000000")) {
