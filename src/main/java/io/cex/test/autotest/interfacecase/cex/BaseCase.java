@@ -2,6 +2,7 @@ package io.cex.test.autotest.interfacecase.cex;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import io.cex.test.framework.common.FileUtil;
 import io.cex.test.framework.common.RandomUtil;
@@ -353,9 +354,11 @@ public class BaseCase {
 
     /**
     * @desc 获取资产信息
-    * @param
+    * @param token 登陆cex token
+     * @param currency 币种信息
+     * @return HashMap中存放币种的totalAmount、availableAmount、frozenAmount
     **/
-    public static HashMap queryAsset(String token){
+    public static HashMap queryAsset(String token,String currency){
         HashMap result = new HashMap();
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);
@@ -365,8 +368,29 @@ public class BaseCase {
             Response response = OkHttpClientManager.post(ip + queryAssetUrl,jsonbody.toJSONString(),"application/json", header);
             if (response.code() == 200) {
                 JSONObject rspjson = JSON.parseObject(response.body().string());
-                System.out.printf("-------------Order response is:" + rspjson);
-                return null;
+                Allure.addAttachment("获取资产信息出参：",rspjson.toJSONString());
+                if (rspjson.get("code").toString().equals("000000")){
+                    JSONObject data = rspjson.getJSONObject("data");
+                    JSONArray array = JSON.parseArray(data.get("currencyList").toString());
+                    if (array.size() !=0){
+                        for (int i = 0;i<array.size();i++){
+                            JSONObject currencyContent = JSON.parseObject(array.getString(i));
+                            if (currencyContent.get("currencyCode").equals(currency)){
+                                result.put("totalAmount",currencyContent.get("totalAmount"));
+                                result.put("availableAmount",currencyContent.get("availableAmount"));
+                                result.put("frozenAmount",currencyContent.get("frozenAmount"));
+                            }
+                        }
+                        log.info("----------------QueryAsset success,response is:"+rspjson+"\n");
+                        return result;
+                    }else {
+                        log.info("----------------QueryAsset success, no currency,response is "+rspjson+"\n");
+                        return null;
+                    }
+                }else {
+                    log.error("----------------QueryAsset failed, trace id is:"+rspjson.get("traceId")+"\n");
+                    return null;
+                }
             }else {
                 log.error("----------------Server connect failed" + response.body() + "\n");
                 return null;
