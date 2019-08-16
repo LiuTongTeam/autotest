@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import io.cex.test.framework.common.FileUtil;
 import io.cex.test.framework.common.RandomUtil;
+import io.cex.test.framework.dbutil.DataBaseManager;
 import io.cex.test.framework.httputil.OkHttpClientManager;
 import io.cex.test.framework.jsonutil.JsonFileUtil;
 import io.qameta.allure.Allure;
@@ -31,8 +32,8 @@ public class BaseCase {
     public static final String pwd = "Aa123456";
     public static final String securityPwd = "Aa12345678";
     public static final String depositCurrency = "IDA";
-    public static final String buyCurrency = "KOFO";
-    public static final String sellCurrency = "USDT";
+    public static final String productCoin = "KOFO";
+    public static final String currencyCoin = "USDT";
     public static final String depositAmount = "20";
     public static final String area = "86";
     public static final String lang = "en-US";
@@ -59,6 +60,7 @@ public class BaseCase {
     public static final String BestPriceUrl = "/order/query/marketBestPrice";
     public static final String dealListUrl = "/order/query/dealList";
     public static final String queryAssetUrl = "/user/asset/query/asset";
+    public static final String cancelOrderUrl = "/user/order/cancel/order";
 
 
     //boss接口url
@@ -319,7 +321,7 @@ public class BaseCase {
         object.put("orderType",orderType);
         object.put("limitPrice",limitPrice);
         object.put("quantity",quantity);
-        if (orderType.equals("MKT")) {
+        if (orderType.equals("LMT")) {
             object.put("amount", amount);
         }
         JSONObject jsonbody = new JSONObject();
@@ -350,6 +352,62 @@ public class BaseCase {
         }
         return result;
 
+    }
+    /**
+    * @desc 撤单
+    * @param token cex 登陆token
+     * @param orderNo 订单号
+    **/
+    public static void cancelOrder(String token,String orderNo){
+        JSONObject object = new JSONObject();
+        object.put("orderNo",orderNo);
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("lang",lang);
+        jsonbody.put("data",object);
+        Allure.addAttachment("撤单入参：",jsonbody.toJSONString());
+        HashMap header = dataInit();
+        header.put("CEXTOKEN",token);
+        HashMap result = new HashMap();
+        try {
+            Response response = OkHttpClientManager.post(ip + cancelOrderUrl, jsonbody.toJSONString(), "application/json", header);
+            if (response.code() == 200) {
+                JSONObject rspjson = JSON.parseObject(response.body().string());
+                Allure.addAttachment("撤单出参：", rspjson.toJSONString());
+                log.info(("撤单出参："+ rspjson.toJSONString()));
+            }else {
+                log.error("----------------Server connect failed" + response.body() + "\n");
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    /**
+    * @desc 批量撤销交易对未成交市价单
+    * @param symbol 需要撤单的交易对
+    **/
+    public static void batchCancelOrder(String symbol){
+        String sqlOrder = String.format("SELECT order_no,user_no from order_info WHERE `status` = 0 and symbol = '%s' and state = 1 and action = 2;",symbol);
+        DataBaseManager dataBaseManager = new DataBaseManager();
+        //查询未成交的市价单
+        JSONArray array = dataBaseManager.executeSingleQuery(sqlOrder,mysql);
+        log.info("order data is "+array.toJSONString());
+        if (array.size()>0){
+            for (int i = 0 ; i< array.size(); i++){
+                //遍历未成交市价单进行撤销
+                JSONObject order = JSON.parseObject(array.get(i).toString());
+                String orderNo = order.getString("order_no");
+                String userNo = order.getString("user_no");
+                //查询该市价单用户信息
+                String sqlQueryMobile = String.format("SELECT mobile_num from member_user WHERE user_no = '%s';",userNo);
+                log.info("-------sqlQueryMobile is"+sqlQueryMobile);
+                JSONArray mobileArry = dataBaseManager.executeSingleQuery(sqlQueryMobile,mysql);
+                JSONObject mobile = JSON.parseObject(mobileArry.getString(0));
+                //使用下单用户登陆，获取登陆token
+                String token = userCexLogin(mobile.getString("mobile_num"),pwd,area);
+                //执行撤单
+                cancelOrder(token,orderNo);
+            }
+        }
     }
 
     /**
