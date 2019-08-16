@@ -1,0 +1,9 @@
+{
+  "comment": "注册账号错误",
+  "body": {
+    "mobileArea":"86",
+    "identifier":"18780050999",
+    "loginPwd":"afdd0b4ad2ec172c586e2150770fbf9f"
+  },
+  "assert":"100003"
+}
