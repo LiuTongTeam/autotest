@@ -1,0 +1,8 @@
+{
+  "comment": "正常返回成功返",
+  "body": {
+    "symbol":"KOFO/USDT",
+    "depthStep":"00001"
+  },
+  "assert":"000000"
+}

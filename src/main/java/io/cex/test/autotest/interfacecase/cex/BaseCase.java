@@ -62,6 +62,8 @@ public class BaseCase {
     public static final String queryAssetUrl = "/user/asset/query/asset";
     public static final String cancelOrderUrl = "/user/order/cancel/order";
     public static final String querySymbolAsset = "/user/asset/query/symbolAsset";
+    public static final String orderBookUrl = "/order/query/orderBook";
+
 
     //boss接口url
     public static final String bossLoginUrl = "/boss/account/login";
@@ -101,7 +103,6 @@ public class BaseCase {
                     "application/json", dataInit());
             if (response.code()==200){
                 JSONObject rspjson = JSON.parseObject(response.body().string());
-                System.out.println(rspjson);
                 Allure.addAttachment("CEX登陆出参：",rspjson.toJSONString());
                 if (rspjson.get("code").equals("000000")){
                     log.info("-------------Login success"+"body:"+rspjson.toJSONString()+"\n");

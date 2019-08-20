@@ -1,0 +1,8 @@
+{
+  "comment": "交易对不存在",
+  "body": {
+    "symbol":"KOF/USDT",
+    "depthStep":"00001"
+  },
+  "assert":"100091"
+}

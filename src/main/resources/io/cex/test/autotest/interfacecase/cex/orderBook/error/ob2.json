@@ -1,0 +1,8 @@
+{
+  "comment": "交易对为空",
+  "body": {
+    "symbol":"",
+    "depthStep":"00001"
+  },
+  "assert":"100006"
+}
