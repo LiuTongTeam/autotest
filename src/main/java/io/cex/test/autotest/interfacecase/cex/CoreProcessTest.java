@@ -26,10 +26,16 @@ import java.util.Map;
  **/
 @Slf4j
 @Feature("主流程")
+
 public class CoreProcessTest extends BaseCase{
     private String token = null;
     private String certificate_no = null;
     private String randomPhone = null;
+    private String cancelAllBuyNo = null;
+    private String cancelAllSellNo = null;
+    private String cancelPartBuyNo = null;
+    private String cancelPartSellNo = null;
+    String symbol = String.format("%s/%s",productCoin,currencyCoin);
     @BeforeClass(description = "初始化header数据")
     public void beforeClazz(){
         //初始化header数据
@@ -168,7 +174,7 @@ public class CoreProcessTest extends BaseCase{
         AssertTool.isContainsExpect("000000",rspCode);
         String sql = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhone,depositCurrency);
         log.info("--------Deposit sql is:"+sql);
-        Thread.sleep(60000);
+        Thread.sleep(30000);
         AssertTool.isContainsExpect("{\"amount\":\"20.000000000000000000000000000000\"}",mysql,sql);
     }
     @Story("充提币")
@@ -180,7 +186,7 @@ public class CoreProcessTest extends BaseCase{
         AssertTool.isContainsExpect("000000",rspCode);
         String sql = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhone,productCoin);
         log.info("--------Deposit KOFO sql is:"+sql);
-        Thread.sleep(60000);
+        Thread.sleep(30000);
         AssertTool.isContainsExpect("{\"amount\":\"20.000000000000000000000000000000\"}",mysql,sql);
     }
     @Story("充提币")
@@ -192,7 +198,7 @@ public class CoreProcessTest extends BaseCase{
         AssertTool.isContainsExpect("000000",rspCode);
         String sql = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhone,currencyCoin);
         log.info("--------Deposit USDT sql is:"+sql);
-        Thread.sleep(60000);
+        Thread.sleep(30000);
         AssertTool.isContainsExpect("{\"amount\":\"20.000000000000000000000000000000\"}",mysql,sql);
     }
     @Story("充提币")
@@ -213,53 +219,101 @@ public class CoreProcessTest extends BaseCase{
         AssertTool.isContainsExpect("000000",rspCode);
         String sql = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhone,depositCurrency);
         log.info("--------Deposit USDT sql is:"+sql);
-        Thread.sleep(60000);
+        Thread.sleep(30000);
         AssertTool.isContainsExpect("{\"amount\":\"5.000000000000000000000000000000\"}",mysql,sql);
     }
 
     @Story("交易")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(dependsOnMethods = "testWithdraw",description = "下单")
-    public void testOrder(){
-        String symbol = String.format("%s/%s",productCoin,currencyCoin);
-        //下单前先撤销未成交的市价单
+    @Test(dependsOnMethods = "testWithdraw",description = "下买单")
+    public void testBuyOrder(){
+        //下单前先批量撤销未成交的市价单
         batchCancelOrder(symbol);
         Map result = order(symbol,"BUY","LMT","5","2","2",token);
+        cancelAllBuyNo = result.get("orderNo").toString();
         AssertTool.isContainsExpect("000000",result.get("code").toString());
+        String frozeAmount = queryAsset(token,currencyCoin).get("frozenAmount").toString();
+        Allure.addAttachment("下单后冻结金额",frozeAmount);
+        AssertTool.isContainsExpect("10",frozeAmount);
     }
 
+    @Story("交易")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(dependsOnMethods = "testBuyOrder",description = "买单全部撤单")
+    public void testCancelBuyOrder() throws InterruptedException{
+        HashMap result = cancelOrder(token,cancelAllBuyNo);
+        AssertTool.isContainsExpect("000000",result.get("code").toString());
+        Thread.sleep(30000);
+        String frozeAmount = queryAsset(token,currencyCoin).get("frozenAmount").toString();
+        Allure.addAttachment("撤单后冻结金额:",frozeAmount);
+        AssertTool.assertEquals(StringUtil.numStringRound(frozeAmount),"0");
+    }
 
+    @Story("交易")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(dependsOnMethods = "testCancelBuyOrder",description = "下卖单")
+    public void testSellOrder(){
+        //下单前先批量撤销未成交的市价单
+        batchCancelOrder(symbol);
+        Map result = order(symbol,"SELL","LMT","5","2","2",token);
+        cancelAllSellNo = result.get("orderNo").toString();
+        AssertTool.isContainsExpect("000000",result.get("code").toString());
+        String frozeAmount = queryAsset(token,productCoin).get("frozenAmount").toString();
+        Allure.addAttachment("下单后冻结币个数为：",frozeAmount);
+        AssertTool.isContainsExpect(StringUtil.numStringRound(frozeAmount),"2");
+    }
 
+    @Story("交易")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(dependsOnMethods = "testSellOrder",description = "卖单全部撤单")
+    public void testCancelSellOrder() throws InterruptedException{
+        HashMap result = cancelOrder(token,cancelAllSellNo);
+        AssertTool.isContainsExpect("000000",result.get("code").toString());
+        Thread.sleep(30000);
+        String frozeAmount = queryAsset(token,productCoin).get("frozenAmount").toString();
+        Allure.addAttachment("撤单后冻结币个数：",frozeAmount);
+        AssertTool.assertEquals(StringUtil.numStringRound(frozeAmount),"0");
+    }
+
+    @Story("交易")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(dependsOnMethods = "testSellOrder",description = "卖单全部撤单")
+    public void testPartBuyOrder(){
+
+    }
 
 
     @Story("充提币")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(dependsOnMethods = "testOrder", description = "归还剩余depositCurrency币种")
+    @Test(dependsOnMethods = "testCancelSellOrder", description = "归还剩余depositCurrency币种")
     public void testWithdrawReturnDepositCurrency() throws InterruptedException{
         String address = BaseCase.getAddress(presetUser,presetUserPwd,depositCurrency);
         String amount = BaseCase.queryAsset(token,depositCurrency).get("availableAmount").toString();
         String rspCode = withDraw(securityPwd,address,token, StringUtil.numStringRound(amount),depositCurrency);
         AssertTool.isContainsExpect("000000",rspCode);
-        Thread.sleep(60000);
+        Thread.sleep(30000);
     }
+
+
     @Story("充提币")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(dependsOnMethods = "testOrder", description = "归还剩余productCoin币种")
+    @Test(dependsOnMethods = "testCancelSellOrder", description = "归还剩余productCoin币种")
     public void testWithdrawReturnProductCoin() throws InterruptedException{
         String address = BaseCase.getAddress(presetUser,presetUserPwd,productCoin);
         String amount = BaseCase.queryAsset(token,productCoin).get("availableAmount").toString();
         String rspCode = withDraw(securityPwd,address,token, StringUtil.numStringRound(amount),productCoin);
         AssertTool.isContainsExpect("000000",rspCode);
-        Thread.sleep(60000);
+        Thread.sleep(30000);
     }
+
     @Story("充提币")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(dependsOnMethods = "testOrder", description = "归还剩余currencyCoin币种")
+    @Test(dependsOnMethods = "testCancelSellOrder", description = "归还剩余currencyCoin币种")
     public void testWithdrawReturnCurrencyCoin() throws InterruptedException{
         String address = BaseCase.getAddress(presetUser,presetUserPwd,currencyCoin);
         String amount = BaseCase.queryAsset(token,currencyCoin).get("availableAmount").toString();
         String rspCode = withDraw(securityPwd,address,token, StringUtil.numStringRound(amount),currencyCoin);
         AssertTool.isContainsExpect("000000",rspCode);
-        Thread.sleep(60000);
+        Thread.sleep(30000);
     }
 }

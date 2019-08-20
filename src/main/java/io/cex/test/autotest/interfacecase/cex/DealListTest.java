@@ -19,14 +19,14 @@ import java.util.HashMap;
 import java.util.Map;
 @Feature("dealList接口")
 
-public class dealList extends BaseCase {
+public class DealListTest extends BaseCase {
     /**
      * @desc 异常用例的数据驱动
      * @param
      **/
     @DataProvider(parallel=true)
     public Object[][] providedealListErrorData(Method method){
-        String path = "./src/main/resources/io/cex/test/autotest/interfacecase/cex/dealList/error";
+        String path = "./src/main/resources/io/cex/test/autotest/interfacecase/cex/DealListTest/error";
         HashMap<String, String>[][] arrymap = (HashMap<String, String>[][]) JsonFileUtil.jsonFileToArry(path);
         return arrymap;
     }
@@ -52,7 +52,7 @@ public class dealList extends BaseCase {
      */
     @DataProvider(parallel=true)
     public Object[][] providedealListData(Method method){
-        String path = "./src/main/resources/io/cex/test/autotest/interfacecase/cex/dealList/dl1.json";
+        String path = "./src/main/resources/io/cex/test/autotest/interfacecase/cex/DealListTest/dl1.json";
         HashMap<String, String>[][] arrymap = (HashMap<String, String>[][]) JsonFileUtil.jsonFileToArry(path);
         return arrymap;
     }

@@ -61,7 +61,7 @@ public class BaseCase {
     public static final String dealListUrl = "/order/query/dealList";
     public static final String queryAssetUrl = "/user/asset/query/asset";
     public static final String cancelOrderUrl = "/user/order/cancel/order";
-
+    public static final String querySymbolAsset = "/user/asset/query/symbolAsset";
 
     //boss接口url
     public static final String bossLoginUrl = "/boss/account/login";
@@ -101,6 +101,7 @@ public class BaseCase {
                     "application/json", dataInit());
             if (response.code()==200){
                 JSONObject rspjson = JSON.parseObject(response.body().string());
+                System.out.println(rspjson);
                 Allure.addAttachment("CEX登陆出参：",rspjson.toJSONString());
                 if (rspjson.get("code").equals("000000")){
                     log.info("-------------Login success"+"body:"+rspjson.toJSONString()+"\n");
@@ -358,7 +359,7 @@ public class BaseCase {
     * @param token cex 登陆token
      * @param orderNo 订单号
     **/
-    public static void cancelOrder(String token,String orderNo){
+    public static HashMap cancelOrder(String token,String orderNo){
         JSONObject object = new JSONObject();
         object.put("orderNo",orderNo);
         JSONObject jsonbody = new JSONObject();
@@ -373,20 +374,25 @@ public class BaseCase {
             if (response.code() == 200) {
                 JSONObject rspjson = JSON.parseObject(response.body().string());
                 Allure.addAttachment("撤单出参：", rspjson.toJSONString());
+                result.put("code", rspjson.get("code").toString());
                 log.info(("撤单出参："+ rspjson.toJSONString()));
+                return result;
             }else {
                 log.error("----------------Server connect failed" + response.body() + "\n");
+                return null;
             }
         }catch (IOException e){
             e.printStackTrace();
         }
+        return null;
     }
     /**
     * @desc 批量撤销交易对未成交市价单
     * @param symbol 需要撤单的交易对
     **/
     public static void batchCancelOrder(String symbol){
-        String sqlOrder = String.format("SELECT order_no,user_no from order_info WHERE `status` = 0 and symbol = '%s' and state = 1 and action = 2;",symbol);
+        //orderType-2 市价单、status-1 委托单状态正常，即未撤单、state != 3不为全部成交
+        String sqlOrder = String.format("SELECT order_no,user_no from order_info WHERE `status` = 0 and state != 3 and symbol = '%s' and order_type = 2;",symbol);
         DataBaseManager dataBaseManager = new DataBaseManager();
         //查询未成交的市价单
         JSONArray array = dataBaseManager.executeSingleQuery(sqlOrder,mysql);
@@ -403,9 +409,9 @@ public class BaseCase {
                 JSONArray mobileArry = dataBaseManager.executeSingleQuery(sqlQueryMobile,mysql);
                 JSONObject mobile = JSON.parseObject(mobileArry.getString(0));
                 //使用下单用户登陆，获取登陆token
-                String token = userCexLogin(mobile.getString("mobile_num"),pwd,area);
+                String cancelOrderToken = userCexLogin(mobile.getString("mobile_num"),pwd,area);
                 //执行撤单
-                cancelOrder(token,orderNo);
+                cancelOrder(cancelOrderToken,orderNo);
             }
         }
     }
