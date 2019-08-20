@@ -1,0 +1,8 @@
+{
+  "comment": "深度输错或不规则",
+  "body": {
+    "symbol":"KOFO/USDT",
+    "depthStep":"23"
+  },
+  "assert":"100006"
+}

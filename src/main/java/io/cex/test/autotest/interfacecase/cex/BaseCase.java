@@ -61,6 +61,7 @@ public class BaseCase {
     public static final String dealListUrl = "/order/query/dealList";
     public static final String queryAssetUrl = "/user/asset/query/asset";
     public static final String cancelOrderUrl = "/user/order/cancel/order";
+    public static final String orderBookUrl = "/order/query/orderBook";
 
 
     //boss接口url

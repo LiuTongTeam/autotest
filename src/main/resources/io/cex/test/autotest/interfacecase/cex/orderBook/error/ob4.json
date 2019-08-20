@@ -1,0 +1,8 @@
+{
+  "comment": "深度为空",
+  "body": {
+    "symbol":"KOFO/USDT",
+    "depthStep":""
+  },
+  "assert":"100006"
+}
