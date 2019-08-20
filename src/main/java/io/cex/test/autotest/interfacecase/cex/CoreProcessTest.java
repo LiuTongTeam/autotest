@@ -16,6 +16,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +36,8 @@ public class CoreProcessTest extends BaseCase{
     private String cancelAllSellNo = null;
     private String cancelPartBuyNo = null;
     private String cancelPartSellNo = null;
+    private String limitPrice = "2";
+
     String symbol = String.format("%s/%s",productCoin,currencyCoin);
     @BeforeClass(description = "初始化header数据")
     public void beforeClazz(){
@@ -229,7 +232,7 @@ public class CoreProcessTest extends BaseCase{
     public void testBuyOrder(){
         //下单前先批量撤销未成交的市价单
         batchCancelOrder(symbol);
-        Map result = order(symbol,"BUY","LMT","5","2","2",token);
+        Map result = order(symbol,"BUY","LMT",limitPrice,"5","5",token);
         cancelAllBuyNo = result.get("orderNo").toString();
         AssertTool.isContainsExpect("000000",result.get("code").toString());
         String frozeAmount = queryAsset(token,currencyCoin).get("frozenAmount").toString();
@@ -253,14 +256,12 @@ public class CoreProcessTest extends BaseCase{
     @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testCancelBuyOrder",description = "下卖单")
     public void testSellOrder(){
-        //下单前先批量撤销未成交的市价单
-        batchCancelOrder(symbol);
-        Map result = order(symbol,"SELL","LMT","5","2","2",token);
+        Map result = order(symbol,"SELL","LMT",limitPrice,"5","5",token);
         cancelAllSellNo = result.get("orderNo").toString();
         AssertTool.isContainsExpect("000000",result.get("code").toString());
         String frozeAmount = queryAsset(token,productCoin).get("frozenAmount").toString();
         Allure.addAttachment("下单后冻结币个数为：",frozeAmount);
-        AssertTool.isContainsExpect(StringUtil.numStringRound(frozeAmount),"2");
+        AssertTool.isContainsExpect(StringUtil.numStringRound(frozeAmount),"5");
     }
 
     @Story("交易")
@@ -277,43 +278,141 @@ public class CoreProcessTest extends BaseCase{
 
     @Story("交易")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(dependsOnMethods = "testSellOrder",description = "卖单全部撤单")
-    public void testPartBuyOrder(){
-
+    @Test(dependsOnMethods = "testCancelSellOrder",description = "测试账户下买单")
+    public void testPartBuyOrder() throws InterruptedException{
+        Map result = order(symbol,"BUY","LMT",limitPrice,"5","5",token);
+        cancelPartBuyNo = result.get("orderNo").toString();
+        Thread.sleep(30000);
+        AssertTool.isContainsExpect("000000",result.get("code").toString());
+        String frozeAmount = queryAsset(token,currencyCoin).get("frozenAmount").toString();
+        Allure.addAttachment("下单后冻结金额",StringUtil.stripTrailingZeros(frozeAmount));
+        AssertTool.isContainsExpect("10",StringUtil.stripTrailingZeros(frozeAmount));
     }
 
 
+    @Story("交易")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(dependsOnMethods = "testPartBuyOrder",description = "预置账户下卖单")
+    public void testPartBuyOrder1() throws InterruptedException{
+        //获取成交前测试账户币个数
+        BigDecimal preAvailableAmount = new BigDecimal(queryAsset(token,productCoin).get("availableAmount").toString());
+        //获取预置账户cex登陆token
+        String preToken = userCexLogin(presetUser,presetUserPwd,area);
+        //预置账户下卖单
+        Map result = order(symbol,"SELL","LMT",limitPrice,"3","3",preToken);
+        AssertTool.isContainsExpect("000000",result.get("code").toString());
+        Thread.sleep(30000);
+        //成交后查询测试账户的支付余额冻结金额
+        String frozeAmount = queryAsset(token,currencyCoin).get("frozenAmount").toString();
+        Allure.addAttachment("成交后冻结金额为：",StringUtil.stripTrailingZeros(frozeAmount));
+        //断言冻结计价币种是否减少
+        AssertTool.isContainsExpect("4",StringUtil.stripTrailingZeros(frozeAmount));
+        //成交后查询测试账户的可用币种个数
+        String availableAmount = StringUtil.stripTrailingZeros(queryAsset(token,productCoin).get("availableAmount").toString());
+        Allure.addAttachment("成交后可用币个数为：",availableAmount);
+        log.info("可用币个数："+availableAmount);
+        //断言成交后可用币种是否与计算的可用个数一致
+        AssertTool.isContainsExpect(countAvailableAmount(symbol,preAvailableAmount.toString(),"3"),availableAmount);
+    }
+    @Story("交易")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(dependsOnMethods = "testPartBuyOrder1",description = "测试账户撤单")
+    public void testPartBuyCancelOrder() throws InterruptedException{
+        HashMap result = cancelOrder(token,cancelPartBuyNo);
+        AssertTool.isContainsExpect("000000",result.get("code").toString());
+        Thread.sleep(30000);
+        String frozeAmount = queryAsset(token,currencyCoin).get("frozenAmount").toString();
+        Allure.addAttachment("测试账户撤单后冻结金额：",StringUtil.stripTrailingZeros(frozeAmount));
+        AssertTool.assertEquals(StringUtil.stripTrailingZeros(frozeAmount),"0");
+    }
+
+    @Story("交易")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(dependsOnMethods = "testPartBuyCancelOrder",description = "测试账户下卖单")
+    public void testPartSellOrder() throws InterruptedException{
+        Map result = order(symbol,"SELL","LMT",limitPrice,"2","2",token);
+        cancelPartSellNo = result.get("orderNo").toString();
+        Thread.sleep(30000);
+        AssertTool.isContainsExpect("000000",result.get("code").toString());
+        String frozeAmount = queryAsset(token,productCoin).get("frozenAmount").toString();
+        Allure.addAttachment("下单后冻结币个数：",StringUtil.stripTrailingZeros(frozeAmount));
+        AssertTool.isContainsExpect("2",StringUtil.stripTrailingZeros(frozeAmount));
+    }
+
+
+    @Story("交易")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(dependsOnMethods = "testPartSellOrder",description = "预置账户下买单")
+    public void testPartSellOrder1() throws InterruptedException{
+        //获取成交前测试账户币个数
+        BigDecimal preAvailableAmount = new BigDecimal(queryAsset(token,currencyCoin).get("availableAmount").toString());
+        Allure.addAttachment("成交前可用金额为：",StringUtil.stripTrailingZeros(preAvailableAmount.toString()));
+        log.info("成交前可用金额："+preAvailableAmount.toString());
+        //获取预置账户cex登陆token
+        String preToken = userCexLogin(presetUser,presetUserPwd,area);
+        //预置账户下买单
+        Map result = order(symbol,"BUY","LMT",limitPrice,"1","1",preToken);
+        Thread.sleep(30000);
+        AssertTool.isContainsExpect("000000",result.get("code").toString());
+        //成交后查询测试账户的卖出币种冻结数量
+        String frozeAmount = queryAsset(token,productCoin).get("frozenAmount").toString();
+        Allure.addAttachment("成交后冻结个数为：",StringUtil.stripTrailingZeros(frozeAmount));
+        AssertTool.isContainsExpect(StringUtil.stripTrailingZeros(frozeAmount),"1");
+        log.info("冻结数量："+StringUtil.stripTrailingZeros(frozeAmount));
+        //查询计价币种可用数量
+        String availableAmount = StringUtil.stripTrailingZeros(queryAsset(token,currencyCoin).get("availableAmount").toString());
+        Allure.addAttachment("成交后可用金额为：",availableAmount);
+        log.info("成交后可用金额："+availableAmount);
+        //断言成交后可用币种是否与计算的可用个数一致
+        AssertTool.isContainsExpect(countAvailableAmount(symbol,preAvailableAmount.toString(),limitPrice),availableAmount);
+    }
+
+    @Story("交易")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(dependsOnMethods = "testPartSellOrder1",description = "测试账户撤单")
+    public void testPartSellCancelOrder() throws InterruptedException{
+        HashMap result = cancelOrder(token,cancelPartSellNo);
+        AssertTool.isContainsExpect("000000",result.get("code").toString());
+        Thread.sleep(30000);
+        String frozeAmount = queryAsset(token,productCoin).get("frozenAmount").toString();
+        Allure.addAttachment("测试账户撤单之后冻结金额：",StringUtil.stripTrailingZeros(frozeAmount));
+        AssertTool.assertEquals(StringUtil.stripTrailingZeros(frozeAmount),"0");
+    }
+
     @Story("充提币")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(dependsOnMethods = "testCancelSellOrder", description = "归还剩余depositCurrency币种")
+    @Test(dependsOnMethods = "testPartSellCancelOrder", description = "归还剩余depositCurrency币种")
     public void testWithdrawReturnDepositCurrency() throws InterruptedException{
         String address = BaseCase.getAddress(presetUser,presetUserPwd,depositCurrency);
         String amount = BaseCase.queryAsset(token,depositCurrency).get("availableAmount").toString();
         String rspCode = withDraw(securityPwd,address,token, StringUtil.numStringRound(amount),depositCurrency);
         AssertTool.isContainsExpect("000000",rspCode);
+        Allure.addAttachment("归还剩余币种"+depositCurrency+":",StringUtil.numStringRound(amount));
         Thread.sleep(30000);
     }
 
 
     @Story("充提币")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(dependsOnMethods = "testCancelSellOrder", description = "归还剩余productCoin币种")
+    @Test(dependsOnMethods = "testPartSellCancelOrder", description = "归还剩余productCoin币种")
     public void testWithdrawReturnProductCoin() throws InterruptedException{
         String address = BaseCase.getAddress(presetUser,presetUserPwd,productCoin);
         String amount = BaseCase.queryAsset(token,productCoin).get("availableAmount").toString();
         String rspCode = withDraw(securityPwd,address,token, StringUtil.numStringRound(amount),productCoin);
         AssertTool.isContainsExpect("000000",rspCode);
+        Allure.addAttachment("归还剩余的币种"+productCoin+":",StringUtil.numStringRound(amount));
         Thread.sleep(30000);
     }
 
     @Story("充提币")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(dependsOnMethods = "testCancelSellOrder", description = "归还剩余currencyCoin币种")
+    @Test(dependsOnMethods = "testPartSellCancelOrder", description = "归还剩余currencyCoin币种")
     public void testWithdrawReturnCurrencyCoin() throws InterruptedException{
         String address = BaseCase.getAddress(presetUser,presetUserPwd,currencyCoin);
         String amount = BaseCase.queryAsset(token,currencyCoin).get("availableAmount").toString();
         String rspCode = withDraw(securityPwd,address,token, StringUtil.numStringRound(amount),currencyCoin);
         AssertTool.isContainsExpect("000000",rspCode);
+        Allure.addAttachment("归还剩余的计价币种"+currencyCoin+":",StringUtil.numStringRound(amount));
         Thread.sleep(30000);
     }
 }

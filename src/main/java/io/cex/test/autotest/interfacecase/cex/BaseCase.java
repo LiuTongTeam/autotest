@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import io.cex.test.framework.common.FileUtil;
 import io.cex.test.framework.common.RandomUtil;
+import io.cex.test.framework.common.StringUtil;
 import io.cex.test.framework.dbutil.DataBaseManager;
 import io.cex.test.framework.httputil.OkHttpClientManager;
 import io.cex.test.framework.jsonutil.JsonFileUtil;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -467,6 +469,25 @@ public class BaseCase {
 
     }
 
+    /**
+    * @desc 根据费率计算实际成交后的可用数量
+    * @param symbol 交易对
+     * @param beforAvailableAmount 交易前可用数量
+     * @param getAmount 成交量
+    **/
+    public static String countAvailableAmount(String symbol,String beforAvailableAmount,String getAmount){
+        String queryRateSql = String.format("select taker_fee_rate from biz_fee_group_trade_config where symbol='%s' and group_name='默认现货交易手续费组';",symbol);
+        DataBaseManager dataBaseManager = new DataBaseManager();
+        JSONArray mobileArry = dataBaseManager.executeSingleQuery(queryRateSql,mysql);
+        String rate = JSON.parseObject(mobileArry.getString(0)).getString("taker_fee_rate");
+        Allure.addAttachment("交易手续费费率为：", StringUtil.stripTrailingZeros(rate));
+        BigDecimal rateNum = new BigDecimal(rate).stripTrailingZeros();
+        BigDecimal beforNum = new BigDecimal(beforAvailableAmount).stripTrailingZeros();
+        BigDecimal getNum = new BigDecimal(getAmount).stripTrailingZeros();
+        //result=beforNum+(getNum-getNum*rateNum)
+        BigDecimal result = beforNum.add(getNum.subtract(getNum.multiply(rateNum)));
+        return result.toString();
+    }
 
 }
 
