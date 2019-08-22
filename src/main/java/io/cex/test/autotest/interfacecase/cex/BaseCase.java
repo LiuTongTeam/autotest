@@ -325,9 +325,7 @@ public class BaseCase {
         object.put("orderType",orderType);
         object.put("limitPrice",limitPrice);
         object.put("quantity",quantity);
-        if (orderType.equals("LMT")) {
-            object.put("amount", amount);
-        }
+        object.put("amount", amount);
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
@@ -390,14 +388,14 @@ public class BaseCase {
         return null;
     }
     /**
-    * @desc 批量撤销交易对未成交市价单
+    * @desc 批量撤销交易对未成交订单
     * @param symbol 需要撤单的交易对
     **/
     public static void batchCancelOrder(String symbol){
-        //orderType-2 市价单、status-1 委托单状态正常，即未撤单、state != 3不为全部成交
-        String sqlOrder = String.format("SELECT order_no,user_no from order_info WHERE `status` = 0 and state != 3 and symbol = '%s' and order_type = 2;",symbol);
+        //status-1 委托单状态正常，即未撤单、state != 3不为全部成交
+        String sqlOrder = String.format("SELECT order_no,user_no from order_info WHERE `status` = 0 and state != 3 and symbol = '%s';",symbol);
         DataBaseManager dataBaseManager = new DataBaseManager();
-        //查询未成交的市价单
+        //查询未成交的下单
         JSONArray array = dataBaseManager.executeSingleQuery(sqlOrder,mysql);
         log.info("order data is "+array.toJSONString());
         if (array.size()>0){
@@ -412,9 +410,18 @@ public class BaseCase {
                 JSONArray mobileArry = dataBaseManager.executeSingleQuery(sqlQueryMobile,mysql);
                 JSONObject mobile = JSON.parseObject(mobileArry.getString(0));
                 //使用下单用户登陆，获取登陆token
-                String cancelOrderToken = userCexLogin(mobile.getString("mobile_num"),pwd,area);
-                //执行撤单
-                cancelOrder(cancelOrderToken,orderNo);
+                String cancelOrderToken = null;
+                try {
+                    //使用测试秘密登陆
+                    cancelOrderToken = userCexLogin(mobile.getString("mobile_num"),pwd,area);
+                    cancelOrder(cancelOrderToken,orderNo);
+                }catch (Exception e){
+                    e.printStackTrace();
+                    //使用预置账户的秘密登陆
+                    cancelOrderToken = userCexLogin(mobile.getString("mobile_num"),presetUserPwd,area);
+                    cancelOrder(cancelOrderToken,orderNo);
+                }
+
             }
         }
     }

@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-@Feature("dealList接口")
+@Feature("DealList接口")
 
 public class DealListTest extends BaseCase {
     /**
@@ -26,7 +26,7 @@ public class DealListTest extends BaseCase {
      **/
     @DataProvider(parallel=true)
     public Object[][] providedealListErrorData(Method method){
-        String path = "./src/main/resources/io/cex/test/autotest/interfacecase/cex/DealListTest/error";
+        String path = "./src/main/resources/io/cex/test/autotest/interfacecase/cex/dealList/error";
         HashMap<String, String>[][] arrymap = (HashMap<String, String>[][]) JsonFileUtil.jsonFileToArry(path);
         return arrymap;
     }
@@ -52,7 +52,7 @@ public class DealListTest extends BaseCase {
      */
     @DataProvider(parallel=true)
     public Object[][] providedealListData(Method method){
-        String path = "./src/main/resources/io/cex/test/autotest/interfacecase/cex/DealListTest/dl1.json";
+        String path = "./src/main/resources/io/cex/test/autotest/interfacecase/cex/dealList/dl1.json";
         HashMap<String, String>[][] arrymap = (HashMap<String, String>[][]) JsonFileUtil.jsonFileToArry(path);
         return arrymap;
     }
