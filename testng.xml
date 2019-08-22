@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <test verbose="2" preserve-order="true" name="C:/code/autotest">
+        <classes>
+            <class name="io.cex.test.autotest.interfacecase.cex.BestPriceTest">
+                <methods>
+                    <include name="testBestPriceError"/>
+                    <include name="testBestPrice"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.CheckLoginTest">
+                <methods>
+                    <include name="testCheckLoginError"/>
+                    <include name="testCheckLogin"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.CheckMobileTest">
+                <methods>
+                    <include name="testCheckMobileError"/>
+                    <include name="testCheckMobile"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.CoreProcessTest">
+                <methods>
+                    <include name="testRegister"/>
+                    <include name="testLogin"/>
+                    <include name="testIdentity"/>
+                    <include name="testFirstTrial"/>
+                    <include name="testReviewing"/>
+                    <include name="testSecurityPwd"/>
+                    <include name="testDeposit1"/>
+                    <include name="testDeposit2"/>
+                    <include name="testDeposit3"/>
+                    <include name="testWithdrawFail"/>
+                    <include name="testWithdraw"/>
+                    <include name="testBuyOrder"/>
+                    <include name="testCancelBuyOrder"/>
+                    <include name="testSellOrder"/>
+                    <include name="testCancelSellOrder"/>
+                    <include name="testPartBuyOrder"/>
+                    <include name="testPartBuyOrder1"/>
+                    <include name="testPartBuyCancelOrder"/>
+                    <include name="testPartSellOrder"/>
+                    <include name="testPartSellOrder1"/>
+                    <include name="testPartSellCancelOrder"/>
+                    <include name="testAllBuyOrderQuery"/>
+                    <include name="testAllBuyOrderPreSell"/>
+                    <include name="testAllBuyOrderBuy"/>
+                    <include name="testAllSellOrderQuery"/>
+                    <include name="testAllSellOrderPreBuy"/>
+                    <include name="testAllSellOrderSell"/>
+                    <include name="testTwiceBuyOrderQuery"/>
+                    <include name="testTwiceBuyOrderPreSell"/>
+                    <include name="testTwiceBuyOrderBuy"/>
+                    <include name="testTwiceSellOrderQuery"/>
+                    <include name="testTwiceSellOrderPreBuy"/>
+                    <include name="testTwiceSellOrderSell"/>
+                    <include name="testMktBuyPreSell"/>
+                    <include name="testMktBuy"/>
+                    <include name="testMktSellPreBuy"/>
+                    <include name="testMktSell"/>
+                    <include name="testWithdrawReturnDepositCurrency"/>
+                    <include name="testWithdrawReturnProductCoin"/>
+                    <include name="testWithdrawReturnCurrencyCoin"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.DealListTest">
+                <methods>
+                    <include name="testdealListError"/>
+                    <include name="testdealList"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.DemoTest">
+                <methods>
+                    <include name="testReadFileDemo"/>
+                    <include name="testDB"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.OrderBookTest">
+                <methods>
+                    <include name="testorderBookDataError"/>
+                    <include name="testorderBookData"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.RegisterTest">
+                <methods>
+                    <include name="testRegisterError"/>
+                    <include name="testRegister"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
