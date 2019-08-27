@@ -33,9 +33,9 @@ public class BaseCase {
     public static String mysql = "jdbc:mysql://172.29.19.71:3306/cex?useUnicode=true&characterEncoding=UTF8&user=root&password=48rm@hd2o3EX";
 
     //接口参数
-    public static final String presetUser = "24244855@qq.com";
-    public static final String presetUserPwd = "afdd0b4ad2ec172c586e2150770fbf9e";
-    public static final String presetUsersecurityPwd = "f3d3d3667220886d7a1a3f1eb9335d91";
+    public static String presetUser = "24244855@qq.com";
+    public static String presetUserPwd = "afdd0b4ad2ec172c586e2150770fbf9e";
+    public static String presetUsersecurityPwd = "f3d3d3667220886d7a1a3f1eb9335d91";
     public static final String pwd = "Aa123456";
     public static final String securityPwd = "Aa12345678";
     public static final String depositCurrency = "IDA";
@@ -96,6 +96,12 @@ public class BaseCase {
             log.info("获取到boss-ip地址为："+boss_ip);
             mysql = properties.getProperty("mysql");
             log.info("获取到mysql连接信息为："+mysql);
+            presetUser = properties.getProperty("presetUser");
+            log.info("获取到presetUser信息为："+presetUser);
+            presetUserPwd = properties.getProperty("presetUserPwd");
+            log.info("获取到presetUserPwd信息为："+presetUserPwd);
+            presetUsersecurityPwd = properties.getProperty("presetUsersecurityPwd");
+            log.info("获取到presetUsersecurityPwd信息为："+presetUsersecurityPwd);
         }catch (IOException e){
             e.printStackTrace();
             log.error("------------未获取到properties配置文件，默认使用测试环境信息");
