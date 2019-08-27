@@ -13,7 +13,9 @@ import io.cex.test.framework.jsonutil.JsonFileUtil;
 import io.qameta.allure.Allure;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
+import org.testng.TestNGException;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
 import java.io.File;
@@ -82,9 +84,8 @@ public class BaseCase {
      * @param  file testNG.xml文件中获取到的parameter信息
     **/
     @BeforeSuite
-    @Parameters("file")
-    public void getProperties(String file){
-//        System.out.println("properties=" + file);
+    @Parameters({"file"})
+    public void getProperties(@Optional("test-application.properties")String file){
         InputStream inputStream = null;
         Properties properties = new Properties();
         try {
