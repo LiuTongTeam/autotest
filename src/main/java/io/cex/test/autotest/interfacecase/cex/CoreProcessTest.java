@@ -3,6 +3,7 @@ package io.cex.test.autotest.interfacecase.cex;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import io.cex.test.autotest.interfacecase.boss.BossBaseCase;
 import io.cex.test.framework.assertutil.AssertTool;
 import io.cex.test.framework.common.RandomUtil;
 import io.cex.test.framework.common.StringUtil;
@@ -20,13 +21,15 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
+import static io.cex.test.autotest.interfacecase.boss.BossBaseCase.*;
+
 /**
  * @author shenqingyan
  * @create 2019/8/8 11:25
  * @desc 主流程测试类
  **/
 @Slf4j
-@Epic("主流程")
+@Epic("CEX主流程")
 
 public class CoreProcessTest extends BaseCase{
     //cex登陆token
@@ -121,7 +124,7 @@ public class CoreProcessTest extends BaseCase{
         //从数据库中获取身份认证ID
         String sql = String.format("SELECT certificate_no FROM member_certification_record WHERE first_name = '%s';",userName);
         DataBaseManager dataBaseManager = new DataBaseManager();
-        certificate_no = JSON.parseObject(dataBaseManager.executeSingleQuery(sql,mysql).getString(0)).getString("certificate_no");
+        certificate_no = JSON.parseObject(dataBaseManager.executeSingleQuery(sql,cexmysql).getString(0)).getString("certificate_no");
         log.info("------certificate_no is:"+certificate_no+"\n");
     }
     @Feature("实名认证")
@@ -130,7 +133,7 @@ public class CoreProcessTest extends BaseCase{
     public void testFirstTrial() throws IOException{
         //boss登陆token放入header
         HashMap header = dataInit();
-        header.put("Boss-Token",BaseCase.userBossLogin(bossUserName,bossLoginPwd));
+        header.put("Boss-Token", BossBaseCase.userBossLogin(bossUserName,bossLoginPwd));
         log.info("-----boss token is :"+header.get("Boss-Token").toString());
         //组装初审接口入参
         JSONObject object = new JSONObject();
@@ -151,7 +154,7 @@ public class CoreProcessTest extends BaseCase{
     @Test(dependsOnMethods = "testFirstTrial", description = "身份认证复审通过")
     public void testReviewing() throws IOException{
         HashMap header = dataInit();
-        header.put("Boss-Token",BaseCase.userBossLogin(bossUserName,bossLoginPwd));
+        header.put("Boss-Token",BossBaseCase.userBossLogin(bossUserName,bossLoginPwd));
         log.info("-----boss token is :"+header.get("Boss-Token").toString());
         //组装复审接口入参
         JSONObject object = new JSONObject();
@@ -196,7 +199,7 @@ public class CoreProcessTest extends BaseCase{
         String sql = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhone,depositCurrency);
         log.info("--------Deposit sql is:"+sql);
         Thread.sleep(60000);
-        AssertTool.isContainsExpect("{\"amount\":\"20.000000000000000000000000000000\"}",mysql,sql);
+        AssertTool.isContainsExpect("{\"amount\":\"20.000000000000000000000000000000\"}",cexmysql,sql);
     }
     @Feature("充提币")
     @Severity(SeverityLevel.CRITICAL)
@@ -208,7 +211,7 @@ public class CoreProcessTest extends BaseCase{
         String sql = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhone,productCoin);
         log.info("--------Deposit KOFO sql is:"+sql);
         Thread.sleep(60000);
-        AssertTool.isContainsExpect("{\"amount\":\"20.000000000000000000000000000000\"}",mysql,sql);
+        AssertTool.isContainsExpect("{\"amount\":\"20.000000000000000000000000000000\"}",cexmysql,sql);
     }
     @Feature("充提币")
     @Severity(SeverityLevel.CRITICAL)
@@ -220,7 +223,7 @@ public class CoreProcessTest extends BaseCase{
         String sql = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhone,currencyCoin);
         log.info("--------Deposit USDT sql is:"+sql);
         Thread.sleep(60000);
-        AssertTool.isContainsExpect("{\"amount\":\"20.000000000000000000000000000000\"}",mysql,sql);
+        AssertTool.isContainsExpect("{\"amount\":\"20.000000000000000000000000000000\"}",cexmysql,sql);
     }
     @Feature("充提币")
     @Severity(SeverityLevel.CRITICAL)
@@ -241,7 +244,7 @@ public class CoreProcessTest extends BaseCase{
         String sql = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhone,depositCurrency);
         log.info("--------Deposit USDT sql is:"+sql);
         Thread.sleep(30000);
-        AssertTool.isContainsExpect("{\"amount\":\"5.000000000000000000000000000000\"}",mysql,sql);
+        AssertTool.isContainsExpect("{\"amount\":\"5.000000000000000000000000000000\"}",cexmysql,sql);
     }
 
     @Feature("交易")
@@ -255,6 +258,7 @@ public class CoreProcessTest extends BaseCase{
         }catch (Exception e){
             e.printStackTrace();
         }
+        token = BaseCase.userCexLogin(randomPhone,pwd,area);
         Map result = order(symbol,"BUY","LMT",limitPrice,"5","5",token);
         cancelAllBuyNo = result.get("orderNo").toString();
         AssertTool.isContainsExpect("000000",result.get("code").toString());

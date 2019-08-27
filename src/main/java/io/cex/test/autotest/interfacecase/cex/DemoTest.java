@@ -8,7 +8,9 @@ import io.cex.test.framework.dbutil.DataBaseManager;
 import io.cex.test.framework.jsonutil.JsonFileUtil;
 import io.cex.test.framework.testng.Retry;
 import io.qameta.allure.*;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
@@ -55,13 +57,14 @@ public class DemoTest extends BaseCase{
     public void testDB(){
         DataBaseManager dataBaseManager = new DataBaseManager();
         //执行查询语句
-        JSONArray data = dataBaseManager.executeSingleQuery("select * from member_user order by id desc limit 2;",mysql);
+        JSONArray data = dataBaseManager.executeSingleQuery("select * from member_user order by id desc limit 2;",cexmysql);
         System.out.printf("第一行数据："+data.getString(0));
         //执行删除语句
-        dataBaseManager.executeSingleDelete("delete from member_user where mobile_num = '13778339517';",mysql);
+        dataBaseManager.executeSingleDelete("delete from member_user where mobile_num = '13778339517';",cexmysql);
         //执行更新语句
-        dataBaseManager.executeSingleUpdate("update member_user set email = 'test@test.com' where mobile_num = '16602829196';",mysql);
+        dataBaseManager.executeSingleUpdate("update member_user set email = 'test@test.com' where mobile_num = '16602829196';",cexmysql);
         AssertTool.isContainsExpect("1","1");
     }
+
 
 }
