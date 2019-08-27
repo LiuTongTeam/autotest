@@ -10,6 +10,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import okhttp3.Response;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -20,6 +21,18 @@ import java.util.Map;
 @Feature("CheckLogin接口")
 
 public class CheckLoginTest extends BaseCase{
+    /**
+     * @desc 前置条件：16602829192已注册
+     * @param
+     **/
+    @BeforeClass
+    public void beforClass(){
+        try {
+            register("17702829192","123qweQWE","86","111111");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
     /**
      * @desc 异常用例的数据驱动
      * @param
