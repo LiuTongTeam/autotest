@@ -13,19 +13,24 @@ import io.cex.test.framework.jsonutil.JsonFileUtil;
 import io.qameta.allure.Allure;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Parameters;
+
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 @Slf4j
 public class BaseCase {
     //测试环境信息
-    public static final String ip = "http://139.9.55.125/apis";
-    public static final String boss_ip = "https://cex-boss-test.up.top";
+    public static String ip = "http://139.9.55.125/apis";
+    public static String boss_ip = "https://cex-boss-test.up.top";
     //数据库连接信息
-    public static final String mysql = "jdbc:mysql://172.29.19.71:3306/cex?useUnicode=true&characterEncoding=UTF8&user=root&password=48rm@hd2o3EX";
+    public static String mysql = "jdbc:mysql://172.29.19.71:3306/cex?useUnicode=true&characterEncoding=UTF8&user=root&password=48rm@hd2o3EX";
 
     //接口参数
     public static final String presetUser = "24244855@qq.com";
@@ -71,6 +76,31 @@ public class BaseCase {
     public static final String bossLoginUrl = "/boss/account/login";
     public static final String firstTrial = "/boss/cex/audit/firstTrial";
     public static final String reviewing = "/boss/cex/audit/reviewing";
+
+    /**
+    * @desc 测试suite运行前获取环境配置信息
+     * @param  file testNG.xml文件中获取到的parameter信息
+    **/
+    @BeforeSuite
+    @Parameters("file")
+    public void getProperties(String file){
+//        System.out.println("properties=" + file);
+        InputStream inputStream = null;
+        Properties properties = new Properties();
+        try {
+            inputStream =BaseCase.class.getClassLoader().getResourceAsStream(file);
+            properties.load(inputStream);
+            ip = properties.getProperty("cexip");
+            log.info("获取到ip地址为："+ip);
+            boss_ip = properties.getProperty("boss_ip");
+            log.info("获取到boss-ip地址为："+boss_ip);
+            mysql = properties.getProperty("mysql");
+            log.info("获取到mysql连接信息为："+mysql);
+        }catch (IOException e){
+            e.printStackTrace();
+            log.error("------------未获取到properties配置文件，默认使用测试环境信息");
+        }
+    }
     /**
     * @desc 数据初始化
     **/
@@ -412,12 +442,12 @@ public class BaseCase {
                 //使用下单用户登陆，获取登陆token
                 String cancelOrderToken = null;
                 try {
-                    //使用测试秘密登陆
+                    //使用测试密码登陆
                     cancelOrderToken = userCexLogin(mobile.getString("mobile_num"),pwd,area);
                     cancelOrder(cancelOrderToken,orderNo);
                 }catch (Exception e){
                     e.printStackTrace();
-                    //使用预置账户的秘密登陆
+                    //使用预置账户的密码登陆
                     cancelOrderToken = userCexLogin(mobile.getString("mobile_num"),presetUserPwd,area);
                     cancelOrder(cancelOrderToken,orderNo);
                 }

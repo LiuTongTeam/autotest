@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="All Test Suite">
+    <parameter name="file" value="test-application.properties"></parameter>
     <test verbose="2" preserve-order="true" name="C:/code/autotest">
         <classes>
             <class name="io.cex.test.autotest.interfacecase.cex.BestPriceTest">
@@ -71,12 +72,12 @@
                     <include name="testdealList"/>
                 </methods>
             </class>
-            <class name="io.cex.test.autotest.interfacecase.cex.DemoTest">
+            <!--<class name="io.cex.test.autotest.interfacecase.cex.DemoTest">
                 <methods>
                     <include name="testReadFileDemo"/>
                     <include name="testDB"/>
                 </methods>
-            </class>
+            </class>-->
             <class name="io.cex.test.autotest.interfacecase.cex.OrderBookTest">
                 <methods>
                     <include name="testorderBookDataError"/>

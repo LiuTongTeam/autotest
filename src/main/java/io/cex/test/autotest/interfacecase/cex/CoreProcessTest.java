@@ -55,7 +55,7 @@ public class CoreProcessTest extends BaseCase{
     private String price1 = null;
     //分笔成交第二次下单价格
     private String price2 = null;
-
+    //交易对
     String symbol = String.format("%s/%s",productCoin,currencyCoin);
     @BeforeClass(description = "初始化header数据")
     public void beforeClazz(){
@@ -388,7 +388,7 @@ public class CoreProcessTest extends BaseCase{
         //成交后查询测试账户的卖出币种冻结数量
         String frozeAmount = queryAsset(token,productCoin).get("frozenAmount").toString();
         Allure.addAttachment("成交后冻结"+productCoin+"个数为：",StringUtil.stripTrailingZeros(frozeAmount));
-        AssertTool.isContainsExpect(StringUtil.stripTrailingZeros(frozeAmount),"1");
+        AssertTool.isContainsExpect("1",StringUtil.stripTrailingZeros(frozeAmount));
         log.info("冻结数量："+StringUtil.stripTrailingZeros(frozeAmount));
         //查询计价币种可用数量
         String availableAmount = StringUtil.stripTrailingZeros(queryAsset(token,currencyCoin).get("availableAmount").toString());
