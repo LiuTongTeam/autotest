@@ -194,7 +194,7 @@ public class CoreProcessTest extends BaseCase{
     @Test(dependsOnMethods = "testSecurityPwd", description = "充币"+depositCurrency)
     public void testDeposit1() throws InterruptedException{
         String address = BaseCase.getAddress(randomPhone,pwd,depositCurrency);
-        String rspCode = withDraw(presetUsersecurityPwd,address,BaseCase.userCexLogin(presetUser,presetUserPwd,area),depositAmount,depositCurrency);
+        String rspCode = withDraw(presetUsersecurityPwd,address,presetToken,depositAmount,depositCurrency);
         AssertTool.isContainsExpect("000000",rspCode);
         String sql = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhone,depositCurrency);
         log.info("--------Deposit sql is:"+sql);
@@ -206,7 +206,7 @@ public class CoreProcessTest extends BaseCase{
     @Test(dependsOnMethods = "testDeposit1", description = "充币"+productCoin)
     public void testDeposit2() throws InterruptedException{
         String address = BaseCase.getAddress(randomPhone,pwd,productCoin);
-        String rspCode = withDraw(presetUsersecurityPwd,address,BaseCase.userCexLogin(presetUser,presetUserPwd,area),depositAmount,productCoin);
+        String rspCode = withDraw(presetUsersecurityPwd,address,presetToken,depositAmount,productCoin);
         AssertTool.isContainsExpect("000000",rspCode);
         String sql = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhone,productCoin);
         log.info("--------Deposit KOFO sql is:"+sql);
@@ -218,7 +218,7 @@ public class CoreProcessTest extends BaseCase{
     @Test(dependsOnMethods = "testDeposit2", description = "充币"+currencyCoin)
     public void testDeposit3() throws InterruptedException{
         String address = BaseCase.getAddress(randomPhone,pwd,currencyCoin);
-        String rspCode = withDraw(presetUsersecurityPwd,address,BaseCase.userCexLogin(presetUser,presetUserPwd,area),depositAmount,currencyCoin);
+        String rspCode = withDraw(presetUsersecurityPwd,address,presetToken,depositAmount,currencyCoin);
         AssertTool.isContainsExpect("000000",rspCode);
         String sql = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhone,currencyCoin);
         log.info("--------Deposit USDT sql is:"+sql);
@@ -252,7 +252,7 @@ public class CoreProcessTest extends BaseCase{
     @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testWithdraw",description = "测试账户下买单")
     public void testBuyOrder(){
-        //下单前先批量撤销未成交的市价单,只能撤销自动化测试账号下的单
+        //下单前先批量撤销未成交的订单,只能撤销自动化测试账号下的单
         try {
             batchCancelOrder(symbol);
         }catch (Exception e){
@@ -328,10 +328,8 @@ public class CoreProcessTest extends BaseCase{
     public void testPartBuyOrder1() throws InterruptedException{
         //获取成交前测试账户币个数
         preAvailableCoinAmount = new BigDecimal(queryAsset(token,productCoin).get("availableAmount").toString());
-        //获取预置账户cex登陆token
-        String preToken = userCexLogin(presetUser,presetUserPwd,area);
         //预置账户下卖单
-        Map result = order(symbol,"SELL","LMT",limitPrice,"3","3",preToken);
+        Map result = order(symbol,"SELL","LMT",limitPrice,"3","3",presetToken);
         AssertTool.isContainsExpect("000000",result.get("code").toString());
         Thread.sleep(30000);
         //成交后查询测试账户的支付余额冻结金额
@@ -383,10 +381,8 @@ public class CoreProcessTest extends BaseCase{
         preAvailableAmount = new BigDecimal(queryAsset(token,currencyCoin).get("availableAmount").toString());
         Allure.addAttachment("成交前可用"+currencyCoin+"金额为：",StringUtil.stripTrailingZeros(preAvailableAmount.toString()));
         log.info("成交前可用金额："+preAvailableAmount.toString());
-        //获取预置账户cex登陆token
-        String preToken = userCexLogin(presetUser,presetUserPwd,area);
         //预置账户下买单
-        Map result = order(symbol,"BUY","LMT",limitPrice,"1","1",preToken);
+        Map result = order(symbol,"BUY","LMT",limitPrice,"1","1",presetToken);
         Thread.sleep(30000);
         AssertTool.isContainsExpect("000000",result.get("code").toString());
         //成交后查询测试账户的卖出币种冻结数量
@@ -440,10 +436,8 @@ public class CoreProcessTest extends BaseCase{
     public void testAllBuyOrderPreSell() throws InterruptedException {
         //计算可购买个数
         availableAmount = StringUtil.stripTrailingZeros(preAvailableAmount.divide(new BigDecimal(limitPrice)).toString());
-        //获取预置账户cex登陆token
-        String preToken = userCexLogin(presetUser,presetUserPwd,area);
         //预置账户下卖单，卖单数量为测试账户最多可购买个数
-        Map sellResult = order(symbol,"SELL","LMT",limitPrice,availableAmount,availableAmount,preToken);
+        Map sellResult = order(symbol,"SELL","LMT",limitPrice,availableAmount,availableAmount,presetToken);
         AssertTool.isContainsExpect("000000",sellResult.get("code").toString());
         Thread.sleep(5000);
     }
@@ -500,11 +494,8 @@ public class CoreProcessTest extends BaseCase{
     public void testAllSellOrderPreBuy() throws InterruptedException {
         //计算可购买个数
         availableAmount = StringUtil.stripTrailingZeros(preAvailableCoinAmount.toString());
-        //获取预置账户cex登陆token
-        System.out.println("availablesell is :"+availableAmount);
-        String preToken = userCexLogin(presetUser,presetUserPwd,area);
         //预置账户下买单，买单数量为测试账户最多可卖个数
-        Map buyResult = order(symbol,"BUY","LMT",limitPrice,availableAmount,availableAmount,preToken);
+        Map buyResult = order(symbol,"BUY","LMT",limitPrice,availableAmount,availableAmount,presetToken);
         AssertTool.isContainsExpect("000000",buyResult.get("code").toString());
         Thread.sleep(5000);
     }
@@ -559,12 +550,10 @@ public class CoreProcessTest extends BaseCase{
         //设置卖单金额
         price1 = StringUtil.stripTrailingZeros(new BigDecimal(limitPrice).subtract(new BigDecimal("0.03")).toString());
         price2 = StringUtil.stripTrailingZeros(new BigDecimal(limitPrice).subtract(new BigDecimal("0.02")).toString());
-        //预置账户下卖单，卖单数量为1
-        String preToken = userCexLogin(presetUser, presetUserPwd, area);
-        Map sellResult1 = order(symbol, "SELL", "LMT", price1, "1", "1", preToken);
+        Map sellResult1 = order(symbol, "SELL", "LMT", price1, "1", "1", presetToken);
         AssertTool.isContainsExpect("000000", sellResult1.get("code").toString());
         //预置账户下卖单，卖单数量为1
-        Map sellResult2 = order(symbol, "SELL", "LMT", price2, "1", "1", preToken);
+        Map sellResult2 = order(symbol, "SELL", "LMT", price2, "1", "1", presetToken);
         AssertTool.isContainsExpect("000000", sellResult2.get("code").toString());
         Thread.sleep(5000);
     }
@@ -630,12 +619,10 @@ public class CoreProcessTest extends BaseCase{
         //设置买单金额
         price1 = StringUtil.stripTrailingZeros(new BigDecimal(limitPrice).add(new BigDecimal("0.02")).toString());
         price2 = StringUtil.stripTrailingZeros(new BigDecimal(limitPrice).add(new BigDecimal("0.01")).toString());
-        //预置账户下买单，卖单数量为1
-        String preToken = userCexLogin(presetUser,presetUserPwd,area);
-        Map buyResult1 = order(symbol,"BUY","LMT",price1,"1","1",preToken);
+        Map buyResult1 = order(symbol,"BUY","LMT",price1,"1","1",presetToken);
         AssertTool.isContainsExpect("000000",buyResult1.get("code").toString());
         //预置账户下买单，卖单数量为1
-        Map buyResult2 = order(symbol,"BUY","LMT",price2,"1","1",preToken);
+        Map buyResult2 = order(symbol,"BUY","LMT",price2,"1","1",presetToken);
         AssertTool.isContainsExpect("000000",buyResult2.get("code").toString());
         Thread.sleep(5000);
     }
@@ -678,8 +665,7 @@ public class CoreProcessTest extends BaseCase{
     @Test(dependsOnMethods = "testTwiceSellOrderSell",description = "预置账户下一笔卖单")
     public void testMktBuyPreSell() throws InterruptedException{
         //预置账户下买单，卖单数量为1
-        String preToken = userCexLogin(presetUser,presetUserPwd,area);
-        Map buyResult1 = order(symbol,"SELL","LMT",limitPrice,"1","1",preToken);
+        Map buyResult1 = order(symbol,"SELL","LMT",limitPrice,"1","1",presetToken);
         AssertTool.isContainsExpect("000000",buyResult1.get("code").toString());
         Thread.sleep(5000);
     }
@@ -701,8 +687,7 @@ public class CoreProcessTest extends BaseCase{
     @Test(dependsOnMethods = "testMktBuy",description = "预置账户下一笔买单")
     public void testMktSellPreBuy() throws InterruptedException{
         //预置账户下买单，卖单数量为1
-        String preToken = userCexLogin(presetUser,presetUserPwd,area);
-        Map buyResult1 = order(symbol,"BUY","LMT",limitPrice,"2","0",preToken);
+        Map buyResult1 = order(symbol,"BUY","LMT",limitPrice,"2","0",presetToken);
         AssertTool.isContainsExpect("000000",buyResult1.get("code").toString());
         Thread.sleep(5000);
     }

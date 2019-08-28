@@ -4,6 +4,8 @@ package io.cex.test.autotest.interfacecase.cex;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import io.cex.test.autotest.interfacecase.boss.BossBaseCase;
+import io.cex.test.framework.assertutil.AssertTool;
 import io.cex.test.framework.common.FileUtil;
 import io.cex.test.framework.common.RandomUtil;
 import io.cex.test.framework.common.StringUtil;
@@ -13,7 +15,6 @@ import io.cex.test.framework.jsonutil.JsonFileUtil;
 import io.qameta.allure.Allure;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
-import org.testng.TestNGException;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
@@ -26,17 +27,30 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+
+/**
+ * @author shenqingyan
+ * @create 2019/8/8 11:50
+ * @desc cex测试基类
+ **/
 @Slf4j
 public class BaseCase {
     //测试环境信息
     public static String ip = "http://139.9.55.125/apis";
-    //数据库连接信息
+    //Boss url，默认使用测试环境url
+    public static String boss_ip = "https://cex-boss-test.up.top";
+    //c2c测试环境信息
+    public static String c2cip = "http://c2c.uat.192.168.50.146.xip.io:31000";
+    //c2c数据库连接信息
+    public static String c2cmysql = "jdbc:mysql://192.168.50.150:3306/c2c?useUnicode=true&characterEncoding=UTF8&user=kofo&password=48rm@hd2o3EX";
+    //cex数据库连接信息
     public static String cexmysql = "jdbc:mysql://172.29.19.71:3306/cex?useUnicode=true&characterEncoding=UTF8&user=root&password=48rm@hd2o3EX";
 
     //接口参数
     public static String presetUser = "24244855@qq.com";
     public static String presetUserPwd = "afdd0b4ad2ec172c586e2150770fbf9e";
     public static String presetUsersecurityPwd = "f3d3d3667220886d7a1a3f1eb9335d91";
+    public static String presetToken = null;
     public static final String pwd = "Aa123456";
     public static final String securityPwd = "Aa12345678";
     public static final String depositCurrency = "IDA";
@@ -49,8 +63,6 @@ public class BaseCase {
     public static final String certificateType = "0";
     public static final String DEVICESOURCE = "native";
     public static final String DEVICEID = "A5A6F0c6B90638A2F-e195d43830A5e9979906e5A0A8A-9330A0B3ADBBB9d93-AFF5dBcF9-A4c749-AB10-4EB49EABF9E7-85315174-34961239";
-    public static final String bossUserName = "admin";
-    public static final String bossLoginPwd = "admin";
 
     //认证图片路径
     public static final String fileUrl = "http://172.29.16.161/";
@@ -99,6 +111,8 @@ public class BaseCase {
         }catch (IOException e){
             e.printStackTrace();
             log.error("------------未获取到properties配置文件，默认使用测试环境信息");
+        }finally {
+            presetToken = userCexLogin(presetUser,presetUserPwd,area);
         }
     }
     /**
@@ -234,6 +248,57 @@ public class BaseCase {
     }
 
 
+    /**
+    * @desc cex身份认证
+    * @param  token 登陆cex token
+     * @return BOSS身份认证ID
+    **/
+    public static String cexIdentity(String token){
+        //认证姓名随机字符串
+        String userName = RandomUtil.generateString(10);
+        JSONObject object = new JSONObject();
+        object.put("countryId",countryId);
+        //图片ID由上传文件接口返回
+        object.put("backId",BaseCase.uploadFile(fileUrl,token,"2.jpeg"));
+        object.put("frontId",BaseCase.uploadFile(fileUrl,token,"3.jpg"));
+        object.put("userName", "TEST"+userName);
+        object.put("certificateNo",RandomUtil.generateLong(18));
+        object.put("personId",BaseCase.uploadFile(fileUrl,token,"1.png"));
+        object.put("certificateType",certificateType);
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("data",object);
+        jsonbody.put("lang",lang);
+        String certificate_no = null;
+        HashMap header = dataInit();
+        header.put("CEXTOKEN",token);
+        try {
+            Response response = OkHttpClientManager.post(ip+identityUrl, jsonbody.toJSONString(),
+                "application/json", header);
+            if (response.code()==200) {
+                JSONObject rspjson = JSON.parseObject(response.body().string());
+                log.info("------------Identity response is:" + rspjson);
+                Allure.addAttachment("认证入参：", jsonbody.toJSONString());
+                Allure.addAttachment("认证出参：", rspjson.toJSONString());
+                if (rspjson.get("code").equals("000000")) {
+                    String sql = String.format("SELECT certificate_no FROM member_certification_record WHERE first_name = '%s';", "TEST"+userName);
+                    DataBaseManager dataBaseManager = new DataBaseManager();
+                    certificate_no = JSON.parseObject(dataBaseManager.executeSingleQuery(sql, cexmysql).getString(0)).getString("certificate_no");
+                    log.info("------certificate_no is:" + certificate_no + "\n");
+                    return certificate_no;
+                }else {
+                    log.error("----------------Cex Identity failed, trace id is:" + rspjson.get("traceId") + "\n");
+                    return certificate_no;
+                }
+            }else {
+                log.error("----------------Server connect failed"+response.body()+"\n");
+                return certificate_no;
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+            return certificate_no;
+        }
+    }
+
 
 
     /**
@@ -251,7 +316,12 @@ public class BaseCase {
         jsonbody.put("data",object);
         jsonbody.put("lang",lang);
         HashMap header = dataInit();
-        String token = userCexLogin(user,pwd,area);
+        String token = null;
+        if (user.equals(presetUser)){
+            token = presetToken;
+        }else {
+            token = userCexLogin(user,pwd,area);
+        }
         header.put("CEXTOKEN",token);
         Allure.addAttachment("获取充币地址入参：",jsonbody.toJSONString());
         try {
@@ -424,7 +494,7 @@ public class BaseCase {
                 }catch (Exception e){
                     e.printStackTrace();
                     //使用预置账户的密码登陆
-                    cancelOrderToken = userCexLogin(mobile.getString("mobile_num"),presetUserPwd,area);
+                    cancelOrderToken = presetToken;
                     cancelOrder(cancelOrderToken,orderNo);
                 }
 

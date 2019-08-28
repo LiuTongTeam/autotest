@@ -1,23 +1,26 @@
 package io.cex.test.autotest.interfacecase.boss;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import io.cex.test.autotest.interfacecase.cex.BaseCase;
 import io.cex.test.framework.httputil.OkHttpClientManager;
 import io.cex.test.framework.jsonutil.JsonFileUtil;
 import io.qameta.allure.Allure;
 import lombok.extern.slf4j.Slf4j;
-
+import okhttp3.Response;
 import java.io.IOException;
 import java.util.HashMap;
+import static io.cex.test.autotest.interfacecase.cex.BaseCase.*;
 
 @Slf4j
 public class BossBaseCase {
-    //接口url，默认使用测试环境url
-    public static String boss_ip = "https://cex-boss-test.up.top";
 
     //boss接口url
     public static final String bossLoginUrl = "/boss/account/login";
     public static final String firstTrial = "/boss/cex/audit/firstTrial";
     public static final String reviewing = "/boss/cex/audit/reviewing";
+    public static final String bossUserName = "admin";
+    public static final String bossLoginPwd = "admin";
     /**
      * @desc BOSS login工具,返回token
      * @param  accountId 用户名
@@ -42,5 +45,77 @@ public class BossBaseCase {
             e.printStackTrace();
             log.error("--------------Server connect failed");
         }        return bossToken;
+    }
+
+    /**
+     * @desc 个人认证初审
+     * @param  certificateNo BOSS身份认证ID
+     **/
+    public static void firstTrial(String certificateNo){
+        HashMap header = dataInit();
+        header.put("Boss-Token", BossBaseCase.userBossLogin(bossUserName,bossLoginPwd));
+        log.info("------boss token is :"+header.get("Boss-Token").toString());
+        //组装初审接口入参
+        JSONObject object = new JSONObject();
+        object.put("auditStatus","1");
+        object.put("auditType","USER_CERT_AUTH");
+        object.put("bid",certificateNo);
+        try {
+            //调用初审接口
+            Response response = OkHttpClientManager.post(boss_ip+firstTrial, object.toJSONString(),
+                    "application/json", header);
+            if (response.code()==200) {
+                JSONObject rspjson = JSON.parseObject(response.body().string());
+                log.info("-------------Identity first trial response is:" + rspjson);
+                Allure.addAttachment("认证初审入参：", object.toJSONString());
+                Allure.addAttachment("认证初审出参：", rspjson.toJSONString());
+                if (rspjson.get("respCode").equals("000000")){
+                    log.info("-------------FirstTrial success"+"body:"+rspjson.toJSONString()+"\n");
+                }else {
+                    log.error("----------------FirstTrial failed, trace id is:"+rspjson.get("traceId")+"\n");
+                }
+            }else {
+                log.error("----------------Server connect failed"+response.body()+"\n");
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * @desc 个人认证复审
+     * @param  certificateNo BOSS身份认证ID
+     **/
+    public static void cexReviewing(String certificateNo){
+        HashMap header = BaseCase.dataInit();
+        header.put("Boss-Token",BossBaseCase.userBossLogin(bossUserName,bossLoginPwd));
+        log.info("------boss token is :"+header.get("Boss-Token").toString());
+        //组装复审接口入参
+        JSONObject object = new JSONObject();
+        object.put("auditType","USER_CERT_AUTH");
+        object.put("auditStatus","1");
+        object.put("bid",certificateNo);
+        try {
+            //调用复审接口
+            Response response = OkHttpClientManager.post(boss_ip+reviewing, object.toJSONString(),
+                    "application/json", header);
+            if (response.code()==200) {
+                JSONObject rspjson = JSON.parseObject(response.body().string());
+                Allure.addAttachment("认证复审入参：", object.toJSONString());
+                Allure.addAttachment("认证复审出参：", rspjson.toJSONString());
+                log.info("-------------Identity reviewing response is:" + rspjson);
+                if (rspjson.get("respCode").equals("000000")){
+                    log.info("-------------Identity reviewing success"+"body:"+rspjson.toJSONString()+"\n");
+                }else {
+                    log.error("----------------Identity reviewing failed, trace id is:"+rspjson.get("traceId")+"\n");
+                }
+            }else {
+                log.error("----------------Server connect failed"+response.body()+"\n");
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
     }
 }
