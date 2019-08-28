@@ -83,6 +83,7 @@ public class BaseCase {
     public static final String cancelOrderUrl = "/user/order/cancel/order";
     public static final String querySymbolAsset = "/user/asset/query/symbolAsset";
     public static final String orderBookUrl = "/order/query/orderBook";
+    public static final String symbolQuotationUrl = "/quotation/query/symbolQuotation";
 
 
 
