@@ -72,6 +72,9 @@ public class BaseCase {
     public static final String cancelOrderUrl = "/user/order/cancel/order";
     public static final String querySymbolAsset = "/user/asset/query/symbolAsset";
     public static final String orderBookUrl = "/order/query/orderBook";
+    public static final String loginoutUrl = "/user/logout";
+    public static final String checkpwdUrl = "/user/password/check/securityPwd";
+
 
 
     //boss接口url
