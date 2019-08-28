@@ -84,6 +84,8 @@ public class BaseCase {
     public static final String querySymbolAsset = "/user/asset/query/symbolAsset";
     public static final String orderBookUrl = "/order/query/orderBook";
     public static final String symbolQuotationUrl = "/quotation/query/symbolQuotation";
+    public static final String loginoutTestUrl = "/user/logout";
+    public static final String checkpwdTestUrl = "/user/password/check/securityPwd";
 
 
 
