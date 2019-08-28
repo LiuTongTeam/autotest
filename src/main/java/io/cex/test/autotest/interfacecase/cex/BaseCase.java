@@ -30,8 +30,9 @@ import java.util.Properties;
 public class BaseCase {
     //测试环境信息
     public static String ip = "http://139.9.55.125/apis";
+    public static String boss_ip = "https://cex-boss-test.up.top";
     //数据库连接信息
-    public static String cexmysql = "jdbc:mysql://172.29.19.71:3306/cex?useUnicode=true&characterEncoding=UTF8&user=root&password=48rm@hd2o3EX";
+    public static String mysql = "jdbc:mysql://172.29.19.71:3306/cex?useUnicode=true&characterEncoding=UTF8&user=root&password=48rm@hd2o3EX";
 
     //接口参数
     public static String presetUser = "24244855@qq.com";
@@ -71,11 +72,13 @@ public class BaseCase {
     public static final String cancelOrderUrl = "/user/order/cancel/order";
     public static final String querySymbolAsset = "/user/asset/query/symbolAsset";
     public static final String orderBookUrl = "/order/query/orderBook";
-    public static final String loginoutUrl = "/user/logout";
-    public static final String checkpwdUrl = "/user/password/check/securityPwd";
+    public static final String symbolQuotationUrl = "/quotation/query/symbolQuotation";
 
 
-
+    //boss接口url
+    public static final String bossLoginUrl = "/boss/account/login";
+    public static final String firstTrial = "/boss/cex/audit/firstTrial";
+    public static final String reviewing = "/boss/cex/audit/reviewing";
 
     /**
     * @desc 测试suite运行前获取环境配置信息
@@ -91,8 +94,10 @@ public class BaseCase {
             properties.load(inputStream);
             ip = properties.getProperty("cexip");
             log.info("获取到ip地址为："+ip);
-            cexmysql = properties.getProperty("cexmysql");
-            log.info("获取到cexmysql连接信息为："+cexmysql);
+            boss_ip = properties.getProperty("boss_ip");
+            log.info("获取到boss-ip地址为："+boss_ip);
+            mysql = properties.getProperty("mysql");
+            log.info("获取到mysql连接信息为："+mysql);
             presetUser = properties.getProperty("presetUser");
             log.info("获取到presetUser信息为："+presetUser);
             presetUserPwd = properties.getProperty("presetUserPwd");
@@ -183,7 +188,7 @@ public class BaseCase {
                 if (rspjson.get("code").equals("000000")){
                     log.info("-------------Regist success"+"body:"+rspjson.toJSONString()+"\n");
                 }else {
-                    log.error("----------------Regist failed, trace id is:"+rspjson.get("traceId")+"\n");
+                    log.error("----------------login failed, trace id is:"+rspjson.get("traceId")+"\n");
             }
             }else {
                 log.error("----------------Server connect failed"+response.body()+"\n");
@@ -236,7 +241,31 @@ public class BaseCase {
 
     }
 
-
+    /**
+    * @desc BOSS login工具,返回token
+    * @param  accountId 用户名
+     * @param pwd 密码
+    **/
+    public static String userBossLogin(String accountId, String pwd){
+        String bossToken = null;
+        JSONObject object = new JSONObject();
+        object.put("accountId", accountId);
+        object.put("password", pwd);
+        Allure.addAttachment("BOSS登陆入参：",object.toJSONString());
+        try {
+            String response = OkHttpClientManager.postAsString(boss_ip+bossLoginUrl,object.toJSONString());
+            try {
+                Allure.addAttachment("BOSS登陆出参：",response);
+                bossToken = JsonFileUtil.jsonToMap(JSONObject.parseObject(response),new HashMap<String, Object>()).get("token").toString();
+            }catch (Exception e){
+                e.printStackTrace();
+                log.error("-----------BOSS login ERROR, response is "+ response);
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+            log.error("--------------Server connect failed");
+        }        return bossToken;
+    }
 
 
     /**
@@ -405,7 +434,7 @@ public class BaseCase {
         String sqlOrder = String.format("SELECT order_no,user_no from order_info WHERE `status` = 0 and state != 3 and symbol = '%s';",symbol);
         DataBaseManager dataBaseManager = new DataBaseManager();
         //查询未成交的下单
-        JSONArray array = dataBaseManager.executeSingleQuery(sqlOrder,cexmysql);
+        JSONArray array = dataBaseManager.executeSingleQuery(sqlOrder,mysql);
         log.info("order data is "+array.toJSONString());
         if (array.size()>0){
             for (int i = 0 ; i< array.size(); i++){
@@ -416,7 +445,7 @@ public class BaseCase {
                 //查询该市价单用户信息
                 String sqlQueryMobile = String.format("SELECT mobile_num from member_user WHERE user_no = '%s';",userNo);
                 log.info("-------sqlQueryMobile is"+sqlQueryMobile);
-                JSONArray mobileArry = dataBaseManager.executeSingleQuery(sqlQueryMobile,cexmysql);
+                JSONArray mobileArry = dataBaseManager.executeSingleQuery(sqlQueryMobile,mysql);
                 JSONObject mobile = JSON.parseObject(mobileArry.getString(0));
                 //使用下单用户登陆，获取登陆token
                 String cancelOrderToken = null;
@@ -494,7 +523,7 @@ public class BaseCase {
     public static String countAvailableAmount(String symbol,String beforAvailableAmount,String getAmount){
         String queryRateSql = String.format("select taker_fee_rate from biz_fee_group_trade_config where symbol='%s' and group_name='默认现货交易手续费组';",symbol);
         DataBaseManager dataBaseManager = new DataBaseManager();
-        JSONArray mobileArry = dataBaseManager.executeSingleQuery(queryRateSql,cexmysql);
+        JSONArray mobileArry = dataBaseManager.executeSingleQuery(queryRateSql,mysql);
         String rate = JSON.parseObject(mobileArry.getString(0)).getString("taker_fee_rate");
         Allure.addAttachment("交易手续费费率为：", StringUtil.stripTrailingZeros(rate));
         BigDecimal rateNum = new BigDecimal(rate).stripTrailingZeros();
