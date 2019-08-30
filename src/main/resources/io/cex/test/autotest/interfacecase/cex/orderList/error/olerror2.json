@@ -1,0 +1,11 @@
+{
+  "comment": "orderStatus为空，返回参数异常",
+  "body": {
+    "gmtStart":"0000000000000",
+    "currPage":1,
+    "orderStatus":"",
+    "pageRows":999,
+    "gmtEnd":"1652473552000"
+  },
+  "assert":"100006"
+}
