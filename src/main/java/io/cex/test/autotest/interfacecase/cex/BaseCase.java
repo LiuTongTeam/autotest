@@ -40,19 +40,21 @@ public class BaseCase {
     //Boss url，默认使用测试环境url
     public static String boss_ip = "https://cex-boss-test.up.top";
     //c2c测试环境信息
-    public static String c2cip = "http://c2c.uat.192.168.50.146.xip.io:31000";
+    public static String c2cip = "http://139.9.55.125/biz_center";
     //c2c数据库连接信息
-    public static String c2cmysql = "jdbc:mysql://192.168.50.150:3306/c2c?useUnicode=true&characterEncoding=UTF8&user=kofo&password=48rm@hd2o3EX";
+    public static String c2cmysql = "jdbc:mysql://172.29.19.71:3306/c2c?useUnicode=true&characterEncoding=UTF8&user=kofo&password=48rm@hd2o3EX";
     //cex数据库连接信息
     public static String cexmysql = "jdbc:mysql://172.29.19.71:3306/cex?useUnicode=true&characterEncoding=UTF8&user=root&password=48rm@hd2o3EX";
 
     //接口参数
     public static String presetUser = "24244855@qq.com";
+    //加密后的密码，对应明文：Aa123456
     public static String presetUserPwd = "afdd0b4ad2ec172c586e2150770fbf9e";
+    //加密后的密码，对应明文：Lxm499125
     public static String presetUsersecurityPwd = "f3d3d3667220886d7a1a3f1eb9335d91";
     public static String presetToken = null;
-    public static final String pwd = "Aa123456";
-    public static final String securityPwd = "Aa12345678";
+    public static final String pwd = "afdd0b4ad2ec172c586e2150770fbf9e";
+    public static final String securityPwd = "f3d3d3667220886d7a1a3f1eb9335d91";
     public static final String depositCurrency = "IDA";
     public static final String productCoin = "KOFO";
     public static final String currencyCoin = "USDT";
@@ -95,7 +97,7 @@ public class BaseCase {
     **/
     @BeforeSuite
     @Parameters({"file"})
-    public void getProperties(@Optional("test-application.properties")String file){
+    public void getProperties(@Optional("./test-application.properties")String file){
         InputStream inputStream = null;
         Properties properties = new Properties();
         try {
@@ -111,11 +113,16 @@ public class BaseCase {
             log.info("获取到presetUserPwd信息为："+presetUserPwd);
             presetUsersecurityPwd = properties.getProperty("presetUsersecurityPwd");
             log.info("获取到presetUsersecurityPwd信息为："+presetUsersecurityPwd);
+            c2cip = properties.getProperty("c2cip");
+            log.info("获取到c2cip地址为："+c2cip);
+            c2cmysql = properties.getProperty("c2cmysql");
+            log.info("获取到c2cmysql连接信息为："+c2cmysql);
         }catch (IOException e){
             e.printStackTrace();
             log.error("------------未获取到properties配置文件，默认使用测试环境信息");
         }finally {
             presetToken = userCexLogin(presetUser,presetUserPwd,area);
+            log.info("------------预置账户token:"+presetToken);
         }
     }
     /**
@@ -302,7 +309,40 @@ public class BaseCase {
         }
     }
 
+    /**
+    * @desc 设置资金密码
+    * @param  token cex登陆token
+    **/
+    public static void setSecurityPwd(String token){
+        JSONObject object = new JSONObject();
+        object.put("securityPwd",securityPwd);
+        object.put("verifyCode","111112");
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("data",object);
+        jsonbody.put("lang",lang);
+        HashMap header = dataInit();
+        header.put("CEXTOKEN",token);
+        try {
+            Response response = OkHttpClientManager.post(ip+securityPwdUrl, jsonbody.toJSONString(),
+                    "application/json", header);
+            if (response.code()==200) {
+                JSONObject rspjson = JSON.parseObject(response.body().string());
+                Allure.addAttachment("设置资金密码入参：", jsonbody.toJSONString());
+                Allure.addAttachment("设置资金密码出参：", rspjson.toJSONString());
+                log.info("-------------SecurityPwd response is:" + rspjson);
+                if (rspjson.get("code").equals("000000")) {
+                    log.info("-------------SecurityPwd Set success" + "body:"+rspjson.toJSONString()+ "\n");
+                }else {
+                    log.error("----------------SecurityPwd Set failed, trace id is:" + rspjson.get("traceId") + "\n");
+                }
+            }else {
+                log.error("----------------Server connect failed"+response.body()+"\n");
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
 
+    }
 
     /**
     * @desc 获取用户对应currency的充币地址

@@ -597,7 +597,7 @@ public class CoreProcessTest extends BaseCase{
     public void testTwiceSellOrderQuery() throws InterruptedException{
         //充值productCoin
         String address = BaseCase.getAddress(randomPhone,pwd,productCoin);
-        String rspCode = withDraw(presetUsersecurityPwd,address,BaseCase.userCexLogin(presetUser,presetUserPwd,area),depositAmount,productCoin);
+        String rspCode = withDraw(presetUsersecurityPwd,address,presetToken,depositAmount,productCoin);
         AssertTool.isContainsExpect("000000",rspCode);
         Thread.sleep(30000);
         token = userCexLogin(randomPhone,pwd,area);
