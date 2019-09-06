@@ -1,0 +1,11 @@
+{
+  "comment": "timeType=1表示7天记录,status=0处理中，返回成功",
+  "body": {
+    "timeType":"1",
+    "currPage":1,
+    "currency":"IDA",
+    "pageRows":10,
+    "status":"0"
+  },
+  "assert":"000000"
+}

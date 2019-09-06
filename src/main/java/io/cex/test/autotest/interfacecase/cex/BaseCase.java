@@ -89,6 +89,9 @@ public class BaseCase {
     public static final String loginoutUrl = "/user/logout";
     public static final String checkpwdTestUrl = "/user/password/check/securityPwd";
     public static final String orderListUrl = "/user/order/query/orderList";
+    public static final String dealDetailUrl = "/user/order/query/dealDetail";
+    public static final String rechargeUrl = "/user/record/query/recharge";
+
 
 
 
