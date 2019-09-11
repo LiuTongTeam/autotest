@@ -91,6 +91,8 @@ public class BaseCase {
     public static final String orderListUrl = "/user/order/query/orderList";
     public static final String dealDetailUrl = "/user/order/query/dealDetail";
     public static final String rechargeUrl = "/user/record/query/recharge";
+    public static final String userInfoUrl = "/user/query/userInfo";
+    public static final String userBindStatusUrl = "/user/query/userBindStatus";
 
 
 
