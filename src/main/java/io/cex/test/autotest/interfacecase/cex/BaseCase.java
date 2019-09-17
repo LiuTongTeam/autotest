@@ -106,6 +106,7 @@ public class BaseCase {
     public void getProperties(@Optional("./test-application.properties")String file){
         InputStream inputStream = null;
         Properties properties = new Properties();
+        System.out.println(file);
         try {
             inputStream =BaseCase.class.getClassLoader().getResourceAsStream(file);
             properties.load(inputStream);
@@ -275,11 +276,11 @@ public class BaseCase {
         JSONObject object = new JSONObject();
         object.put("countryId",countryId);
         //图片ID由上传文件接口返回
-        object.put("backId",BaseCase.uploadFile(fileUrl,token,"2.jpeg"));
-        object.put("frontId",BaseCase.uploadFile(fileUrl,token,"3.jpg"));
+        object.put("backId",BaseCase.uploadFile(fileUrl,token,"2.jpg"));
+        object.put("frontId",BaseCase.uploadFile(fileUrl,token,"3.png"));
         object.put("userName", "TEST"+userName);
         object.put("certificateNo",RandomUtil.generateLong(18));
-        object.put("personId",BaseCase.uploadFile(fileUrl,token,"1.png"));
+        object.put("personId",BaseCase.uploadFile(fileUrl,token,"1.jpeg"));
         object.put("certificateType",certificateType);
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data",object);
