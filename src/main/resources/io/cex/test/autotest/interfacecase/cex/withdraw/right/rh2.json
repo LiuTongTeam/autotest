@@ -1,0 +1,11 @@
+{
+  "comment": "timeType=2表示30天记录,status=1已完成，返回成功",
+  "body": {
+    "timeType":"2",
+    "currPage":1,
+    "currency":"",
+    "pageRows":10,
+    "status":"1"
+  },
+  "assert":"000000"
+}

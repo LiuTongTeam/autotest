@@ -1,0 +1,11 @@
+{
+  "comment": "timeType=3表示90天记录,status=空，查全部，返回成功",
+  "body": {
+    "timeType":"3",
+    "currPage":1,
+    "currency":"",
+    "pageRows":10,
+    "status":""
+  },
+  "assert":"000000"
+}

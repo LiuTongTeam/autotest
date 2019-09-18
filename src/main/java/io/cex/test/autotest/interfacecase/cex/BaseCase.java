@@ -93,6 +93,10 @@ public class BaseCase {
     public static final String rechargeUrl = "/user/record/query/recharge";
     public static final String userInfoUrl = "/user/query/userInfo";
     public static final String userBindStatusUrl = "/user/query/userBindStatus";
+    public static final String withdrawInfoUrl = "/user/withdraw/query/withdrawInfo";
+    public static final String qwithdrawUrl = "/user/record/query/withdraw";
+    public static final String currencyChainInfoUrl = "/currency/query/currencyChainInfo";
+    public static final String recommendSymbolQuotationUrl = "/quotation/query/recommendSymbolQuotation";
 
 
 
