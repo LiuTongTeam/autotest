@@ -21,6 +21,14 @@ import java.util.Map;
 @Feature("CheckLogin接口")
 
 public class CheckLoginTest extends BaseCase{
+    @BeforeClass
+    public void beforClass(){
+        try {
+            register("17702829192","123qweQWE","86","111111");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
     /**
      * @desc 异常用例的数据驱动
      * @param

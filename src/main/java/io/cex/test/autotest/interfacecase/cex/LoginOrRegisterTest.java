@@ -10,6 +10,7 @@ import io.cex.test.framework.testng.Retry;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -19,6 +20,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 public class LoginOrRegisterTest extends BaseCase{
     //cex登陆token
     private String token = null;
