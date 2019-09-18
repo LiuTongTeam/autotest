@@ -1,0 +1,15 @@
+{
+  "comment": "不传手机号",
+  "body": {
+    "lang": "zh-CN",
+    "data": {
+      "mobileArea": "86",
+      "identifier": " ",
+      "loginPwd": " ",
+      "verifyCode": "123456",
+      "type": "1",
+      "invitationCode": ""
+    },
+    "assert": "100006"
+  }
+}

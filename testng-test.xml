@@ -4,25 +4,25 @@
     <parameter name="file" value="test-application.properties"></parameter>
     <test verbose="2" preserve-order="true" name="C:/code/autotest">
         <classes>
-            <class name="io.cex.test.autotest.interfacecase.cex.BestPriceTest">
+            <!--<class name="io.cex.test.autotest.interfacecase.cex.BestPriceTest">
                 <methods>
                     <include name="testBestPriceError"/>
                     <include name="testBestPrice"/>
                 </methods>
-            </class>
-            <class name="io.cex.test.autotest.interfacecase.cex.CheckLoginTest">
+            </class>-->
+            <!--<class name="io.cex.test.autotest.interfacecase.cex.CheckLoginTest">
                 <methods>
                     <include name="testCheckLoginError"/>
                     <include name="testCheckLogin"/>
                 </methods>
-            </class>
-            <class name="io.cex.test.autotest.interfacecase.cex.CheckMobileTest">
+            </class>-->
+            <!--<class name="io.cex.test.autotest.interfacecase.cex.CheckMobileTest">
                 <methods>
                     <include name="testCheckMobileError"/>
                     <include name="testCheckMobile"/>
                 </methods>
-            </class>
-            <class name="io.cex.test.autotest.interfacecase.cex.CoreProcessTest">
+            </class>-->
+            <!--<class name="io.cex.test.autotest.interfacecase.cex.CoreProcessTest">
                 <methods>
                     <include name="testRegister"/>
                     <include name="testLogin"/>
@@ -65,29 +65,45 @@
                     <include name="testWithdrawReturnProductCoin"/>
                     <include name="testWithdrawReturnCurrencyCoin"/>
                 </methods>
-            </class>
-            <class name="io.cex.test.autotest.interfacecase.cex.DealListTest">
+            </class>-->
+            <!--<class name="io.cex.test.autotest.interfacecase.cex.DealListTest">
                 <methods>
                     <include name="testdealListError"/>
                     <include name="testdealList"/>
                 </methods>
-            </class>
+            </class>-->
             <!--<class name="io.cex.test.autotest.interfacecase.cex.DemoTest">
                 <methods>
                     <include name="testReadFileDemo"/>
                     <include name="testDB"/>
                 </methods>
             </class>-->
-            <class name="io.cex.test.autotest.interfacecase.cex.OrderBookTest">
+            <!--<class name="io.cex.test.autotest.interfacecase.cex.OrderBookTest">
                 <methods>
                     <include name="testorderBookDataError"/>
                     <include name="testorderBookData"/>
                 </methods>
-            </class>
-            <class name="io.cex.test.autotest.interfacecase.cex.RegisterTest">
+            </class>-->
+            <!--<class name="io.cex.test.autotest.interfacecase.cex.RegisterTest">
                 <methods>
                     <include name="testRegisterError"/>
                     <include name="testRegister"/>
+                </methods>
+            </class>-->
+            <class name="io.cex.test.autotest.interfacecase.cex.LoginoutTest">
+                <methods>
+                    <include name="testloginoutError1"/>
+                    <include name="testloginoutError2"/>
+                    <include name="testloginoutError3"/>
+                    <include name="testloginout"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.CheckpwdTest">
+                <methods>
+                    <include name="testcheckpwdError1"/>
+                    <include name="testcheckpwdError2"/>
+                    <include name="testcheckpwdError3"/>
+                    <include name="testcheckpwd"/>
                 </methods>
             </class>
         </classes>

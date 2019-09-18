@@ -1,0 +1,15 @@
+{
+  "comment": "手机号未注册，邀请码错误",
+  "body": {
+    "lang": "zh-CN",
+    "data": {
+      "mobileArea": "86",
+      "identifier": "17702310001",
+      "loginPwd": " ",
+      "verifyCode": "123456",
+      "type": "1",
+      "invitationCode": "11111111111"
+    },
+    "assert": "000000"
+  }
+}

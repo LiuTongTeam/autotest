@@ -89,14 +89,7 @@ public class BaseCase {
     public static final String loginoutUrl = "/user/logout";
     public static final String checkpwdTestUrl = "/user/password/check/securityPwd";
     public static final String orderListUrl = "/user/order/query/orderList";
-    public static final String dealDetailUrl = "/user/order/query/dealDetail";
-    public static final String rechargeUrl = "/user/record/query/recharge";
-    public static final String userInfoUrl = "/user/query/userInfo";
-    public static final String userBindStatusUrl = "/user/query/userBindStatus";
-    public static final String withdrawInfoUrl = "/user/withdraw/query/withdrawInfo";
-    public static final String qwithdrawUrl = "/user/record/query/withdraw";
-    public static final String currencyChainInfoUrl = "/currency/query/currencyChainInfo";
-    public static final String recommendSymbolQuotationUrl = "/quotation/query/recommendSymbolQuotation";
+    public static final String symbolquotationgroupUrl = "/quotation/query/symbolQuotationGroupByInTradeArea";
 
 
 
@@ -110,7 +103,6 @@ public class BaseCase {
     public void getProperties(@Optional("./test-application.properties")String file){
         InputStream inputStream = null;
         Properties properties = new Properties();
-        System.out.println(file);
         try {
             inputStream =BaseCase.class.getClassLoader().getResourceAsStream(file);
             properties.load(inputStream);
@@ -280,11 +272,11 @@ public class BaseCase {
         JSONObject object = new JSONObject();
         object.put("countryId",countryId);
         //图片ID由上传文件接口返回
-        object.put("backId",BaseCase.uploadFile(fileUrl,token,"2.jpg"));
-        object.put("frontId",BaseCase.uploadFile(fileUrl,token,"3.png"));
+        object.put("backId",BaseCase.uploadFile(fileUrl,token,"2.jpeg"));
+        object.put("frontId",BaseCase.uploadFile(fileUrl,token,"3.jpg"));
         object.put("userName", "TEST"+userName);
         object.put("certificateNo",RandomUtil.generateLong(18));
-        object.put("personId",BaseCase.uploadFile(fileUrl,token,"1.jpeg"));
+        object.put("personId",BaseCase.uploadFile(fileUrl,token,"1.png"));
         object.put("certificateType",certificateType);
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data",object);
