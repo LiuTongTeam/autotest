@@ -53,5 +53,6 @@ public class CexConfig {
     public static final String qwithdrawUrl = "/user/record/query/withdraw";
     public static final String currencyChainInfoUrl = "/currency/query/currencyChainInfo";
     public static final String recommendSymbolQuotationUrl = "/quotation/query/recommendSymbolQuotation";
+    public static final String symbolDetailUrl = "/kline/get/symbolDetail";
 
 }

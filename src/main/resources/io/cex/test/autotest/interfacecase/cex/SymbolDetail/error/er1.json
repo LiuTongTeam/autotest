@@ -1,0 +1,7 @@
+{
+  "comment": "输入错误的交易对返回交易对错误",
+  "body": {
+    "symbol":"KOF/USDT"
+  },
+  "assert":"100091"
+}
