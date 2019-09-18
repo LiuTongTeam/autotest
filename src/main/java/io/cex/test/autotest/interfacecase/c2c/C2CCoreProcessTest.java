@@ -3,8 +3,8 @@ package io.cex.test.autotest.interfacecase.c2c;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.sun.xml.internal.bind.v2.TODO;
-import io.cex.test.autotest.interfacecase.cex.BaseCase;
+import io.cex.test.autotest.interfacecase.BaseCase;
+import io.cex.test.autotest.interfacecase.cex.tool.CexCommonOption;
 import io.cex.test.framework.assertutil.AssertTool;
 import io.cex.test.framework.common.RandomUtil;
 import io.cex.test.framework.dbutil.DataBaseManager;
@@ -19,9 +19,11 @@ import org.testng.annotations.Test;
 import java.io.IOException;
 import java.util.HashMap;
 
-import static io.cex.test.autotest.interfacecase.boss.BossBaseCase.cexReviewing;
-import static io.cex.test.autotest.interfacecase.boss.BossBaseCase.firstTrial;
-import static io.cex.test.autotest.interfacecase.cex.BaseCase.*;
+import static io.cex.test.autotest.interfacecase.boss.tool.BossCommonOption.cexReviewing;
+import static io.cex.test.autotest.interfacecase.boss.tool.BossCommonOption.firstTrial;
+import static io.cex.test.autotest.interfacecase.c2c.tool.C2CConfig.*;
+import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
+import static io.cex.test.autotest.interfacecase.cex.tool.CexCommonOption.*;
 
 /**
  * @author shenqingyan
@@ -30,7 +32,7 @@ import static io.cex.test.autotest.interfacecase.cex.BaseCase.*;
  **/
 @Epic("C2C主流程")
 @Slf4j
-public class C2CCoreProcessTest extends C2CBaseCase {
+public class C2CCoreProcessTest extends BaseCase {
     private String merchanttoken = null;
     private String usertoken = null;
     //随机手机号，用于注册
@@ -48,11 +50,11 @@ public class C2CCoreProcessTest extends C2CBaseCase {
         randomPhoneMerchant = RandomUtil.getRandomPhoneNum();
         randomPhoneUser = RandomUtil.getRandomPhoneNum();
         //注册
-        BaseCase.register(randomPhoneMerchant,pwd,area,"000000");
-        BaseCase.register(randomPhoneUser, pwd, area,"000000");
+        CexCommonOption.register(randomPhoneMerchant,pwd,area,"000000");
+        CexCommonOption.register(randomPhoneUser, pwd, area,"000000");
         //登陆
-        merchanttoken = BaseCase.userCexLogin(randomPhoneMerchant, pwd, area);
-        usertoken = BaseCase.userCexLogin(randomPhoneUser, pwd, area);
+        merchanttoken = userCexLogin(randomPhoneMerchant, pwd, area);
+        usertoken = userCexLogin(randomPhoneUser, pwd, area);
         AssertTool.assertNotEquals(merchanttoken,null);
         AssertTool.assertNotEquals(usertoken,null);
     }
@@ -202,7 +204,7 @@ public class C2CCoreProcessTest extends C2CBaseCase {
     @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testUserPmCreateBankCard", description = "充值")
     public void testDeposit() throws InterruptedException{
-        String address1 = BaseCase.getAddress(randomPhoneMerchant,pwd,currencyCoin);
+        String address1 = CexCommonOption.getAddress(randomPhoneMerchant,pwd,currencyCoin);
         //TODO 不能用这个账户
         String token = userCexLogin("shengyan1@126.com","7e274f7903305885b210ead4b62557fe",area);
         String rspCode1 = withDraw(presetUsersecurityPwd,address1,token,amount,currencyCoin);
@@ -211,7 +213,7 @@ public class C2CCoreProcessTest extends C2CBaseCase {
         log.info("--------Deposit sql is:"+sql1);
         Thread.sleep(30000);
         AssertTool.isContainsExpect("{\"amount\":\"1.000000000000000000000000000000\"}",cexmysql,sql1);
-        String address2 = BaseCase.getAddress(randomPhoneUser,pwd,currencyCoin);
+        String address2 = CexCommonOption.getAddress(randomPhoneUser,pwd,currencyCoin);
         String rspCode2 = withDraw(presetUsersecurityPwd,address2,token,amount,currencyCoin);
         AssertTool.isContainsExpect("000000",rspCode2);
         String sql2 = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhoneUser,"USDT");
@@ -224,8 +226,8 @@ public class C2CCoreProcessTest extends C2CBaseCase {
     @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testDeposit", description = "用户划入")
     public void testUserTransferIn() throws IOException{
-        merchanttoken = BaseCase.userCexLogin(randomPhoneMerchant, pwd, area);
-        usertoken = BaseCase.userCexLogin(randomPhoneUser, pwd, area);
+        merchanttoken = CexCommonOption.userCexLogin(randomPhoneMerchant, pwd, area);
+        usertoken = CexCommonOption.userCexLogin(randomPhoneUser, pwd, area);
         HashMap header = BaseCase.dataInit();
         header.put("CEXTOKEN",usertoken);
         System.out.println(header.get("CEXTOKEN"));
@@ -256,9 +258,9 @@ public class C2CCoreProcessTest extends C2CBaseCase {
         AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
     }
 
-    @Feature("划转")
+    @Feature("买卖")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(dependsOnMethods = "testMerchantTransferIn", description = "商户划入")
+    @Test(dependsOnMethods = "testMerchantTransferIn", description = "添加商户")
     public void testMerchantAdd() throws IOException{
         HashMap header = BaseCase.dataInit();
         header.put("CEXTOKEN",merchanttoken);

@@ -2,6 +2,7 @@ package io.cex.test.autotest.interfacecase.cex;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import io.cex.test.autotest.interfacecase.BaseCase;
 import io.cex.test.framework.assertutil.AssertTool;
 import io.cex.test.framework.httputil.OkHttpClientManager;
 import io.cex.test.framework.jsonutil.JsonFileUtil;
@@ -10,15 +11,18 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import okhttp3.Response;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+
+import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.CheckMobileUrl;
+import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.lang;
+
 @Feature("CheckMobile接口")
-public class CheckMobileTest extends BaseCase{
+public class CheckMobileTest extends BaseCase {
     /**
      * @desc 异常用例的数据驱动
      * @param

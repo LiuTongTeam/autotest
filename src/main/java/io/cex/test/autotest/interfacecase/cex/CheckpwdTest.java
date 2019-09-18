@@ -2,6 +2,7 @@ package io.cex.test.autotest.interfacecase.cex;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import io.cex.test.autotest.interfacecase.BaseCase;
 import io.cex.test.framework.assertutil.AssertTool;
 import io.cex.test.framework.httputil.OkHttpClientManager;
 import io.qameta.allure.Allure;
@@ -15,10 +16,12 @@ import org.testng.annotations.Test;
 import java.io.IOException;
 import java.util.HashMap;
 
+import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
+
 @Slf4j
 @Feature("ChecksecurityPwd接口")
 
-public class CheckpwdTest extends BaseCase{
+public class CheckpwdTest extends BaseCase {
 
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "检查资金密码正确")

@@ -3,7 +3,9 @@ package io.cex.test.autotest.interfacecase.cex;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import io.cex.test.autotest.interfacecase.boss.BossBaseCase;
+import io.cex.test.autotest.interfacecase.BaseCase;
+import io.cex.test.autotest.interfacecase.boss.tool.BossCommonOption;
+import io.cex.test.autotest.interfacecase.cex.tool.CexCommonOption;
 import io.cex.test.framework.assertutil.AssertTool;
 import io.cex.test.framework.common.RandomUtil;
 import io.cex.test.framework.common.StringUtil;
@@ -21,7 +23,9 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.cex.test.autotest.interfacecase.boss.BossBaseCase.*;
+import static io.cex.test.autotest.interfacecase.boss.tool.BossConfig.*;
+import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
+import static io.cex.test.autotest.interfacecase.cex.tool.CexCommonOption.*;
 
 /**
  * @author shenqingyan
@@ -31,7 +35,7 @@ import static io.cex.test.autotest.interfacecase.boss.BossBaseCase.*;
 @Slf4j
 @Epic("CEX主流程")
 
-public class CoreProcessTest extends BaseCase{
+public class CoreProcessTest extends BaseCase {
     //cex登陆token
     private String token = null;
     //BOSS身份认证ID
@@ -89,7 +93,7 @@ public class CoreProcessTest extends BaseCase{
     @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testRegister",description = "登陆")
     public void testLogin(){
-        token = BaseCase.userCexLogin(randomPhone,pwd,area);
+        token = CexCommonOption.userCexLogin(randomPhone,pwd,area);
         AssertTool.assertNotEquals(null,token);
         log.info("------------cex token:"+token);
         Allure.addAttachment("登陆token：",token);
@@ -103,11 +107,11 @@ public class CoreProcessTest extends BaseCase{
         JSONObject object = new JSONObject();
         object.put("countryId",countryId);
         //图片ID由上传文件接口返回
-        object.put("backId",BaseCase.uploadFile(fileUrl,token,"1.jpeg"));
-        object.put("frontId",BaseCase.uploadFile(fileUrl,token,"2.jpg"));
+        object.put("backId", CexCommonOption.uploadFile(fileUrl,token,"1.jpeg"));
+        object.put("frontId", CexCommonOption.uploadFile(fileUrl,token,"2.jpg"));
         object.put("userName", userName);
         object.put("certificateNo",RandomUtil.generateLong(18));
-        object.put("personId",BaseCase.uploadFile(fileUrl,token,"3.png"));
+        object.put("personId", CexCommonOption.uploadFile(fileUrl,token,"3.png"));
         object.put("certificateType",certificateType);
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data",object);
@@ -133,7 +137,7 @@ public class CoreProcessTest extends BaseCase{
     public void testFirstTrial() throws IOException{
         //boss登陆token放入header
         HashMap header = dataInit();
-        header.put("Boss-Token", BossBaseCase.userBossLogin(bossUserName,bossLoginPwd));
+        header.put("Boss-Token", BossCommonOption.userBossLogin(bossUserName,bossLoginPwd));
         log.info("-----boss token is :"+header.get("Boss-Token").toString());
         //组装初审接口入参
         JSONObject object = new JSONObject();
@@ -154,7 +158,7 @@ public class CoreProcessTest extends BaseCase{
     @Test(dependsOnMethods = "testFirstTrial", description = "身份认证复审通过")
     public void testReviewing() throws IOException{
         HashMap header = dataInit();
-        header.put("Boss-Token",BossBaseCase.userBossLogin(bossUserName,bossLoginPwd));
+        header.put("Boss-Token", BossCommonOption.userBossLogin(bossUserName,bossLoginPwd));
         log.info("-----boss token is :"+header.get("Boss-Token").toString());
         //组装复审接口入参
         JSONObject object = new JSONObject();
@@ -193,7 +197,7 @@ public class CoreProcessTest extends BaseCase{
     @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testSecurityPwd", description = "充币"+depositCurrency)
     public void testDeposit1() throws InterruptedException{
-        String address = BaseCase.getAddress(randomPhone,pwd,depositCurrency);
+        String address = CexCommonOption.getAddress(randomPhone,pwd,depositCurrency);
         String rspCode = withDraw(presetUsersecurityPwd,address,presetToken,depositAmount,depositCurrency);
         AssertTool.isContainsExpect("000000",rspCode);
         String sql = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhone,depositCurrency);
@@ -205,7 +209,7 @@ public class CoreProcessTest extends BaseCase{
     @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testDeposit1", description = "充币"+productCoin)
     public void testDeposit2() throws InterruptedException{
-        String address = BaseCase.getAddress(randomPhone,pwd,productCoin);
+        String address = CexCommonOption.getAddress(randomPhone,pwd,productCoin);
         String rspCode = withDraw(presetUsersecurityPwd,address,presetToken,depositAmount,productCoin);
         AssertTool.isContainsExpect("000000",rspCode);
         String sql = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhone,productCoin);
@@ -217,7 +221,7 @@ public class CoreProcessTest extends BaseCase{
     @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testDeposit2", description = "充币"+currencyCoin)
     public void testDeposit3() throws InterruptedException{
-        String address = BaseCase.getAddress(randomPhone,pwd,currencyCoin);
+        String address = CexCommonOption.getAddress(randomPhone,pwd,currencyCoin);
         String rspCode = withDraw(presetUsersecurityPwd,address,presetToken,depositAmount,currencyCoin);
         AssertTool.isContainsExpect("000000",rspCode);
         String sql = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhone,currencyCoin);
@@ -229,8 +233,8 @@ public class CoreProcessTest extends BaseCase{
     @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testDeposit3", description = "提币数量超过账户剩余数量")
     public void testWithdrawFail(){
-        String address = BaseCase.getAddress(presetUser,presetUserPwd,depositCurrency);
-        token = BaseCase.userCexLogin(randomPhone,pwd,area);
+        String address = CexCommonOption.getAddress(presetUser,presetUserPwd,depositCurrency);
+        token = CexCommonOption.userCexLogin(randomPhone,pwd,area);
         String rspCode = withDraw(securityPwd,address,token,"25",depositCurrency);
         AssertTool.isContainsExpect("100113",rspCode);
     }
@@ -238,7 +242,7 @@ public class CoreProcessTest extends BaseCase{
     @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testWithdrawFail", description = "提币成功")
     public void testWithdraw() throws InterruptedException{
-        String address = BaseCase.getAddress(presetUser,presetUserPwd,depositCurrency);
+        String address = CexCommonOption.getAddress(presetUser,presetUserPwd,depositCurrency);
         String rspCode = withDraw(securityPwd,address,token,"15",depositCurrency);
         AssertTool.isContainsExpect("000000",rspCode);
         String sql = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhone,depositCurrency);
@@ -258,7 +262,7 @@ public class CoreProcessTest extends BaseCase{
         }catch (Exception e){
             e.printStackTrace();
         }
-        token = BaseCase.userCexLogin(randomPhone,pwd,area);
+        token = CexCommonOption.userCexLogin(randomPhone,pwd,area);
         Map result = order(symbol,"BUY","LMT",limitPrice,"5","5",token);
         cancelAllBuyNo = result.get("orderNo").toString();
         AssertTool.isContainsExpect("000000",result.get("code").toString());
@@ -596,7 +600,7 @@ public class CoreProcessTest extends BaseCase{
     @Test(dependsOnMethods = "testTwiceBuyOrderBuy",description = "成交前查询")
     public void testTwiceSellOrderQuery() throws InterruptedException{
         //充值productCoin
-        String address = BaseCase.getAddress(randomPhone,pwd,productCoin);
+        String address = CexCommonOption.getAddress(randomPhone,pwd,productCoin);
         String rspCode = withDraw(presetUsersecurityPwd,address,presetToken,depositAmount,productCoin);
         AssertTool.isContainsExpect("000000",rspCode);
         Thread.sleep(30000);
@@ -709,8 +713,8 @@ public class CoreProcessTest extends BaseCase{
     @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testMktSell", description = "归还剩余depositCurrency币种")
     public void testWithdrawReturnDepositCurrency() throws InterruptedException{
-        String address = BaseCase.getAddress(presetUser,presetUserPwd,depositCurrency);
-        String amount = BaseCase.queryAsset(token,depositCurrency).get("availableAmount").toString();
+        String address = CexCommonOption.getAddress(presetUser,presetUserPwd,depositCurrency);
+        String amount = CexCommonOption.queryAsset(token,depositCurrency).get("availableAmount").toString();
         String rspCode = withDraw(securityPwd,address,token, StringUtil.numStringRound(amount),depositCurrency);
         AssertTool.isContainsExpect("000000",rspCode);
         Allure.addAttachment("归还剩余币种"+depositCurrency+":",StringUtil.numStringRound(amount));
@@ -723,8 +727,8 @@ public class CoreProcessTest extends BaseCase{
     @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testMktSell", description = "归还剩余productCoin币种")
     public void testWithdrawReturnProductCoin() throws InterruptedException{
-        String address = BaseCase.getAddress(presetUser,presetUserPwd,productCoin);
-        String amount = BaseCase.queryAsset(token,productCoin).get("availableAmount").toString();
+        String address = CexCommonOption.getAddress(presetUser,presetUserPwd,productCoin);
+        String amount = CexCommonOption.queryAsset(token,productCoin).get("availableAmount").toString();
         String rspCode = withDraw(securityPwd,address,token, StringUtil.numStringRound(amount),productCoin);
         AssertTool.isContainsExpect("000000",rspCode);
         Allure.addAttachment("归还剩余的币种"+productCoin+":",StringUtil.numStringRound(amount));
@@ -736,8 +740,8 @@ public class CoreProcessTest extends BaseCase{
     @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testMktSell", description = "归还剩余currencyCoin币种")
     public void testWithdrawReturnCurrencyCoin() throws InterruptedException{
-        String address = BaseCase.getAddress(presetUser,presetUserPwd,currencyCoin);
-        String amount = BaseCase.queryAsset(token,currencyCoin).get("availableAmount").toString();
+        String address = CexCommonOption.getAddress(presetUser,presetUserPwd,currencyCoin);
+        String amount = CexCommonOption.queryAsset(token,currencyCoin).get("availableAmount").toString();
         String rspCode = withDraw(securityPwd,address,token, StringUtil.numStringRound(amount),currencyCoin);
         AssertTool.isContainsExpect("000000",rspCode);
         Allure.addAttachment("归还剩余的计价币种"+currencyCoin+":",StringUtil.numStringRound(amount));

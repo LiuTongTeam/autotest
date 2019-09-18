@@ -1,17 +1,6 @@
-package io.cex.test.autotest.interfacecase.c2c;
+package io.cex.test.autotest.interfacecase.c2c.tool;
 
-import io.cex.test.autotest.interfacecase.cex.BaseCase;
 import lombok.extern.slf4j.Slf4j;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.Optional;
-import org.testng.annotations.Parameters;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-
-import static io.cex.test.autotest.interfacecase.cex.BaseCase.c2cip;
-import static io.cex.test.autotest.interfacecase.cex.BaseCase.c2cmysql;
 
 /**
  * @author shenqingyan
@@ -19,7 +8,7 @@ import static io.cex.test.autotest.interfacecase.cex.BaseCase.c2cmysql;
  * @desc c2c测试基类
  **/
 @Slf4j
-public class C2CBaseCase {
+public class C2CConfig {
     public static final String nikeNameAddUrl = "/user/nickname/add";
     public static final String pmCreateUrl = "/pm/create";
     public static final String transferOutUrl = "/transfer/out";
@@ -29,9 +18,5 @@ public class C2CBaseCase {
     public static final String tradeUpdateUrl = "/admin/trade/update";
     public static final String submitBuyOrderUrl = "/order/submitBuyOrder";
     public static final String userCancelUrl = "/order/userCancel";
-
-
-
-
 
 }

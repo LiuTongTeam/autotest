@@ -2,6 +2,8 @@ package io.cex.test.autotest.interfacecase.cex;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import io.cex.test.autotest.interfacecase.BaseCase;
+import io.cex.test.autotest.interfacecase.cex.tool.CexCommonOption;
 import io.cex.test.framework.assertutil.AssertTool;
 import io.cex.test.framework.common.RandomUtil;
 import io.cex.test.framework.httputil.OkHttpClientManager;
@@ -16,6 +18,8 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.util.HashMap;
+
+import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
 
 @Feature("logout接口")
 @Slf4j
@@ -51,7 +55,7 @@ public class LoginoutTest extends BaseCase {
     @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testRegister", description = "登陆")
     public void testLogin() {
-        token = BaseCase.userCexLogin(randomPhone, pwd, area);
+        token = CexCommonOption.userCexLogin(randomPhone, pwd, area);
         AssertTool.assertNotEquals(null, token);
         log.info("------------cex token:" + token);
         Allure.addAttachment("登陆token：", token);

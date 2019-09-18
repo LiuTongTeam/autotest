@@ -1,26 +1,23 @@
-package io.cex.test.autotest.interfacecase.boss;
+package io.cex.test.autotest.interfacecase.boss.tool;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import io.cex.test.autotest.interfacecase.cex.BaseCase;
+import io.cex.test.autotest.interfacecase.BaseCase;
 import io.cex.test.framework.httputil.OkHttpClientManager;
 import io.cex.test.framework.jsonutil.JsonFileUtil;
 import io.qameta.allure.Allure;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
+
 import java.io.IOException;
 import java.util.HashMap;
-import static io.cex.test.autotest.interfacecase.cex.BaseCase.*;
+
+import static io.cex.test.autotest.interfacecase.BaseCase.boss_ip;
+import static io.cex.test.autotest.interfacecase.BaseCase.dataInit;
+import static io.cex.test.autotest.interfacecase.boss.tool.BossConfig.*;
 
 @Slf4j
-public class BossBaseCase {
-
-    //boss接口url
-    public static final String bossLoginUrl = "/boss/account/login";
-    public static final String firstTrial = "/boss/cex/audit/firstTrial";
-    public static final String reviewing = "/boss/cex/audit/reviewing";
-    public static final String bossUserName = "admin";
-    public static final String bossLoginPwd = "admin";
+public class BossCommonOption {
     /**
      * @desc BOSS login工具,返回token
      * @param  accountId 用户名
@@ -53,7 +50,7 @@ public class BossBaseCase {
      **/
     public static void firstTrial(String certificateNo){
         HashMap header = dataInit();
-        header.put("Boss-Token", BossBaseCase.userBossLogin(bossUserName,bossLoginPwd));
+        header.put("Boss-Token", BossCommonOption.userBossLogin(bossUserName,bossLoginPwd));
         log.info("------boss token is :"+header.get("Boss-Token").toString());
         //组装初审接口入参
         JSONObject object = new JSONObject();
@@ -89,7 +86,7 @@ public class BossBaseCase {
      **/
     public static void cexReviewing(String certificateNo){
         HashMap header = BaseCase.dataInit();
-        header.put("Boss-Token",BossBaseCase.userBossLogin(bossUserName,bossLoginPwd));
+        header.put("Boss-Token",BossCommonOption.userBossLogin(bossUserName,bossLoginPwd));
         log.info("------boss token is :"+header.get("Boss-Token").toString());
         //组装复审接口入参
         JSONObject object = new JSONObject();

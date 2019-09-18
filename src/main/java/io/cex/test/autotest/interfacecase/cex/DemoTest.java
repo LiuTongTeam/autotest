@@ -3,14 +3,13 @@ package io.cex.test.autotest.interfacecase.cex;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import io.cex.test.autotest.interfacecase.BaseCase;
 import io.cex.test.framework.assertutil.AssertTool;
 import io.cex.test.framework.dbutil.DataBaseManager;
 import io.cex.test.framework.jsonutil.JsonFileUtil;
 import io.cex.test.framework.testng.Retry;
 import io.qameta.allure.*;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
@@ -18,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 //定义测试报告中用例功能描述信息，比如说某接口，展示在测试报告中
 @Feature("Demo")
-public class DemoTest extends BaseCase{
+public class DemoTest extends BaseCase {
     /**
      * @desc 数据驱动
      * @param

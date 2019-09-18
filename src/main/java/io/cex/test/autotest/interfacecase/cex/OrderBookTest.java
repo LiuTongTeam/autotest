@@ -2,6 +2,7 @@ package io.cex.test.autotest.interfacecase.cex;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import io.cex.test.autotest.interfacecase.BaseCase;
 import io.cex.test.framework.assertutil.AssertTool;
 import io.cex.test.framework.httputil.OkHttpClientManager;
 import io.cex.test.framework.jsonutil.JsonFileUtil;
@@ -17,6 +18,10 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+
+import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.lang;
+import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.orderBookUrl;
+
 @Feature("OrderBook接口")
 
 public class OrderBookTest extends BaseCase {
