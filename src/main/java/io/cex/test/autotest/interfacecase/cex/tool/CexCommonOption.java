@@ -440,7 +440,7 @@ public class CexCommonOption {
      * @param currency 币种信息
      * @return HashMap中存放币种的totalAmount、availableAmount、frozenAmount
      **/
-    public static HashMap queryAsset(String token,String currency){
+    public static HashMap queryCexAsset(String token,String currency){
         HashMap result = new HashMap();
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);

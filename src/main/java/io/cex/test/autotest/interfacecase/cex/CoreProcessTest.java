@@ -266,7 +266,7 @@ public class CoreProcessTest extends BaseCase {
         Map result = order(symbol,"BUY","LMT",limitPrice,"5","5",token);
         cancelAllBuyNo = result.get("orderNo").toString();
         AssertTool.isContainsExpect("000000",result.get("code").toString());
-        String frozeAmount = queryAsset(token,currencyCoin).get("frozenAmount").toString();
+        String frozeAmount = queryCexAsset(token,currencyCoin).get("frozenAmount").toString();
         Allure.addAttachment("下单后冻结"+currencyCoin+"金额:",frozeAmount);
         AssertTool.isContainsExpect("10",frozeAmount);
     }
@@ -279,7 +279,7 @@ public class CoreProcessTest extends BaseCase {
         HashMap result = cancelOrder(token,cancelAllBuyNo);
         AssertTool.isContainsExpect("000000",result.get("code").toString());
         Thread.sleep(60000);
-        String frozeAmount = queryAsset(token,currencyCoin).get("frozenAmount").toString();
+        String frozeAmount = queryCexAsset(token,currencyCoin).get("frozenAmount").toString();
         Allure.addAttachment("撤单后冻结"+currencyCoin+"金额:",frozeAmount);
         AssertTool.assertEquals(StringUtil.numStringRound(frozeAmount),"0");
     }
@@ -292,7 +292,7 @@ public class CoreProcessTest extends BaseCase {
         Map result = order(symbol,"SELL","LMT",limitPrice,"5","5",token);
         cancelAllSellNo = result.get("orderNo").toString();
         AssertTool.isContainsExpect("000000",result.get("code").toString());
-        String frozeAmount = queryAsset(token,productCoin).get("frozenAmount").toString();
+        String frozeAmount = queryCexAsset(token,productCoin).get("frozenAmount").toString();
         Allure.addAttachment("下单后冻结币"+productCoin+"个数为：",frozeAmount);
         AssertTool.isContainsExpect(StringUtil.numStringRound(frozeAmount),"5");
     }
@@ -305,7 +305,7 @@ public class CoreProcessTest extends BaseCase {
         HashMap result = cancelOrder(token,cancelAllSellNo);
         AssertTool.isContainsExpect("000000",result.get("code").toString());
         Thread.sleep(30000);
-        String frozeAmount = queryAsset(token,productCoin).get("frozenAmount").toString();
+        String frozeAmount = queryCexAsset(token,productCoin).get("frozenAmount").toString();
         Allure.addAttachment("撤单后冻结币"+productCoin+"个数：",frozeAmount);
         AssertTool.assertEquals(StringUtil.numStringRound(frozeAmount),"0");
     }
@@ -319,7 +319,7 @@ public class CoreProcessTest extends BaseCase {
         cancelPartBuyNo = result.get("orderNo").toString();
         Thread.sleep(30000);
         AssertTool.isContainsExpect("000000",result.get("code").toString());
-        String frozeAmount = queryAsset(token,currencyCoin).get("frozenAmount").toString();
+        String frozeAmount = queryCexAsset(token,currencyCoin).get("frozenAmount").toString();
         Allure.addAttachment("下单后冻结"+currencyCoin+"金额",StringUtil.stripTrailingZeros(frozeAmount));
         AssertTool.isContainsExpect("10",StringUtil.stripTrailingZeros(frozeAmount));
     }
@@ -331,18 +331,18 @@ public class CoreProcessTest extends BaseCase {
     @Test(dependsOnMethods = "testPartBuyOrder",description = "预置账户下卖单")
     public void testPartBuyOrder1() throws InterruptedException{
         //获取成交前测试账户币个数
-        preAvailableCoinAmount = new BigDecimal(queryAsset(token,productCoin).get("availableAmount").toString());
+        preAvailableCoinAmount = new BigDecimal(queryCexAsset(token,productCoin).get("availableAmount").toString());
         //预置账户下卖单
         Map result = order(symbol,"SELL","LMT",limitPrice,"3","3",presetToken);
         AssertTool.isContainsExpect("000000",result.get("code").toString());
         Thread.sleep(30000);
         //成交后查询测试账户的支付余额冻结金额
-        String frozeAmount = queryAsset(token,currencyCoin).get("frozenAmount").toString();
+        String frozeAmount = queryCexAsset(token,currencyCoin).get("frozenAmount").toString();
         Allure.addAttachment("成交后冻结"+currencyCoin+"金额为：",StringUtil.stripTrailingZeros(frozeAmount));
         //断言冻结计价币种是否减少
         AssertTool.isContainsExpect("4",StringUtil.stripTrailingZeros(frozeAmount));
         //成交后查询测试账户的可用币种个数
-        String availableAmount = StringUtil.stripTrailingZeros(queryAsset(token,productCoin).get("availableAmount").toString());
+        String availableAmount = StringUtil.stripTrailingZeros(queryCexAsset(token,productCoin).get("availableAmount").toString());
         Allure.addAttachment("成交后可用币"+productCoin+"个数为：",availableAmount);
         log.info("可用币个数："+availableAmount);
         //断言成交后可用币种是否与计算的可用个数一致
@@ -356,7 +356,7 @@ public class CoreProcessTest extends BaseCase {
         HashMap result = cancelOrder(token,cancelPartBuyNo);
         AssertTool.isContainsExpect("000000",result.get("code").toString());
         Thread.sleep(30000);
-        String frozeAmount = queryAsset(token,currencyCoin).get("frozenAmount").toString();
+        String frozeAmount = queryCexAsset(token,currencyCoin).get("frozenAmount").toString();
         Allure.addAttachment("测试账户撤单后冻结"+currencyCoin+"金额：",StringUtil.stripTrailingZeros(frozeAmount));
         AssertTool.assertEquals(StringUtil.stripTrailingZeros(frozeAmount),"0");
     }
@@ -370,7 +370,7 @@ public class CoreProcessTest extends BaseCase {
         cancelPartSellNo = result.get("orderNo").toString();
         Thread.sleep(30000);
         AssertTool.isContainsExpect("000000",result.get("code").toString());
-        String frozeAmount = queryAsset(token,productCoin).get("frozenAmount").toString();
+        String frozeAmount = queryCexAsset(token,productCoin).get("frozenAmount").toString();
         Allure.addAttachment("下单后冻结币"+productCoin+"个数：",StringUtil.stripTrailingZeros(frozeAmount));
         AssertTool.isContainsExpect("2",StringUtil.stripTrailingZeros(frozeAmount));
     }
@@ -382,7 +382,7 @@ public class CoreProcessTest extends BaseCase {
     @Test(dependsOnMethods = "testPartSellOrder",description = "预置账户下买单")
     public void testPartSellOrder1() throws InterruptedException{
         //获取成交前测试账户计价币个数
-        preAvailableAmount = new BigDecimal(queryAsset(token,currencyCoin).get("availableAmount").toString());
+        preAvailableAmount = new BigDecimal(queryCexAsset(token,currencyCoin).get("availableAmount").toString());
         Allure.addAttachment("成交前可用"+currencyCoin+"金额为：",StringUtil.stripTrailingZeros(preAvailableAmount.toString()));
         log.info("成交前可用金额："+preAvailableAmount.toString());
         //预置账户下买单
@@ -390,12 +390,12 @@ public class CoreProcessTest extends BaseCase {
         Thread.sleep(30000);
         AssertTool.isContainsExpect("000000",result.get("code").toString());
         //成交后查询测试账户的卖出币种冻结数量
-        String frozeAmount = queryAsset(token,productCoin).get("frozenAmount").toString();
+        String frozeAmount = queryCexAsset(token,productCoin).get("frozenAmount").toString();
         Allure.addAttachment("成交后冻结"+productCoin+"个数为：",StringUtil.stripTrailingZeros(frozeAmount));
         AssertTool.isContainsExpect("1",StringUtil.stripTrailingZeros(frozeAmount));
         log.info("冻结数量："+StringUtil.stripTrailingZeros(frozeAmount));
         //查询计价币种可用数量
-        String availableAmount = StringUtil.stripTrailingZeros(queryAsset(token,currencyCoin).get("availableAmount").toString());
+        String availableAmount = StringUtil.stripTrailingZeros(queryCexAsset(token,currencyCoin).get("availableAmount").toString());
         Allure.addAttachment("成交后可用"+currencyCoin+"金额为：",availableAmount);
         log.info("成交后可用金额："+availableAmount);
         //断言成交后可用币种是否与计算的可用个数一致
@@ -410,7 +410,7 @@ public class CoreProcessTest extends BaseCase {
         HashMap result = cancelOrder(token,cancelPartSellNo);
         AssertTool.isContainsExpect("000000",result.get("code").toString());
         Thread.sleep(30000);
-        String frozeAmount = queryAsset(token,productCoin).get("frozenAmount").toString();
+        String frozeAmount = queryCexAsset(token,productCoin).get("frozenAmount").toString();
         Allure.addAttachment("测试账户撤单之后冻结"+productCoin+"个数：",StringUtil.stripTrailingZeros(frozeAmount));
         AssertTool.assertEquals(StringUtil.stripTrailingZeros(frozeAmount),"0");
     }
@@ -421,11 +421,11 @@ public class CoreProcessTest extends BaseCase {
     @Test(dependsOnMethods = "testPartSellCancelOrder",description = "查询成交前余额")
     public void testAllBuyOrderQuery() throws InterruptedException{
         //获取成交前计价币种数量
-        preAvailableAmount = new BigDecimal(queryAsset(token,currencyCoin).get("availableAmount").toString());
+        preAvailableAmount = new BigDecimal(queryCexAsset(token,currencyCoin).get("availableAmount").toString());
         Allure.addAttachment("成交前可用计价币"+currencyCoin+"为：",StringUtil.stripTrailingZeros(preAvailableAmount.toString()));
         log.info("成交前可用计价币为："+preAvailableAmount.toString());
         //获取成交前交易币种数量
-        preAvailableCoinAmount = new BigDecimal(queryAsset(token,productCoin).get("availableAmount").toString());
+        preAvailableCoinAmount = new BigDecimal(queryCexAsset(token,productCoin).get("availableAmount").toString());
         Allure.addAttachment("成交前可用交易币"+productCoin+"为：",StringUtil.stripTrailingZeros(preAvailableCoinAmount.toString()));
         log.info("成交前可用交易币为："+preAvailableCoinAmount.toString());
 
@@ -457,17 +457,17 @@ public class CoreProcessTest extends BaseCase {
         AssertTool.isContainsExpect("000000",buyResult.get("code").toString());
         Thread.sleep(30000);
         //成交后查询测试账户的计价币种冻结数量
-        String frozeAmount = queryAsset(token,currencyCoin).get("frozenAmount").toString();
+        String frozeAmount = queryCexAsset(token,currencyCoin).get("frozenAmount").toString();
         Allure.addAttachment("成交后冻结"+currencyCoin+"个数为：",StringUtil.stripTrailingZeros(frozeAmount));
         AssertTool.isContainsExpect("0",StringUtil.stripTrailingZeros(frozeAmount));
         log.info("冻结数量："+StringUtil.stripTrailingZeros(frozeAmount));
         //查询计价币种可用数量
-        String currencyCoinAmount = StringUtil.stripTrailingZeros(queryAsset(token,currencyCoin).get("availableAmount").toString());
+        String currencyCoinAmount = StringUtil.stripTrailingZeros(queryCexAsset(token,currencyCoin).get("availableAmount").toString());
         Allure.addAttachment("成交后计价币种"+currencyCoin+"可用金额为：",currencyCoinAmount);
         log.info("成交后计价币种可用金额："+currencyCoinAmount);
         AssertTool.isContainsExpect("0",StringUtil.stripTrailingZeros(currencyCoinAmount));
         //成交后查询测试账户的可用交易币种个数
-        String productCoinAmount = StringUtil.stripTrailingZeros(queryAsset(token,productCoin).get("availableAmount").toString());
+        String productCoinAmount = StringUtil.stripTrailingZeros(queryCexAsset(token,productCoin).get("availableAmount").toString());
         Allure.addAttachment("成交后可用币"+productCoin+"个数为：",productCoinAmount);
         log.info("可用币个数："+productCoinAmount);
         //断言成交后可用交易币种是否与计算的可用个数一致
@@ -481,11 +481,11 @@ public class CoreProcessTest extends BaseCase {
     @Test(dependsOnMethods = "testAllBuyOrderBuy",description = "查询成交前余额")
     public void testAllSellOrderQuery() throws InterruptedException{
         //获取交易前计价币种数量
-        preAvailableAmount = new BigDecimal(queryAsset(token,currencyCoin).get("availableAmount").toString());
+        preAvailableAmount = new BigDecimal(queryCexAsset(token,currencyCoin).get("availableAmount").toString());
         Allure.addAttachment("交易前可用计价币"+currencyCoin+"为：",StringUtil.stripTrailingZeros(preAvailableAmount.toString()));
         log.info("成交前可用计价币为："+preAvailableAmount.toString());
         //获取交易前交易币种数量
-        preAvailableCoinAmount = new BigDecimal(queryAsset(token,productCoin).get("availableAmount").toString());
+        preAvailableCoinAmount = new BigDecimal(queryCexAsset(token,productCoin).get("availableAmount").toString());
         Allure.addAttachment("交易前可用交易币"+productCoin+"为：",StringUtil.stripTrailingZeros(preAvailableCoinAmount.toString()));
         log.info("交易前可用交易币为："+preAvailableCoinAmount.toString());
 
@@ -515,17 +515,17 @@ public class CoreProcessTest extends BaseCase {
         AssertTool.isContainsExpect("000000",sellResult.get("code").toString());
         Thread.sleep(30000);
         //成交后查询测试账户的交易币种冻结数量
-        String frozeAmount = queryAsset(token,productCoin).get("frozenAmount").toString();
+        String frozeAmount = queryCexAsset(token,productCoin).get("frozenAmount").toString();
         Allure.addAttachment("交易后冻结交易币种"+productCoin+"个数为：",StringUtil.stripTrailingZeros(frozeAmount));
         AssertTool.isContainsExpect("0",StringUtil.stripTrailingZeros(frozeAmount));
         log.info("交易后冻结交易币种个数为："+StringUtil.stripTrailingZeros(frozeAmount));
         //查询交易币种可用数量
-        String productCoinAmount = StringUtil.stripTrailingZeros(queryAsset(token,productCoin).get("availableAmount").toString());
+        String productCoinAmount = StringUtil.stripTrailingZeros(queryCexAsset(token,productCoin).get("availableAmount").toString());
         Allure.addAttachment("成交后交易币种"+productCoin+"可用金额为：",productCoinAmount);
         log.info("成交后交易币种可用金额："+productCoinAmount);
         AssertTool.isContainsExpect("0",StringUtil.stripTrailingZeros(productCoinAmount));
         //成交后查询测试账户的可用计价币种个数
-        String currencyCoinAmount = StringUtil.stripTrailingZeros(queryAsset(token,currencyCoin).get("availableAmount").toString());
+        String currencyCoinAmount = StringUtil.stripTrailingZeros(queryCexAsset(token,currencyCoin).get("availableAmount").toString());
         Allure.addAttachment("成交后计价币"+currencyCoin+"个数为：",currencyCoinAmount);
         log.info("计价币个数："+currencyCoinAmount);
         //断言成交后可用计价币种是否与计算的可用个数一致
@@ -540,7 +540,7 @@ public class CoreProcessTest extends BaseCase {
     @Test(dependsOnMethods = "testAllSellOrderSell",description = "查询成交前余额")
     public void testTwiceBuyOrderQuery() throws InterruptedException{
         //获取交易前计价币种数量
-        preAvailableAmount = new BigDecimal(queryAsset(token,currencyCoin).get("availableAmount").toString());
+        preAvailableAmount = new BigDecimal(queryCexAsset(token,currencyCoin).get("availableAmount").toString());
         Allure.addAttachment("交易前可用计价币"+currencyCoin+"为：",StringUtil.stripTrailingZeros(preAvailableAmount.toString()));
         log.info("成交前可用计价币为："+preAvailableAmount.toString());
     }
@@ -574,19 +574,19 @@ public class CoreProcessTest extends BaseCase {
         AssertTool.isContainsExpect("000000",buyResult.get("code").toString());
         Thread.sleep(30000);
         //成交后查询测试账户计价币种冻结数量
-        String frozeAmount = queryAsset(token,currencyCoin).get("frozenAmount").toString();
+        String frozeAmount = queryCexAsset(token,currencyCoin).get("frozenAmount").toString();
         Allure.addAttachment("成交后冻结计价币种"+currencyCoin+"个数为：",StringUtil.stripTrailingZeros(frozeAmount));
         AssertTool.isContainsExpect("0",StringUtil.stripTrailingZeros(frozeAmount));
         log.info("冻结计价币种个数："+StringUtil.stripTrailingZeros(frozeAmount));
         //查询计价币种可用数量
-        String currencyCoinAmount = StringUtil.stripTrailingZeros(queryAsset(token,currencyCoin).get("availableAmount").toString());
+        String currencyCoinAmount = StringUtil.stripTrailingZeros(queryCexAsset(token,currencyCoin).get("availableAmount").toString());
         Allure.addAttachment("成交后计价币种"+"可用金额：",currencyCoinAmount);
         log.info("成交后计价币种可用金额为："+currencyCoinAmount);
         //预期结果为：交易前计价币种数量-(salePrice1*1+salePrice2*1)
         String expect = StringUtil.stripTrailingZeros(preAvailableAmount.subtract(new BigDecimal(price1).add(new BigDecimal(price2))).toString());
         AssertTool.isContainsExpect(expect,StringUtil.stripTrailingZeros(currencyCoinAmount));
         //成交后查询测试账户的可用交易币种个数
-        String productCoinAmount = StringUtil.stripTrailingZeros(queryAsset(token,productCoin).get("availableAmount").toString());
+        String productCoinAmount = StringUtil.stripTrailingZeros(queryCexAsset(token,productCoin).get("availableAmount").toString());
         Allure.addAttachment("成交后可用币"+productCoin+"个数为：",productCoinAmount);
         log.info("可用币个数："+productCoinAmount);
         //断言成交后可用交易币种是否与计算的可用个数一致
@@ -606,11 +606,11 @@ public class CoreProcessTest extends BaseCase {
         Thread.sleep(30000);
         token = userCexLogin(randomPhone,pwd,area);
         //获取成交前计价币种数量
-        preAvailableAmount = new BigDecimal(queryAsset(token,currencyCoin).get("availableAmount").toString());
+        preAvailableAmount = new BigDecimal(queryCexAsset(token,currencyCoin).get("availableAmount").toString());
         Allure.addAttachment("成交前可用计价币"+currencyCoin+"为：",StringUtil.stripTrailingZeros(preAvailableAmount.toString()));
         log.info("成交前可用计价币为："+preAvailableAmount.toString());
         //获取交易前交易币种数量
-        preAvailableCoinAmount = new BigDecimal(queryAsset(token,productCoin).get("availableAmount").toString());
+        preAvailableCoinAmount = new BigDecimal(queryCexAsset(token,productCoin).get("availableAmount").toString());
         Allure.addAttachment("交易前可用交易币"+productCoin+"为：",StringUtil.stripTrailingZeros(preAvailableCoinAmount.toString()));
         log.info("交易前可用交易币为："+preAvailableCoinAmount.toString());
     }
@@ -641,19 +641,19 @@ public class CoreProcessTest extends BaseCase {
         AssertTool.isContainsExpect("000000",sellResult.get("code").toString());
         Thread.sleep(30000);
         //成交后查询测试账户交易币种冻结数量
-        String frozeAmount = queryAsset(token,productCoin).get("frozenAmount").toString();
+        String frozeAmount = queryCexAsset(token,productCoin).get("frozenAmount").toString();
         Allure.addAttachment("成交后冻结交易币种"+productCoin+"个数为 ：",StringUtil.stripTrailingZeros(frozeAmount));
         AssertTool.isContainsExpect("0",StringUtil.stripTrailingZeros(frozeAmount));
         log.info("冻结交易币种个数："+StringUtil.stripTrailingZeros(frozeAmount));
         //查询交易币种可用数量
-        String productCoinAmount = StringUtil.stripTrailingZeros(queryAsset(token,productCoin).get("availableAmount").toString());
+        String productCoinAmount = StringUtil.stripTrailingZeros(queryCexAsset(token,productCoin).get("availableAmount").toString());
         Allure.addAttachment("成交后交易币种"+productCoin+"可用金额：",productCoinAmount);
         log.info("成交后交易币种可用金额为："+productCoinAmount);
         //预期结果为：交易前交易币种数量-2
         String expect = StringUtil.stripTrailingZeros(preAvailableCoinAmount.subtract(new BigDecimal("2")).toString());
         AssertTool.isContainsExpect(expect,StringUtil.stripTrailingZeros(productCoinAmount));
         //成交后查询测试账户的可用计价币种个数
-        String currencyCoinAmount = StringUtil.stripTrailingZeros(queryAsset(token,currencyCoin).get("availableAmount").toString());
+        String currencyCoinAmount = StringUtil.stripTrailingZeros(queryCexAsset(token,currencyCoin).get("availableAmount").toString());
         Allure.addAttachment("成交后可用计价币"+currencyCoin+"个数为：",currencyCoinAmount);
         log.info("可用计价币个数："+currencyCoinAmount);
         //成交计价金额
@@ -714,7 +714,7 @@ public class CoreProcessTest extends BaseCase {
     @Test(dependsOnMethods = "testMktSell", description = "归还剩余depositCurrency币种")
     public void testWithdrawReturnDepositCurrency() throws InterruptedException{
         String address = CexCommonOption.getAddress(presetUser,presetUserPwd,depositCurrency);
-        String amount = CexCommonOption.queryAsset(token,depositCurrency).get("availableAmount").toString();
+        String amount = CexCommonOption.queryCexAsset(token,depositCurrency).get("availableAmount").toString();
         String rspCode = withDraw(securityPwd,address,token, StringUtil.numStringRound(amount),depositCurrency);
         AssertTool.isContainsExpect("000000",rspCode);
         Allure.addAttachment("归还剩余币种"+depositCurrency+":",StringUtil.numStringRound(amount));
@@ -728,7 +728,7 @@ public class CoreProcessTest extends BaseCase {
     @Test(dependsOnMethods = "testMktSell", description = "归还剩余productCoin币种")
     public void testWithdrawReturnProductCoin() throws InterruptedException{
         String address = CexCommonOption.getAddress(presetUser,presetUserPwd,productCoin);
-        String amount = CexCommonOption.queryAsset(token,productCoin).get("availableAmount").toString();
+        String amount = CexCommonOption.queryCexAsset(token,productCoin).get("availableAmount").toString();
         String rspCode = withDraw(securityPwd,address,token, StringUtil.numStringRound(amount),productCoin);
         AssertTool.isContainsExpect("000000",rspCode);
         Allure.addAttachment("归还剩余的币种"+productCoin+":",StringUtil.numStringRound(amount));
@@ -741,7 +741,7 @@ public class CoreProcessTest extends BaseCase {
     @Test(dependsOnMethods = "testMktSell", description = "归还剩余currencyCoin币种")
     public void testWithdrawReturnCurrencyCoin() throws InterruptedException{
         String address = CexCommonOption.getAddress(presetUser,presetUserPwd,currencyCoin);
-        String amount = CexCommonOption.queryAsset(token,currencyCoin).get("availableAmount").toString();
+        String amount = CexCommonOption.queryCexAsset(token,currencyCoin).get("availableAmount").toString();
         String rspCode = withDraw(securityPwd,address,token, StringUtil.numStringRound(amount),currencyCoin);
         AssertTool.isContainsExpect("000000",rspCode);
         Allure.addAttachment("归还剩余的计价币种"+currencyCoin+":",StringUtil.numStringRound(amount));

@@ -16,7 +16,10 @@ public class C2CConfig {
     public static final String merchantAddUrl = "/gateway/merchant/add";
     public static final String tradeAddUrl = "/admin/trade/add";
     public static final String tradeUpdateUrl = "/admin/trade/update";
+    public static final String tradeCancelUrl = "/admin/trade/cancel";
     public static final String submitBuyOrderUrl = "/order/submitBuyOrder";
     public static final String userCancelUrl = "/order/userCancel";
+    public static final String assetsDetailUrl = "/assets/detail";
+
 
 }
