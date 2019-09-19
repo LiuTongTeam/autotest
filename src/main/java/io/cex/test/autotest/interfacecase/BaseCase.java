@@ -29,7 +29,7 @@ public class BaseCase {
     //c2c测试环境信息
     public static String c2cip = "http://139.9.55.125/biz_center";
     //c2c数据库连接信息
-    public static String c2cmysql = "jdbc:mysql://172.29.19.71:3306/c2c?useUnicode=true&characterEncoding=UTF8&user=kofo&password=48rm@hd2o3EX";
+    public static String c2cmysql = "jdbc:mysql://172.29.19.71:3306/c2c?useUnicode=true&characterEncoding=UTF8&user=root&password=48rm@hd2o3EX";
     //cex数据库连接信息
     public static String cexmysql = "jdbc:mysql://172.29.19.71:3306/cex?useUnicode=true&characterEncoding=UTF8&user=root&password=48rm@hd2o3EX";
 
