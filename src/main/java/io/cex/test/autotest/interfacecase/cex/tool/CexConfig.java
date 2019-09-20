@@ -56,5 +56,9 @@ public class CexConfig {
     public static final String symbolDetailUrl = "/kline/get/symbolDetail";
     public static final String allArticleListUrl = "/article/query/allArticleList";
     public static final String depthDataUrl = "/quotation/query/depthData";
+    public static final String symbolUrl = "/user/symbol/list/symbol";
+    public static final String exchangeRateUrl = "/exchangeRate/query/exchangeRate";
+    public static final String batchChannelTokenUrl = "/user/query/batchChannelToken";
+    public static final String userAuthInfoUrl = "/user/query/userAuthInfo";
 
 }
