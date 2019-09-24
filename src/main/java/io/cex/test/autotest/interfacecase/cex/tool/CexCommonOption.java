@@ -127,7 +127,7 @@ public class CexCommonOption {
                 JSONObject rspjson = JSON.parseObject(response.body().string());
                 Allure.addAttachment("上传文件出参：",rspjson.toJSONString());
                 if (rspjson.get("code").equals("000000")) {
-                    log.info("-------------Upload File success" + "body:"+rspjson.toJSONString()+ "\n");
+                    log.info("-------------Upload Files success" + "body:"+rspjson.toJSONString()+ "\n");
                     id = rspjson.getString("data");
                 } else {
                     log.error("----------------Upload File failed, trace id is:" + rspjson.get("traceId") + "\n");

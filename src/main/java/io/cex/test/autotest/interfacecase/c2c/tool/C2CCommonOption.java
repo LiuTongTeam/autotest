@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import io.cex.test.autotest.interfacecase.BaseCase;
 import io.cex.test.autotest.interfacecase.cex.tool.CexCommonOption;
+import io.cex.test.framework.common.FileUtil;
 import io.cex.test.framework.dbutil.DataBaseManager;
 import io.cex.test.framework.httputil.OkHttpClientManager;
 import io.cex.test.framework.jsonutil.JsonFileUtil;
@@ -13,11 +14,11 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import org.testng.annotations.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-import static io.cex.test.autotest.interfacecase.BaseCase.c2cip;
-import static io.cex.test.autotest.interfacecase.BaseCase.c2cmysql;
+import static io.cex.test.autotest.interfacecase.BaseCase.*;
 import static io.cex.test.autotest.interfacecase.c2c.tool.C2CConfig.*;
 import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
 
@@ -134,5 +135,56 @@ public class C2CCommonOption {
             }
         }
     }
+
+
+    /**
+     * @desc 用户上传文件
+     * @param  fileUrl 文件服务器地址
+     * @param fileName 图片名，带文件后缀，如test.jpeg
+     * @param token 登陆token
+     * @return 图片ID
+     **/
+    public static String userUploadFile(String fileUrl, String token,String fileName,String url){
+        String id = null;
+        HashMap iheader = new HashMap<String, String>();
+        iheader.put("DEVICEID", DEVICEID);
+        iheader.put("DEVICESOURCE",DEVICESOURCE);
+        iheader.put("Lang",lang);
+        iheader.put("CEXTOKEN",token);
+        //从服务器获取图片资源
+        File file = FileUtil.getFileFromWeb(fileUrl+fileName);
+        try {
+            //调用上传图片接口，获取图片ID
+            Response response = OkHttpClientManager.post(c2cip+url,
+                    "multipart/form-data; boundary=----WebKitFormBoundarylsMUpMX3lOxQKla8", iheader,file,fileName);
+            if (response.code()==200) {
+                // System.out.println("body:"+response.body().string()+"header"+response.headers().toString());
+                JSONObject rspjson = JSON.parseObject(response.body().string());
+                Allure.addAttachment("上传文件出参：",rspjson.toJSONString());
+                System.out.println("response"+rspjson.toJSONString());
+                if (rspjson.get("respCode").equals("000000")) {
+                    log.info("-------------Upload File success" + "body:"+rspjson.toJSONString()+ "\n");
+                    id = rspjson.getString("data");
+                } else {
+                    log.error("----------------Upload File failed, trace id is:" + rspjson.get("traceId") + "\n");
+                }
+                //    System.out.println("body:"+rspjson.toJSONString()+"header"+response.headers().toString());
+                return id;
+            }else {
+                log.error("----------------Server connect failed"+response.body()+"\n");
+                return id;
+            }
+
+        }catch (IOException e){
+            e.printStackTrace();
+            return id;
+        }
+
+    }
+
+/*    public static void main(String[] args) {
+        String token = CexCommonOption.userCexLogin("13849254601",pwd,area);
+        System.out.println(userUploadFile(fileUrl,token,"2.jpg",merchantUploadImageUrl));
+    }*/
 
 }

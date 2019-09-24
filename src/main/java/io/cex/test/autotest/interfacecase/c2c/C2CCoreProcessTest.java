@@ -131,9 +131,9 @@ public class C2CCoreProcessTest extends BaseCase {
         header.put("CEXTOKEN",merchanttoken);
         System.out.println(header.get("CEXTOKEN"));
         JSONObject jsonbody = new JSONObject();
-        jsonbody.put("realName","merchant");
+        jsonbody.put("realName","merchant"+randomPhoneUser);
         jsonbody.put("type","WECHAT");
-        jsonbody.put("account",RandomUtil.generateString(7));
+        jsonbody.put("account","we"+randomPhoneUser+"me");
         jsonbody.put("qrcodeUrl","http://172.29.16.161/1.jpeg");
         jsonbody.put("securityPwd","Lxm499125");
         System.out.println(jsonbody.toJSONString());
@@ -178,8 +178,8 @@ public class C2CCoreProcessTest extends BaseCase {
         System.out.println(header.get("CEXTOKEN"));
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("type","WECHAT");
-        jsonbody.put("realName","user");
-        jsonbody.put("account",RandomUtil.generateString(7));
+        jsonbody.put("realName","user"+randomPhoneUser);
+        jsonbody.put("account","we"+randomPhoneUser);
         jsonbody.put("qrcodeUrl","http://172.29.16.161/2.jpeg");
         jsonbody.put("securityPwd","Lxm499125");
         System.out.println(jsonbody.toJSONString());
@@ -200,7 +200,7 @@ public class C2CCoreProcessTest extends BaseCase {
         System.out.println(header.get("CEXTOKEN"));
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("type","BANKCARD");
-        jsonbody.put("realName","user11");
+        jsonbody.put("realName","user"+randomPhoneUser);
         jsonbody.put("qrcodeUrl","http://172.29.16.161/2.jpg");
         jsonbody.put("account",userBankAccount);
         jsonbody.put("securityPwd","Lxm499125");
@@ -510,7 +510,7 @@ public class C2CCoreProcessTest extends BaseCase {
         String freezeAmount = StringUtil.stripTrailingZeros(queryC2CAsset("freezeAmount",merchanttoken));
         AssertTool.assertEquals(freezeAmount,"50");
         //查询商户总资产
-        String merchantAmount = StringUtil.stripTrailingZeros(queryC2CAsset("freezeAmount",merchanttoken));
+        String merchantAmount = StringUtil.stripTrailingZeros(queryC2CAsset("amount",merchanttoken));
         AssertTool.assertEquals(freezeAmount,"50");
         //查询用户总资产
         String userAmount = StringUtil.stripTrailingZeros(queryC2CAsset("amount",usertoken));
@@ -522,7 +522,128 @@ public class C2CCoreProcessTest extends BaseCase {
 
     @Feature("买卖")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(dependsOnMethods = "testMerchantConfirm", description = "商户取消买入广告")
+    @Test(dependsOnMethods = "testMerchantConfirm", description = "用户提交卖出订单")
+    public void testSubmitSellOrder() throws IOException{
+        HashMap header = BaseCase.dataInit();
+        header.put("CEXTOKEN",usertoken);
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("totalPrice","10");
+        jsonbody.put("tradeId",tradeMerchantBuyId);
+        jsonbody.put("securityPwd","Lxm499125");
+        Response response = OkHttpClientManager.post(c2cip+submitBuyOrderUrl,jsonbody.toJSONString(),"application/json",header);
+        JSONObject rspjson = JSON.parseObject(response.body().string());
+        Allure.addAttachment("提交卖出订单入参：",jsonbody.toJSONString());
+        Allure.addAttachment("提交卖出订单出参：",rspjson.toJSONString());
+        log.info("-------------Submit buy order response is:"+rspjson);
+        AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
+        orderId = JsonFileUtil.jsonToMap(rspjson,new HashMap<>()).get("orderId").toString();
+        //查询冻结广告
+        String remainAmount = StringUtil.stripTrailingZeros(selectOne(merchanttoken,tradeMerchantBuyId,"remainAmount"));
+        AssertTool.assertEquals(remainAmount,"90");
+        //查询用户总资产
+        String userAmount = StringUtil.stripTrailingZeros(queryC2CAsset("freezeAmount",usertoken));
+        AssertTool.assertEquals(userAmount,"10");
+    }
+
+    @Feature("买卖")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(dependsOnMethods = "testSubmitSellOrder", description = "商户取消买入订单")
+    public void testUserCancelSellOrder() throws IOException {
+        HashMap header = BaseCase.dataInit();
+        header.put("CEXTOKEN", merchanttoken);
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("orderId", orderId);
+        Response response = OkHttpClientManager.post(c2cip+merchantCancelUrl,jsonbody.toJSONString(),"application/json",header);
+        JSONObject rspjson = JSON.parseObject(response.body().string());
+        Allure.addAttachment("商户取消买入订单入参：",jsonbody.toJSONString());
+        Allure.addAttachment("商户取消买入订单出参：",rspjson.toJSONString());
+        log.info("-------------Cancel buy order response is:"+rspjson);
+        AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
+        //查询冻结广告
+        String freezeAmount = StringUtil.stripTrailingZeros(selectOne(merchanttoken,tradeMerchantBuyId,"freezeAmount"));
+        AssertTool.assertEquals(freezeAmount,"0");
+        //查询可交易广告
+        String remainAmount = StringUtil.stripTrailingZeros(selectOne(merchanttoken,tradeMerchantBuyId,"remainAmount"));
+        AssertTool.assertEquals(remainAmount,"100");
+    }
+
+    @Feature("买卖")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(dependsOnMethods = "testUserCancelSellOrder", description = "用户再次提交卖出订单")
+    public void testSubmitReSellOrder() throws IOException{
+        HashMap header = BaseCase.dataInit();
+        header.put("CEXTOKEN",usertoken);
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("totalPrice","50");
+        jsonbody.put("tradeId",tradeMerchantBuyId);
+        jsonbody.put("securityPwd","Lxm499125");
+        Response response = OkHttpClientManager.post(c2cip+submitBuyOrderUrl,jsonbody.toJSONString(),"application/json",header);
+        JSONObject rspjson = JSON.parseObject(response.body().string());
+        Allure.addAttachment("再次提交卖出订单入参：",jsonbody.toJSONString());
+        Allure.addAttachment("再次提交卖出订单出参：",rspjson.toJSONString());
+        log.info("-------------Resubmit buy order response is:"+rspjson);
+        AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
+        orderId = JsonFileUtil.jsonToMap(rspjson,new HashMap<>()).get("orderId").toString();
+        //查询冻结广告
+        String remainAmount = StringUtil.stripTrailingZeros(selectOne(merchanttoken,tradeMerchantBuyId,"remainAmount"));
+        AssertTool.assertEquals(remainAmount,"50");
+        //查询用户冻结资产
+        String userAmount = StringUtil.stripTrailingZeros(queryC2CAsset("freezeAmount",usertoken));
+        AssertTool.assertEquals(userAmount,"50");
+    }
+
+    @Feature("买卖")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(dependsOnMethods = "testSubmitReSellOrder", description = "商家确认支付")
+    public void testMerchantConfirmPay() throws IOException{
+        HashMap header = BaseCase.dataInit();
+        header.put("CEXTOKEN",merchanttoken);
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("orderId",orderId);
+        jsonbody.put("paymentMethod","BANKCARD");
+        jsonbody.put("receiptRealName","user"+randomPhoneUser);
+        jsonbody.put("receiptAccount",userBankAccount);
+        Response response = OkHttpClientManager.post(c2cip+merchantConfirmPayUrl,jsonbody.toJSONString(),"application/json",header);
+        JSONObject rspjson = JSON.parseObject(response.body().string());
+        Allure.addAttachment("商家确认支付入参：",jsonbody.toJSONString());
+        Allure.addAttachment("商家确认支付出参：",rspjson.toJSONString());
+        log.info("-------------Merchant confirm pay response is:"+rspjson);
+        AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
+    }
+
+    @Feature("买卖")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(dependsOnMethods = "testMerchantConfirmPay", description = "用户确认收款")
+    public void testUserConfirm() throws IOException{
+        HashMap header = BaseCase.dataInit();
+        header.put("CEXTOKEN",usertoken);
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("orderId",orderId);
+        jsonbody.put("securityPwd","Lxm499125");
+        Response response = OkHttpClientManager.post(c2cip+userConfirmUrl,jsonbody.toJSONString(),"application/json",header);
+        JSONObject rspjson = JSON.parseObject(response.body().string());
+        Allure.addAttachment("用户确认收款入参：",jsonbody.toJSONString());
+        Allure.addAttachment("用户确认收款出参：",rspjson.toJSONString());
+        log.info("-------------User confirm receive response is:"+rspjson);
+        AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
+        //查询商户冻结资产
+        String freezeAmount = StringUtil.stripTrailingZeros(queryC2CAsset("freezeAmount",merchanttoken));
+        AssertTool.assertEquals(freezeAmount,"50");
+        //查询商户总资产
+        String merchantAmount = StringUtil.stripTrailingZeros(queryC2CAsset("amount",merchanttoken));
+        AssertTool.assertEquals(merchantAmount,"100");
+        //查询用户总资产
+        String userAmount = StringUtil.stripTrailingZeros(queryC2CAsset("amount",usertoken));
+        AssertTool.assertEquals(userAmount,"100");
+        //查询冻结广告
+        String remainAmount = StringUtil.stripTrailingZeros(selectOne(merchanttoken,tradeMerchantSellId,"remainAmount"));
+        AssertTool.assertEquals(remainAmount,"50");
+    }
+
+
+    @Feature("买卖")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(dependsOnMethods = "testUserConfirm", description = "商户取消买入广告")
     public void testTradeBuyCancel() throws IOException {
         HashMap header = BaseCase.dataInit();
         header.put("CEXTOKEN", merchanttoken);

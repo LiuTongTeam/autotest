@@ -19,8 +19,13 @@ public class C2CConfig {
     public static final String tradeCancelUrl = "/admin/trade/cancel";
     public static final String submitBuyOrderUrl = "/order/submitBuyOrder";
     public static final String userCancelUrl = "/order/userCancel";
+    public static final String merchantCancelUrl = "/admin/order/merchantCancel";
     public static final String assetsDetailUrl = "/assets/detail";
+    public static final String userConfirmUrl = "/order/userConfirm";
     public static final String userConfirmPayUrl = "/order/userConfirmPay";
     public static final String merchantConfirmUrl = "/admin/order/merchantConfirm";
+    public static final String merchantConfirmPayUrl = "/admin/order/merchantConfirmPay";
     public static final String selectOneUrl = "/admin/trade/selectOne";
+    public static final String userUploadImageUrl = "/pm/uploadImage";
+    public static final String merchantUploadImageUrl = "/admin/pm/uploadImage";
 }
