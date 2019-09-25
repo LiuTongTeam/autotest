@@ -60,5 +60,7 @@ public class CexConfig {
     public static final String exchangeRateUrl = "/exchangeRate/query/exchangeRate";
     public static final String batchChannelTokenUrl = "/user/query/batchChannelToken";
     public static final String userAuthInfoUrl = "/user/query/userAuthInfo";
+    public static final String authAuditReasonUrl = "/user/query/authAuditReason";
+    public static final String currencyInfoUrl = "/currency/query/currencyInfo";
 
 }
