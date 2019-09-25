@@ -62,5 +62,9 @@ public class CexConfig {
     public static final String userAuthInfoUrl = "/user/query/userAuthInfo";
     public static final String authAuditReasonUrl = "/user/query/authAuditReason";
     public static final String currencyInfoUrl = "/currency/query/currencyInfo";
+    public static final String getSecurityUrl = "/user/query/getSecurity";
+    public static final String awithdrawAddressUrl = "/user/withdraw/add/withdrawAddress";
+    public static final String qwithdrawAddressUrl = "/user/withdraw/query/withdrawAddress";
+    public static final String dwithdrawAddressUrl = "/user/withdraw/delete/withdrawAddress";
 
 }
