@@ -50,6 +50,8 @@ public class C2CCoreProcessTest extends BaseCase {
     private String userReturnAmount = null;
     private String merchantBankAccount = RandomUtil.generateLong(10).toString();
     private String userBankAccount = RandomUtil.generateLong(10).toString();
+    private String userImageUrl = null;
+    private String merchantImageUrl = null;
 
     @BeforeClass(description = "取消已有自动化测试产生的广告")
     public void testDataClean(){
@@ -125,7 +127,46 @@ public class C2CCoreProcessTest extends BaseCase {
 
     @Feature("数据准备")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "设置merchant微信支付方式",dependsOnMethods = "testAddNickName")
+    @Test(dependsOnMethods = "testAddNickName", description = "添加商户")
+    public void testMerchantAdd() throws IOException{
+        HashMap header = BaseCase.dataInit();
+        header.put("CEXTOKEN",merchanttoken);
+        String sql1 = String.format("SELECT user_no from member_user WHERE mobile_num = '%s';\n",randomPhoneMerchant);
+        String userNo = new DataBaseManager().executeSingleQuery(sql1,cexmysql).getString(0);
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("userId",JSON.parseObject(userNo).get("user_no").toString());
+        jsonbody.put("currency",currencyCoin);
+        jsonbody.put("buyLimit","100");
+        jsonbody.put("sellLimit","100");
+        System.out.println(jsonbody.toJSONString());
+        Response response = OkHttpClientManager.post(c2cip+merchantAddUrl,jsonbody.toJSONString(),"application/json",header);
+        JSONObject rspjson = JSON.parseObject(response.body().string());
+        Allure.addAttachment("商户添加入参：",jsonbody.toJSONString());
+        Allure.addAttachment("商户添加出参：",rspjson.toJSONString());
+        log.info("-------------Merchant add response is:"+rspjson);
+        AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
+    }
+
+    @Feature("数据准备")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(description = "上传图片",dependsOnMethods = "testMerchantAdd")
+    public void testUploadImage() throws InterruptedException{
+        String userImageId = userUploadFile(fileUrl,usertoken,"2.jpg",userUploadImageUrl);
+        Thread.sleep(1000);
+        String merchantImageId = userUploadFile(fileUrl,merchanttoken,"1.jpeg",merchantUploadImageUrl);
+        userImageUrl = getImageFile(usertoken,userGetImageUrl,userImageId);
+        merchantImageUrl = getImageFile(merchanttoken,merchantGetImageUrl,merchantImageId);
+
+/*        String userImageId = userUploadFile(fileUrl,usertoken,"1.jpeg",userUploadImageUrl);
+        System.out.println(getImageFile(usertoken,userGetImageUrl,userImageId));
+        Thread.sleep(3000);
+        String  merchantImageId= userUploadFile(fileUrl,merchanttoken,"1.jpeg",merchantUploadImageUrl);
+        System.out.println(getImageFile(merchanttoken,merchantGetImageUrl,merchantImageId));*/
+    }
+
+    @Feature("数据准备")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(description = "设置merchant微信支付方式",dependsOnMethods = "testUploadImage")
     public void testMerchantPmCreateWe() throws IOException{
         HashMap header = BaseCase.dataInit();
         header.put("CEXTOKEN",merchanttoken);
@@ -134,16 +175,17 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("realName","merchant"+randomPhoneUser);
         jsonbody.put("type","WECHAT");
         jsonbody.put("account","we"+randomPhoneUser+"me");
-        jsonbody.put("qrcodeUrl","http://172.29.16.161/1.jpeg");
-        jsonbody.put("securityPwd","Lxm499125");
+        jsonbody.put("qrcodeUrl",merchantImageUrl);
+        jsonbody.put("securityPwd",securityPwd);
         System.out.println(jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(c2cip+pmCreateUrl,jsonbody.toJSONString(),"application/json",header);
+        Response response = OkHttpClientManager.post(c2cip+merchantPmCreateUrl,jsonbody.toJSONString(),"application/json",header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
         Allure.addAttachment("设置merchant微信支付方式入参：",jsonbody.toJSONString());
         Allure.addAttachment("设置merchant微信支付方式出参：",rspjson.toJSONString());
         log.info("-------------Set merchant wechat pay response is:"+rspjson);
         AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
     }
+
 
     @Feature("数据准备")
     @Severity(SeverityLevel.CRITICAL)
@@ -158,10 +200,10 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("account",merchantBankAccount);
         jsonbody.put("bankName","bank111");
         jsonbody.put("bankSubName","test支行");
-        jsonbody.put("securityPwd","Lxm499125");
+        jsonbody.put("securityPwd",securityPwd);
         jsonbody.put("qrcodeUrl","http://172.29.16.161/2.jpeg");
         System.out.println(jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(c2cip+pmCreateUrl,jsonbody.toJSONString(),"application/json",header);
+        Response response = OkHttpClientManager.post(c2cip+merchantCreateBankCardUrl,jsonbody.toJSONString(),"application/json",header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
         Allure.addAttachment("设置merchant银行卡支付方式入参：",jsonbody.toJSONString());
         Allure.addAttachment("设置merchant银行卡支付方式出参：",rspjson.toJSONString());
@@ -171,7 +213,7 @@ public class C2CCoreProcessTest extends BaseCase {
 
     @Feature("数据准备")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "设置user微信支付方式",dependsOnMethods = "testAddNickName")
+    @Test(description = "设置user微信支付方式",dependsOnMethods = "testMerchantPmCreateBankCard")
     public void testUserPmCreateWe() throws IOException{
         HashMap header = BaseCase.dataInit();
         header.put("CEXTOKEN",usertoken);
@@ -180,8 +222,8 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("type","WECHAT");
         jsonbody.put("realName","user"+randomPhoneUser);
         jsonbody.put("account","we"+randomPhoneUser);
-        jsonbody.put("qrcodeUrl","http://172.29.16.161/2.jpeg");
-        jsonbody.put("securityPwd","Lxm499125");
+        jsonbody.put("qrcodeUrl",userImageUrl);
+        jsonbody.put("securityPwd",securityPwd);
         System.out.println(jsonbody.toJSONString());
         Response response = OkHttpClientManager.post(c2cip+pmCreateUrl,jsonbody.toJSONString(),"application/json",header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
@@ -193,7 +235,7 @@ public class C2CCoreProcessTest extends BaseCase {
 
     @Feature("数据准备")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "设置user银行卡支付方式",dependsOnMethods = "testMerchantPmCreateWe")
+    @Test(description = "设置user银行卡支付方式",dependsOnMethods = "testUserPmCreateWe")
     public void testUserPmCreateBankCard() throws IOException{
         HashMap header = BaseCase.dataInit();
         header.put("CEXTOKEN",usertoken);
@@ -203,7 +245,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("realName","user"+randomPhoneUser);
         jsonbody.put("qrcodeUrl","http://172.29.16.161/2.jpg");
         jsonbody.put("account",userBankAccount);
-        jsonbody.put("securityPwd","Lxm499125");
+        jsonbody.put("securityPwd",securityPwd);
         jsonbody.put("bankName","bank111");
         jsonbody.put("bankSubName","test支行");
         System.out.println(jsonbody.toJSONString());
@@ -271,31 +313,11 @@ public class C2CCoreProcessTest extends BaseCase {
         AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
     }
 
-    @Feature("买卖")
-    @Severity(SeverityLevel.CRITICAL)
-    @Test(dependsOnMethods = "testMerchantTransferIn", description = "添加商户")
-    public void testMerchantAdd() throws IOException{
-        HashMap header = BaseCase.dataInit();
-        header.put("CEXTOKEN",merchanttoken);
-        String sql1 = String.format("SELECT user_no from member_user WHERE mobile_num = '%s';\n",randomPhoneMerchant);
-        String userNo = new DataBaseManager().executeSingleQuery(sql1,cexmysql).getString(0);
-        JSONObject jsonbody = new JSONObject();
-        jsonbody.put("userId",JSON.parseObject(userNo).get("user_no").toString());
-        jsonbody.put("currency",currencyCoin);
-        jsonbody.put("buyLimit","100");
-        jsonbody.put("sellLimit","100");
-        System.out.println(jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(c2cip+merchantAddUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
-        Allure.addAttachment("商户添加入参：",jsonbody.toJSONString());
-        Allure.addAttachment("商户添加出参：",rspjson.toJSONString());
-        log.info("-------------Merchant add response is:"+rspjson);
-        AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
-    }
+
 
     @Feature("买卖")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(dependsOnMethods = "testMerchantAdd", description = "发布买入广告")
+    @Test(dependsOnMethods = "testMerchantTransferIn", description = "发布买入广告")
     public void testAddBuyTrade() throws IOException{
         HashMap header = BaseCase.dataInit();
         header.put("CEXTOKEN",merchanttoken);
@@ -364,7 +386,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("remark","autotest");
         jsonbody.put("minPriceLimit","0.01");
         jsonbody.put("maxPriceLimit","500");
-        jsonbody.put("securityPwd","Lxm499125");
+        jsonbody.put("securityPwd",securityPwd);
         Response response = OkHttpClientManager.post(c2cip+tradeAddUrl,jsonbody.toJSONString(),"application/json",header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
         Allure.addAttachment("发布卖出广告入参：",jsonbody.toJSONString());
@@ -389,7 +411,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("tradeType","SELL");
         jsonbody.put("amount","100");
         jsonbody.put("remark","autotest");
-        jsonbody.put("securityPwd","Lxm499125");
+        jsonbody.put("securityPwd",securityPwd);
         jsonbody.put("currency",currencyCoin);
         jsonbody.put("minPriceLimit","0.1");
         jsonbody.put("maxPriceLimit","1000");
@@ -499,7 +521,7 @@ public class C2CCoreProcessTest extends BaseCase {
         header.put("CEXTOKEN",merchanttoken);
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("orderId",orderId);
-        jsonbody.put("securityPwd","Lxm499125");
+        jsonbody.put("securityPwd",securityPwd);
         Response response = OkHttpClientManager.post(c2cip+merchantConfirmUrl,jsonbody.toJSONString(),"application/json",header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
         Allure.addAttachment("商户确认收款入参：",jsonbody.toJSONString());
@@ -529,7 +551,7 @@ public class C2CCoreProcessTest extends BaseCase {
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("totalPrice","10");
         jsonbody.put("tradeId",tradeMerchantBuyId);
-        jsonbody.put("securityPwd","Lxm499125");
+        jsonbody.put("securityPwd",securityPwd);
         Response response = OkHttpClientManager.post(c2cip+submitBuyOrderUrl,jsonbody.toJSONString(),"application/json",header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
         Allure.addAttachment("提交卖出订单入参：",jsonbody.toJSONString());
@@ -576,7 +598,7 @@ public class C2CCoreProcessTest extends BaseCase {
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("totalPrice","50");
         jsonbody.put("tradeId",tradeMerchantBuyId);
-        jsonbody.put("securityPwd","Lxm499125");
+        jsonbody.put("securityPwd",securityPwd);
         Response response = OkHttpClientManager.post(c2cip+submitBuyOrderUrl,jsonbody.toJSONString(),"application/json",header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
         Allure.addAttachment("再次提交卖出订单入参：",jsonbody.toJSONString());
@@ -619,7 +641,7 @@ public class C2CCoreProcessTest extends BaseCase {
         header.put("CEXTOKEN",usertoken);
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("orderId",orderId);
-        jsonbody.put("securityPwd","Lxm499125");
+        jsonbody.put("securityPwd",securityPwd);
         Response response = OkHttpClientManager.post(c2cip+userConfirmUrl,jsonbody.toJSONString(),"application/json",header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
         Allure.addAttachment("用户确认收款入参：",jsonbody.toJSONString());
@@ -649,7 +671,7 @@ public class C2CCoreProcessTest extends BaseCase {
         header.put("CEXTOKEN", merchanttoken);
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("tradeId",tradeMerchantBuyId);
-        jsonbody.put("securityPwd","Lxm499125");
+        jsonbody.put("securityPwd",securityPwd);
         Response response = OkHttpClientManager.post(c2cip+tradeCancelUrl,jsonbody.toJSONString(),"application/json",header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
         Allure.addAttachment("商户取消买入广告入参：",jsonbody.toJSONString());
@@ -666,7 +688,7 @@ public class C2CCoreProcessTest extends BaseCase {
         header.put("CEXTOKEN", merchanttoken);
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("tradeId",tradeMerchantSellId);
-        jsonbody.put("securityPwd","Lxm499125");
+        jsonbody.put("securityPwd",securityPwd);
         Response response = OkHttpClientManager.post(c2cip+tradeCancelUrl,jsonbody.toJSONString(),"application/json",header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
         Allure.addAttachment("商户取消卖出广告入参：",jsonbody.toJSONString());
@@ -678,7 +700,8 @@ public class C2CCoreProcessTest extends BaseCase {
     @Feature("归还")
     @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testTradeSellCancel", description = "商户划出")
-    public void testMerchantTransferOut() throws IOException{
+    public void testMerchantTransferOut() throws IOException,InterruptedException{
+        Thread.sleep(1000);
         HashMap header = BaseCase.dataInit();
         header.put("CEXTOKEN",merchanttoken);
         merchantReturnAmount = queryC2CAsset("amount",merchanttoken);
@@ -696,7 +719,8 @@ public class C2CCoreProcessTest extends BaseCase {
     @Feature("归还")
     @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testMerchantTransferOut", description = "用户划出")
-    public void testUserTransferOut() throws IOException{
+    public void testUserTransferOut() throws IOException,InterruptedException{
+        Thread.sleep(1000);
         HashMap header = BaseCase.dataInit();
         header.put("CEXTOKEN",usertoken);
         userReturnAmount = queryC2CAsset("amount",usertoken);

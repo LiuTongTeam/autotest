@@ -142,21 +142,19 @@ public class C2CCommonOption {
      * @param  fileUrl 文件服务器地址
      * @param fileName 图片名，带文件后缀，如test.jpeg
      * @param token 登陆token
+     * @param url 上传接口url,userUploadImageUrl/merchantUploadImageUrl
      * @return 图片ID
      **/
     public static String userUploadFile(String fileUrl, String token,String fileName,String url){
         String id = null;
-        HashMap iheader = new HashMap<String, String>();
-        iheader.put("DEVICEID", DEVICEID);
-        iheader.put("DEVICESOURCE",DEVICESOURCE);
-        iheader.put("Lang",lang);
-        iheader.put("CEXTOKEN",token);
+        HashMap header = BaseCase.dataInit();
+        header.put("CEXTOKEN", token);
         //从服务器获取图片资源
         File file = FileUtil.getFileFromWeb(fileUrl+fileName);
         try {
             //调用上传图片接口，获取图片ID
             Response response = OkHttpClientManager.post(c2cip+url,
-                    "multipart/form-data; boundary=----WebKitFormBoundarylsMUpMX3lOxQKla8", iheader,file,fileName);
+                    "multipart/form-data; boundary=----WebKitFormBoundarylsMUpMX3lOxQKla8", header,file,fileName);
             if (response.code()==200) {
                 // System.out.println("body:"+response.body().string()+"header"+response.headers().toString());
                 JSONObject rspjson = JSON.parseObject(response.body().string());
@@ -182,9 +180,50 @@ public class C2CCommonOption {
 
     }
 
-/*    public static void main(String[] args) {
-        String token = CexCommonOption.userCexLogin("13849254601",pwd,area);
-        System.out.println(userUploadFile(fileUrl,token,"2.jpg",merchantUploadImageUrl));
-    }*/
+    /**
+     * @desc 用户上传文件
+     * @param token 登陆token
+     * @param url 上传接口url,userUploadImageUrl/merchantUploadImageUrl
+     * @return 图片ID
+     **/
+    public static String getImageFile(String token,String url,String fileId){
+        String id = null;
+        HashMap header = BaseCase.dataInit();
+        header.put("CEXTOKEN", token);
+        JSONObject object = new JSONObject();
+        object.put("fileId",fileId);
+        try {
+            Response response = OkHttpClientManager.post(c2cip+url,object.toJSONString(),"application/json",header);
+            if (response.code()==200) {
+                // System.out.println("body:"+response.body().string()+"header"+response.headers().toString());
+                JSONObject rspjson = JSON.parseObject(response.body().string());
+                Allure.addAttachment("获取二维码图片出参：",rspjson.toJSONString());
+                System.out.println("response"+rspjson.toJSONString());
+                if (rspjson.get("respCode").equals("000000")) {
+                    log.info("------------Get File success" + "body:"+rspjson.toJSONString()+ "\n");
+                    id = rspjson.getString("data");
+                } else {
+                    log.error("---------------Get File failed, trace id is:" + rspjson.get("traceId") + "\n");
+                }
+                return id;
+            }else {
+                log.error("----------------Server connect failed"+response.body()+"\n");
+                return id;
+            }
+
+        }catch (IOException e){
+            e.printStackTrace();
+            return id;
+        }
+
+    }
+    public static void main(String[] args) {
+        String token = CexCommonOption.userCexLogin("15073121922",pwd,area);
+        String ID = userUploadFile(fileUrl,token,"1.jpeg",userUploadImageUrl);
+        System.out.println(getImageFile(token,userGetImageUrl,ID));
+        String token1 = CexCommonOption.userCexLogin("13849254601",pwd,area);
+        ID = userUploadFile(fileUrl,token1,"1.jpeg",merchantUploadImageUrl);
+        System.out.println(getImageFile(token1,merchantGetImageUrl,ID));
+    }
 
 }

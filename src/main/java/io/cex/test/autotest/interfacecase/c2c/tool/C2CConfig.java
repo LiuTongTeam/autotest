@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 public class C2CConfig {
     public static final String nikeNameAddUrl = "/user/nickname/add";
     public static final String pmCreateUrl = "/pm/create";
+    public static final String merchantPmCreateUrl = "/admin/pm/create";
+    public static final String merchantCreateBankCardUrl = "/admin/pm/createBankCard";
     public static final String transferOutUrl = "/transfer/out";
     public static final String transferInUrl = "/transfer/in";
     public static final String merchantAddUrl = "/gateway/merchant/add";
@@ -28,4 +30,7 @@ public class C2CConfig {
     public static final String selectOneUrl = "/admin/trade/selectOne";
     public static final String userUploadImageUrl = "/pm/uploadImage";
     public static final String merchantUploadImageUrl = "/admin/pm/uploadImage";
+    public static final String merchantGetImageUrl = "/admin/pm/getImageUrl";
+    public static final String userGetImageUrl = "/pm/getImageUrl";
+
 }
