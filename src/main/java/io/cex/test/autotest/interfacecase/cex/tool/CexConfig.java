@@ -66,5 +66,6 @@ public class CexConfig {
     public static final String awithdrawAddressUrl = "/user/withdraw/add/withdrawAddress";
     public static final String qwithdrawAddressUrl = "/user/withdraw/query/withdrawAddress";
     public static final String dwithdrawAddressUrl = "/user/withdraw/delete/withdrawAddress";
+    public static final String addressUrl = "/user/address/validate/address";
 
 }
