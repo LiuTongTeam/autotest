@@ -3,6 +3,7 @@ package io.cex.test.autotest.interfacecase.cex;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import io.cex.test.autotest.interfacecase.BaseCase;
+import io.cex.test.autotest.interfacecase.cex.tool.CexCommonOption;
 import io.cex.test.framework.assertutil.AssertTool;
 import io.cex.test.framework.httputil.OkHttpClientManager;
 import io.cex.test.framework.jsonutil.JsonFileUtil;
@@ -11,6 +12,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import okhttp3.Response;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -22,13 +24,18 @@ import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
 
 public class WithdrawAddressTest extends BaseCase {
     private String bizId = null;
+    private String address = null;
+    @BeforeClass
+    public void getAddress(){
+        address = CexCommonOption.getAddress(presetUser,presetUserPwd,depositCurrency);
+    }
     //提币地址 新增的异常用例1
     @Test(description = "异常用例没有token，返回100006")
     public void withdrawAddressError1() throws IOException {
         JSONObject object = new JSONObject();
-        object.put("currency", "IDA");
-        object.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
-        object.put("currencyAddress", "0xd9a99030385cbd069f7afd9d9eda8c0c87950a57");
+        object.put("currency", depositCurrency);
+        object.put("securityPwd", presetUsersecurityPwd);
+        object.put("currencyAddress", address);
         object.put("addressRemark", "lxm");
         object.put("labelContent", "");
         JSONObject jsonbody = new JSONObject();
@@ -45,9 +52,9 @@ public class WithdrawAddressTest extends BaseCase {
     @Test(description = "输入错误的资金密码，返回资金密码错误100108")
     public void withdrawAddressError2() throws IOException {
         JSONObject object = new JSONObject();
-        object.put("currency", "IDA");
-        object.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d22");
-        object.put("currencyAddress", "0xd9a99030385cbd069f7afd9d9eda8c0c87950a57");
+        object.put("currency",depositCurrency);
+        object.put("securityPwd", "123");
+        object.put("currencyAddress", address);
         object.put("addressRemark", "lxm");
         object.put("labelContent", "");
         JSONObject jsonbody = new JSONObject();
@@ -67,7 +74,7 @@ public class WithdrawAddressTest extends BaseCase {
     @Test(description = "查询用户提币地址，返回000000，返回bizid用于后面删除并添加地址")
     public void qwithdrawAddress() throws IOException {
         JSONObject object = new JSONObject();
-        object.put("currency", "IDA");
+        object.put("currency", depositCurrency);
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
         jsonbody.put("lang",lang);
@@ -135,9 +142,9 @@ public class WithdrawAddressTest extends BaseCase {
     @Test(dependsOnMethods = "dwithdrawAddress",description = "正常用例，返回000000")
     public void awithdrawAddress() throws IOException {
         JSONObject object = new JSONObject();
-        object.put("currency", "IDA");
-        object.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
-        object.put("currencyAddress", "0xd9a99030385cbd069f7afd9d9eda8c0c87950a57");
+        object.put("currency", depositCurrency);
+        object.put("securityPwd", presetUsersecurityPwd);
+        object.put("currencyAddress", address);
         object.put("addressRemark", "lxm");
         object.put("labelContent", "");
         JSONObject jsonbody = new JSONObject();
