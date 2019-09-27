@@ -12,6 +12,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import okhttp3.Response;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -21,7 +22,13 @@ import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
 
 @Feature("AddressTest地址是否合法，内部地址校验")
 public class AddressTest extends BaseCase {
-    private String address = CexCommonOption.getAddress(presetUser,presetUserPwd,depositCurrency);
+
+    private String address = null;
+    @BeforeClass
+    public void getAddress(){
+        address = CexCommonOption.getAddress(presetUser,presetUserPwd,depositCurrency);
+    }
+
     //异常测试案例1 没有token
     @Test(description = "异常用例没有token，返回100006")
     public void addressTestError1() throws IOException {
