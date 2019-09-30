@@ -1,0 +1,9 @@
+{
+  "comment": "手机号非法，返回infrastructure-100100",
+  "body": {
+    "authType": "WITHDRAW_COIN",
+    "mobileArea": "86",
+    "mobile": "123"
+  },
+  "assert":"infrastructure-100100"
+}

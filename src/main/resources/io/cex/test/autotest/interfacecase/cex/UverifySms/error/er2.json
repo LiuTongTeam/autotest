@@ -1,0 +1,9 @@
+{
+  "comment": "手机号为空，返回000000,因为根据token拿的手机号",
+  "body": {
+    "authType": "WITHDRAW_COIN",
+    "mobileArea": "86",
+    "mobile": ""
+  },
+  "assert":"000000"
+}

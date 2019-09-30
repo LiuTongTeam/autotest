@@ -1,0 +1,10 @@
+{
+  "comment": "区号乱填，手机号正确，返回infrastructure-100016",
+  "body": {
+    "authType": "LOGIN",
+    "mobileArea": "8611",
+    "mobile": "18780050294",
+    "captchaIdentifier": "1645821116347170817"
+  },
+  "assert":"infrastructure-100016"
+}

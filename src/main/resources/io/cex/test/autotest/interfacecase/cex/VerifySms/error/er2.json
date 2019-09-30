@@ -1,0 +1,10 @@
+{
+  "comment": "手机号为空，返回100006",
+  "body": {
+    "authType": "LOGIN",
+    "mobileArea": "86",
+    "mobile": "",
+    "captchaIdentifier": "1645821116347170817"
+  },
+  "assert":"100006"
+}

@@ -1,0 +1,9 @@
+{
+  "comment": "正常返回成功",
+  "body": {
+    "authType": "LOGIN",
+    "email": "24244855@qq.com",
+    "captchaIdentifier": "1645821116347170817"
+  },
+  "assert":"000000"
+}

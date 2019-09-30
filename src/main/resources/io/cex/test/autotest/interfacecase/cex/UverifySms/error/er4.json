@@ -1,0 +1,9 @@
+{
+  "comment": "区号乱填，手机号正确，返回infrastructure-100016",
+  "body": {
+    "authType": "WITHDRAW_COIN",
+    "mobileArea": "8611",
+    "mobile": "18780050294"
+  },
+  "assert":"infrastructure-100016"
+}

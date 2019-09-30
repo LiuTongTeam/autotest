@@ -1,0 +1,9 @@
+{
+  "comment": "邮件为空，返回100006",
+  "body": {
+    "authType": "LOGIN",
+    "email": "",
+    "captchaIdentifier": "1645821116347170817"
+  },
+  "assert":"100006"
+}

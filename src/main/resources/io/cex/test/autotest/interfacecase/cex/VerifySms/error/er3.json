@@ -1,0 +1,10 @@
+{
+  "comment": "手机号非法，返回infrastructure-100100",
+  "body": {
+    "authType": "LOGIN",
+    "mobileArea": "86",
+    "mobile": "123",
+    "captchaIdentifier": "1645821116347170817"
+  },
+  "assert":"infrastructure-100100"
+}
