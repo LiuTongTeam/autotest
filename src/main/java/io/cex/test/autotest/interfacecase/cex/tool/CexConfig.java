@@ -71,5 +71,6 @@ public class CexConfig {
     public static final String verifyEmailUrl = "/message/send/verifyEmail";
     public static final String uverifySmsUrl = "/user/message/send/verifySms";
     public static final String uverifyEmailUrl = "/user/message/send/verifyEmail";
+    public static final String CheckemailUrl = "/user/message/check/email";
 
 }
