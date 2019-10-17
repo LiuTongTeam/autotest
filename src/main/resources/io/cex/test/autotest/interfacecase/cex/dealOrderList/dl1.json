@@ -1,0 +1,13 @@
+{
+  "comment": "正常返回成功返",
+  "body": {
+    "symbol":"KOFO/USDT",
+    "gmtEnd":"1562576359000",
+    "orderStatus":"CLOSED",
+    "currPage":1,
+    "gmtStart":"0000000000000",
+    "pageRows":20,
+    "orderAction":"BUY"
+  },
+  "assert":"000000"
+}

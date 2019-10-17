@@ -16,20 +16,22 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
+import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.delsymbolUrl;
+@Feature("Delsymbol用户删除自选交易对")
 
-@Feature("userInfo接口测试")
 
-public class UserInfoTest extends BaseCase {
+public class DelsymbolTest extends BaseCase {
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "userInfo正常用例")
-    public void userInfo() throws IOException {
+    @Test(description = "正常用例")
+    public void delsymbol() throws IOException {
         JSONObject object = new JSONObject();
         JSONObject jsonbody = new JSONObject();
+        object.put("symbol", "KOFO/USDT");
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
         HashMap header = dataInit();
         header.put("CEXTOKEN", presetToken);
-        Response response = OkHttpClientManager.post(ip + userInfoUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip + delsymbolUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
         Allure.addAttachment("入参：", jsonbody.toJSONString());
@@ -37,18 +39,33 @@ public class UserInfoTest extends BaseCase {
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
     }
     @Test(description = "异常用例：没有输入token")
-    public void userInfoError1() throws IOException {
+    public void delsymbolError1() throws IOException {
         JSONObject object = new JSONObject();
         JSONObject jsonbody = new JSONObject();
+        object.put("symbol", "KOFO/USDT");
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
-        Response response = OkHttpClientManager.post(ip + querySymbolAsset, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip + delsymbolUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
         JSONObject rspjson = JSON.parseObject(response.body().string());
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("100006", rspjson.get("code").toString());
     }
-
-
+    @Test(description = "异常用例：交易对为空")
+    public void delsymbolError2() throws IOException {
+        JSONObject object = new JSONObject();
+        JSONObject jsonbody = new JSONObject();
+        object.put("symbol", "");
+        jsonbody.put("data", object);
+        jsonbody.put("lang", lang);
+        HashMap header = dataInit();
+        header.put("CEXTOKEN", presetToken);
+        Response response = OkHttpClientManager.post(ip + delsymbolUrl, jsonbody.toJSONString(),
+                "application/json", header);
+        JSONObject rspjson = JSON.parseObject(response.body().string());
+        Allure.addAttachment("入参：", jsonbody.toJSONString());
+        Allure.addAttachment("出参：", rspjson.toJSONString());
+        AssertTool.isContainsExpect("100006", rspjson.get("code").toString());
+    }
 }

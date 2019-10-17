@@ -72,5 +72,10 @@ public class CexConfig {
     public static final String uverifySmsUrl = "/user/message/send/verifySms";
     public static final String uverifyEmailUrl = "/user/message/send/verifyEmail";
     public static final String CheckemailUrl = "/user/message/check/email";
+    public static final String currencyAssetUrl = "/user/asset/query/currencyAsset";
+    public static final String dealOrderListUrl = "/user/order/query/dealOrderList";
+    public static final String addsymbolUrl = "/user/symbol/add/symbol";
+    public static final String delsymbolUrl = "/user/symbol/delete/symbol";
+    public static final String countryListUrl = "/cex/country/query/countryList";
 
 }
