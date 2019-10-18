@@ -1,0 +1,9 @@
+{
+  "comment": "地址输入错误",
+  "body": {
+    "currency": "ETH",
+    "withdrawAddr":  "11111111111111 ",
+    "label":  ""
+  },
+  "assert":"000000"
+}

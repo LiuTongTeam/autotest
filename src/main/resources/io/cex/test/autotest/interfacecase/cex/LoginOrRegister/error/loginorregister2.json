@@ -1,15 +1,12 @@
 {
   "comment": "手机号未注册，验证码为空",
   "body": {
-    "lang": "zh-CN",
-    "data": {
       "mobileArea": "86",
       "identifier": "17702310001",
       "loginPwd": "Aa123456",
       "verifyCode": " ",
       "type": "1",
       "invitationCode": "0ktejS"
-    },
+  },
     "assert": "100006"
-  }
 }

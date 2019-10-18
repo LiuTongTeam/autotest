@@ -1,0 +1,11 @@
+{
+  "comment": "划转记录查询币种IDA",
+  "body": {
+    "currency": "IDA",
+    "timeType":  "1",
+    "direction":  "1",
+    "pageRows":  "10",
+    "currPage":"1"
+  },
+  "assert":"000000"
+}

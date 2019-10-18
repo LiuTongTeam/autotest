@@ -23,6 +23,7 @@ import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
 
 public class CheckpwdTest extends BaseCase {
 
+    //检查资金密码正确，返回000000
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "检查资金密码正确")
     public void checkpwdtest() throws IOException {
@@ -42,6 +43,7 @@ public class CheckpwdTest extends BaseCase {
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
     }
 
+    //检查资金密码错误，返回100108
     @Test(description = "检查资金密码错误")
     public void checkpwderror1() throws IOException {
         JSONObject object = new JSONObject();
@@ -60,6 +62,7 @@ public class CheckpwdTest extends BaseCase {
         AssertTool.isContainsExpect("100108", rspjson.get("code").toString());
     }
 
+    //检查资金密码为空，返回100006
     @Test(description = "检查资金密码为空")
     public void checkpwderror2() throws IOException {
         JSONObject object = new JSONObject();
@@ -78,6 +81,7 @@ public class CheckpwdTest extends BaseCase {
         AssertTool.isContainsExpect("100006", rspjson.get("code").toString());
     }
 
+    //检查资金密码不传token，返回100006
     @Test(description = "检查资金密码正确，不传token")
     public void checkpwderror3() throws IOException {
         JSONObject object = new JSONObject();

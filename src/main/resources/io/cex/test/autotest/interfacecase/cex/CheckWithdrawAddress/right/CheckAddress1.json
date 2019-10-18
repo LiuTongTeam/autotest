@@ -1,0 +1,9 @@
+{
+  "comment": "提币地址为内部地址",
+  "body": {
+    "currency": "ETH",
+    "withdrawAddr":  "0xd9a99030385cbd069f7afd9d9eda8c0c87950a57",
+    "label":  ""
+  },
+  "assert":"000000"
+}

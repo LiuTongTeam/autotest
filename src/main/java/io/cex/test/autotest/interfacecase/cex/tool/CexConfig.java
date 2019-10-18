@@ -67,6 +67,12 @@ public class CexConfig {
     public static final String qwithdrawAddressUrl = "/user/withdraw/query/withdrawAddress";
     public static final String dwithdrawAddressUrl = "/user/withdraw/delete/withdrawAddress";
     public static final String addressUrl = "/user/address/validate/address";
+    public static final String loginorregisterUrl = "/user/loginOrRegister";
+    public static final String checkwithdrawaddressUrl = "/user/withdraw/check/withdrawAddress";
+    public static final String querytransferUrl = "/user/record/query/transfer";
+    public static final String channeltokenUrl = "/user/query/channelToken";
+    public static final String onlineUserSummaryUrl = "/user/mm/query/onlineUserSummary";
+    public static final String orderDetailUrl = "/user/mm/query/orderDetail";
     public static final String verifySmsUrl = "/message/send/verifySms";
     public static final String verifyEmailUrl = "/message/send/verifyEmail";
     public static final String uverifySmsUrl = "/user/message/send/verifySms";
