@@ -83,5 +83,12 @@ public class CexConfig {
     public static final String addsymbolUrl = "/user/symbol/add/symbol";
     public static final String delsymbolUrl = "/user/symbol/delete/symbol";
     public static final String countryListUrl = "/cex/country/query/countryList";
+    public static final String loginHistoryUrl = "/user/query/loginHistory";
+    public static final String lastLoginInfoUrl = "/user/query/lastLoginInfo";
+    public static final String configInfoUrl = "/mqtt/query/configInfo";
+    public static final String captchaUrl = "/captcha/start/captcha";
+    public static final String vcaptchaUrl = "/captcha/validate/captcha";
+    public static final String symbolListUrl = "/symbol/query/symbolList";
+    public static final String currencyListUrl = "/currency/query/currencyList";
 
 }
