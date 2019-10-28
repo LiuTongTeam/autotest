@@ -94,5 +94,6 @@ public class CexConfig {
     public static final String helpCenterUrl = "/article/query/helpCenter";
     public static final String fullArticleUrl = "/article/query/fullArticle";
     public static final String loginPwdWithoutLoginUrl = "/user/password/reset/loginPwdWithoutLogin";
+    public static final String loginPwdUrl = "/user/password/reset/loginPwd";
 
 }
