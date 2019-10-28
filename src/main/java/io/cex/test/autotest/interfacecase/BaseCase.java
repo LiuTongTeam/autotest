@@ -41,9 +41,9 @@ public class BaseCase {
     @BeforeSuite
     @Parameters({"file"})
     public void getProperties(@Optional("./test-application.properties")String file){
-        InputStream inputStream = null;
-        Properties properties = new Properties();
         try {
+            InputStream inputStream = null;
+            Properties properties = new Properties();
             inputStream =BaseCase.class.getClassLoader().getResourceAsStream(file);
             properties.load(inputStream);
             ip = properties.getProperty("cexip");
@@ -60,10 +60,11 @@ public class BaseCase {
             log.info("获取到c2cip地址为："+c2cip);
             c2cmysql = properties.getProperty("c2cmysql");
             log.info("获取到c2cmysql连接信息为："+c2cmysql);
+            presetToken = userCexLogin(presetUser,presetUserPwd,area);
+            log.info("------------预置账户token:"+presetToken);
         }catch (IOException e){
             e.printStackTrace();
             log.error("------------未获取到properties配置文件，默认使用测试环境信息");
-        }finally {
             presetToken = userCexLogin(presetUser,presetUserPwd,area);
             log.info("------------预置账户token:"+presetToken);
         }

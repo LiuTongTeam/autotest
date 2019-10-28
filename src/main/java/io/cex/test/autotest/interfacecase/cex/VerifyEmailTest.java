@@ -39,7 +39,8 @@ public class VerifyEmailTest extends BaseCase {
      * @param
      **/
     @Test(dataProvider = "provideVerifyEmailErrorData",description = "VerifyEmailError异常用例")
-    public void verifyEmailError(Map<?,?> param) throws IOException {
+    public void verifyEmailError(Map<?,?> param) throws IOException,InterruptedException {
+        Thread.sleep( Long.parseLong(param.get("time").toString()));
         JSONObject object = JSON.parseObject(param.get("body").toString());
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);
@@ -62,7 +63,8 @@ public class VerifyEmailTest extends BaseCase {
     }
     @Severity(SeverityLevel.CRITICAL)
     @Test(dataProvider = "provideverifyEmailTestData",description = "检查返回是否成功")
-    public void verifyEmail(Map<?,?> param) throws IOException {
+    public void verifyEmail(Map<?,?> param) throws IOException,InterruptedException {
+        Thread.sleep( Long.parseLong(param.get("time").toString()));
         dataInit();
         JSONObject object = JSON.parseObject(param.get("body").toString());
         JSONObject jsonbody = new JSONObject();

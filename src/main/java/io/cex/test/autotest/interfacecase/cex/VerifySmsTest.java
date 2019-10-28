@@ -3,7 +3,9 @@ package io.cex.test.autotest.interfacecase.cex;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import io.cex.test.autotest.interfacecase.BaseCase;
+import io.cex.test.autotest.interfacecase.cex.tool.CexCommonOption;
 import io.cex.test.framework.assertutil.AssertTool;
+import io.cex.test.framework.common.StringUtil;
 import io.cex.test.framework.httputil.OkHttpClientManager;
 import io.cex.test.framework.jsonutil.JsonFileUtil;
 import io.qameta.allure.Allure;
@@ -19,11 +21,14 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.verifySmsUrl;
-import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.lang;
+import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
+
 @Feature("VerifySmsTest接口测试")
 
 public class VerifySmsTest extends BaseCase {
+
+    private String token = CexCommonOption.userCexLogin("13331053186",pwd,"86");
+
     /**
      * @desc 异常用例的数据驱动
      * @param
@@ -39,7 +44,8 @@ public class VerifySmsTest extends BaseCase {
      * @param
      **/
     @Test(dataProvider = "provideVerifySmsTestErrorData",description = "VerifySmsTest异常用例")
-    public void verifySmsTestError(Map<?,?> param) throws IOException {
+    public void verifySmsTestError(Map<?,?> param) throws IOException,InterruptedException {
+        Thread.sleep( Long.parseLong(param.get("time").toString()));
         JSONObject object = JSON.parseObject(param.get("body").toString());
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);
@@ -62,8 +68,9 @@ public class VerifySmsTest extends BaseCase {
     }
     @Severity(SeverityLevel.CRITICAL)
     @Test(dataProvider = "provideverifySmsTestData",description = "检查返回是否成功")
-    public void verifySmsTest(Map<?,?> param) throws IOException {
+    public void verifySmsTest(Map<?,?> param) throws IOException,InterruptedException {
         dataInit();
+        Thread.sleep( Long.parseLong(param.get("time").toString()));
         JSONObject object = JSON.parseObject(param.get("body").toString());
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);
@@ -75,5 +82,4 @@ public class VerifySmsTest extends BaseCase {
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("code").toString());
     }
-
 }

@@ -6,6 +6,7 @@ import io.cex.test.autotest.interfacecase.BaseCase;
 import io.cex.test.framework.assertutil.AssertTool;
 import io.cex.test.framework.httputil.OkHttpClientManager;
 import io.qameta.allure.Allure;
+import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import okhttp3.Response;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 
 import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
 
-
+@Feature("ChannelToken接口")
 public class ChannelTokenTest extends BaseCase {
     //获取临时渠道，返回000000
     @Severity(SeverityLevel.CRITICAL)

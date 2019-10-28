@@ -34,7 +34,7 @@ import static io.cex.test.autotest.interfacecase.cex.tool.CexCommonOption.*;
  * @create 2019/8/28 14:18
  * @desc c2c主流程测试
  **/
-@Epic("C2C主流程")
+@Epic("AA【C2C----------主流程】")
 @Slf4j
 public class C2CCoreProcessTest extends BaseCase {
     private String merchanttoken = null;
@@ -52,6 +52,10 @@ public class C2CCoreProcessTest extends BaseCase {
     private String userBankAccount = RandomUtil.generateLong(10).toString();
     private String userImageUrl = null;
     private String merchantImageUrl = null;
+    private String userWechatPayId = null;
+    private String merchantWechatPayId = null;
+    private String userBankCardPayId = null;
+    private String merchantBankCarPayId = null;
 
     @BeforeClass(description = "取消已有自动化测试产生的广告")
     public void testDataClean(){
@@ -106,7 +110,6 @@ public class C2CCoreProcessTest extends BaseCase {
     public void testAddNickName() throws IOException {
         HashMap header = BaseCase.dataInit();
         header.put("CEXTOKEN",merchanttoken);
-        System.out.println(header.get("CEXTOKEN"));
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("nickname","merchant"+RandomUtil.generateString(6));
         Response response = OkHttpClientManager.post(c2cip+nikeNameAddUrl,jsonbody.toJSONString(),"application/json",header);
@@ -138,7 +141,6 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("currency",currencyCoin);
         jsonbody.put("buyLimit","100");
         jsonbody.put("sellLimit","100");
-        System.out.println(jsonbody.toJSONString());
         Response response = OkHttpClientManager.post(c2cip+merchantAddUrl,jsonbody.toJSONString(),"application/json",header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
         Allure.addAttachment("商户添加入参：",jsonbody.toJSONString());
@@ -151,17 +153,9 @@ public class C2CCoreProcessTest extends BaseCase {
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "上传图片",dependsOnMethods = "testMerchantAdd")
     public void testUploadImage() throws InterruptedException{
-        String userImageId = userUploadFile(fileUrl,usertoken,"2.jpg",userUploadImageUrl);
+        userImageUrl = userUploadFile(fileUrl,usertoken,"2.jpg",userUploadImageUrl);
         Thread.sleep(1000);
-        String merchantImageId = userUploadFile(fileUrl,merchanttoken,"1.jpeg",merchantUploadImageUrl);
-        userImageUrl = getImageFile(usertoken,userGetImageUrl,userImageId);
-        merchantImageUrl = getImageFile(merchanttoken,merchantGetImageUrl,merchantImageId);
-
-/*        String userImageId = userUploadFile(fileUrl,usertoken,"1.jpeg",userUploadImageUrl);
-        System.out.println(getImageFile(usertoken,userGetImageUrl,userImageId));
-        Thread.sleep(3000);
-        String  merchantImageId= userUploadFile(fileUrl,merchanttoken,"1.jpeg",merchantUploadImageUrl);
-        System.out.println(getImageFile(merchanttoken,merchantGetImageUrl,merchantImageId));*/
+        merchantImageUrl = userUploadFile(fileUrl,merchanttoken,"1.jpeg",merchantUploadImageUrl);
     }
 
     @Feature("数据准备")
@@ -172,12 +166,11 @@ public class C2CCoreProcessTest extends BaseCase {
         header.put("CEXTOKEN",merchanttoken);
         System.out.println(header.get("CEXTOKEN"));
         JSONObject jsonbody = new JSONObject();
-        jsonbody.put("realName","merchant"+randomPhoneUser);
+        jsonbody.put("realName","mer1"+randomPhoneUser);
         jsonbody.put("type","WECHAT");
-        jsonbody.put("account","we"+randomPhoneUser+"me");
+        jsonbody.put("account","we"+randomPhoneUser+"11");
         jsonbody.put("qrcodeUrl",merchantImageUrl);
         jsonbody.put("securityPwd",securityPwd);
-        System.out.println(jsonbody.toJSONString());
         Response response = OkHttpClientManager.post(c2cip+merchantPmCreateUrl,jsonbody.toJSONString(),"application/json",header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
         Allure.addAttachment("设置merchant微信支付方式入参：",jsonbody.toJSONString());
@@ -193,16 +186,14 @@ public class C2CCoreProcessTest extends BaseCase {
     public void testMerchantPmCreateBankCard() throws IOException{
         HashMap header = BaseCase.dataInit();
         header.put("CEXTOKEN",merchanttoken);
-        System.out.println(header.get("CEXTOKEN"));
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("type","BANKCARD");
-        jsonbody.put("realName","merchant"+randomPhoneMerchant);
-        jsonbody.put("account",merchantBankAccount);
-        jsonbody.put("bankName","bank111");
-        jsonbody.put("bankSubName","test支行");
+        jsonbody.put("realName","me1"+randomPhoneMerchant);
+        jsonbody.put("account",merchantBankAccount+"1");
+        jsonbody.put("bankName","bank1");
+        jsonbody.put("bankSubName","test1");
         jsonbody.put("securityPwd",securityPwd);
         jsonbody.put("qrcodeUrl","http://172.29.16.161/2.jpeg");
-        System.out.println(jsonbody.toJSONString());
         Response response = OkHttpClientManager.post(c2cip+merchantCreateBankCardUrl,jsonbody.toJSONString(),"application/json",header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
         Allure.addAttachment("设置merchant银行卡支付方式入参：",jsonbody.toJSONString());
@@ -217,11 +208,10 @@ public class C2CCoreProcessTest extends BaseCase {
     public void testUserPmCreateWe() throws IOException{
         HashMap header = BaseCase.dataInit();
         header.put("CEXTOKEN",usertoken);
-        System.out.println(header.get("CEXTOKEN"));
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("type","WECHAT");
-        jsonbody.put("realName","user"+randomPhoneUser);
-        jsonbody.put("account","we"+randomPhoneUser);
+        jsonbody.put("realName","us1"+randomPhoneUser);
+        jsonbody.put("account","we1"+randomPhoneUser);
         jsonbody.put("qrcodeUrl",userImageUrl);
         jsonbody.put("securityPwd",securityPwd);
         System.out.println(jsonbody.toJSONString());
@@ -239,15 +229,14 @@ public class C2CCoreProcessTest extends BaseCase {
     public void testUserPmCreateBankCard() throws IOException{
         HashMap header = BaseCase.dataInit();
         header.put("CEXTOKEN",usertoken);
-        System.out.println(header.get("CEXTOKEN"));
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("type","BANKCARD");
-        jsonbody.put("realName","user"+randomPhoneUser);
+        jsonbody.put("realName","us1"+randomPhoneUser);
         jsonbody.put("qrcodeUrl","http://172.29.16.161/2.jpg");
-        jsonbody.put("account",userBankAccount);
+        jsonbody.put("account",userBankAccount+"1");
         jsonbody.put("securityPwd",securityPwd);
-        jsonbody.put("bankName","bank111");
-        jsonbody.put("bankSubName","test支行");
+        jsonbody.put("bankName","bank");
+        jsonbody.put("bankSubName","test");
         System.out.println(jsonbody.toJSONString());
         Response response = OkHttpClientManager.post(c2cip+pmCreateUrl,jsonbody.toJSONString(),"application/json",header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
@@ -259,7 +248,129 @@ public class C2CCoreProcessTest extends BaseCase {
 
     @Feature("数据准备")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(dependsOnMethods = "testUserPmCreateBankCard", description = "充值")
+    @Test(description = "查询支付方式",dependsOnMethods = "testUserPmCreateBankCard")
+    public void testGetPayMethod() throws IOException{
+        userWechatPayId = getPayMethodId(usertoken,"WECHAT",userListUrl);
+        merchantWechatPayId = getPayMethodId(merchanttoken,"WECHAT",merchantListUrl);
+        userBankCardPayId = getPayMethodId(usertoken,"BANKCARD",userListUrl);
+        merchantBankCarPayId = getPayMethodId(merchanttoken,"BANKCARD",merchantListUrl);
+    }
+
+    @Feature("数据准备")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(description = "修改merchant微信支付方式",dependsOnMethods = "testGetPayMethod")
+    public void testMerchantPmUpdateWe() throws IOException{
+        HashMap header = BaseCase.dataInit();
+        header.put("CEXTOKEN",merchanttoken);
+        System.out.println(header.get("CEXTOKEN"));
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("id",merchantWechatPayId);
+        jsonbody.put("realName","merchant"+randomPhoneUser);
+        jsonbody.put("type","WECHAT");
+        jsonbody.put("account","we"+randomPhoneUser+"me");
+        jsonbody.put("qrcodeUrl",merchantImageUrl);
+        jsonbody.put("securityPwd",securityPwd);
+        Response response = OkHttpClientManager.post(c2cip+merchantUpdatePayMethod,jsonbody.toJSONString(),"application/json",header);
+        JSONObject rspjson = JSON.parseObject(response.body().string());
+        Allure.addAttachment("修改merchant微信支付方式入参：",jsonbody.toJSONString());
+        Allure.addAttachment("修改merchant微信支付方式出参：",rspjson.toJSONString());
+        log.info("-------------Update merchant wechat pay response is:"+rspjson);
+        AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
+    }
+
+
+    @Feature("数据准备")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(description = "修改merchant银行卡支付方式",dependsOnMethods = "testMerchantPmUpdateWe")
+    public void testMerchantPmUpdateBankCard() throws IOException{
+        HashMap header = BaseCase.dataInit();
+        header.put("CEXTOKEN",merchanttoken);
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("id",merchantBankCarPayId);
+        jsonbody.put("type","BANKCARD");
+        jsonbody.put("realName","merchant"+randomPhoneMerchant);
+        jsonbody.put("account",merchantBankAccount);
+        jsonbody.put("bankName","bank111");
+        jsonbody.put("bankSubName","test支行");
+        jsonbody.put("securityPwd",securityPwd);
+        jsonbody.put("qrcodeUrl","http://172.29.16.161/2.jpeg");
+        Response response = OkHttpClientManager.post(c2cip+merchantUpdateBankPayMethod,jsonbody.toJSONString(),"application/json",header);
+        JSONObject rspjson = JSON.parseObject(response.body().string());
+        Allure.addAttachment("修改merchant银行卡支付方式入参：",jsonbody.toJSONString());
+        Allure.addAttachment("修改merchant银行卡支付方式出参：",rspjson.toJSONString());
+        log.info("-------------Update merchant bank card pay response is:"+rspjson);
+        AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
+    }
+
+    @Feature("数据准备")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(description = "修改user微信支付方式",dependsOnMethods = "testMerchantPmUpdateBankCard")
+    public void testUserPmUpdateWe() throws IOException{
+        HashMap header = BaseCase.dataInit();
+        header.put("CEXTOKEN",usertoken);
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("id",userWechatPayId);
+        jsonbody.put("type","WECHAT");
+        jsonbody.put("realName","user"+randomPhoneUser);
+        jsonbody.put("account","we"+randomPhoneUser);
+        jsonbody.put("qrcodeUrl",userImageUrl);
+        jsonbody.put("securityPwd",securityPwd);
+        System.out.println(jsonbody.toJSONString());
+        Response response = OkHttpClientManager.post(c2cip+userUpdatePayMethod,jsonbody.toJSONString(),"application/json",header);
+        JSONObject rspjson = JSON.parseObject(response.body().string());
+        Allure.addAttachment("修改user微信支付方式入参：",jsonbody.toJSONString());
+        Allure.addAttachment("修改user微信支付方式出参：",rspjson.toJSONString());
+        log.info("-------------Update merchant wechat pay response is:"+rspjson);
+        AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
+    }
+
+    @Feature("数据准备")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(description = "修改user银行卡支付方式",dependsOnMethods = "testUserPmUpdateWe")
+    public void testUserPmUpdateBankCard() throws IOException{
+        HashMap header = BaseCase.dataInit();
+        header.put("CEXTOKEN",usertoken);
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("id",userBankCardPayId);
+        jsonbody.put("type","BANKCARD");
+        jsonbody.put("realName","user"+randomPhoneUser);
+        jsonbody.put("qrcodeUrl","http://172.29.16.161/2.jpg");
+        jsonbody.put("account",userBankAccount);
+        jsonbody.put("securityPwd",securityPwd);
+        jsonbody.put("bankName","bank111");
+        jsonbody.put("bankSubName","test支行");
+        System.out.println(jsonbody.toJSONString());
+        Response response = OkHttpClientManager.post(c2cip+userUpdateBankPayMethod,jsonbody.toJSONString(),"application/json",header);
+        JSONObject rspjson = JSON.parseObject(response.body().string());
+        Allure.addAttachment("修改user银行卡支付方式入参：",jsonbody.toJSONString());
+        Allure.addAttachment("修改user银行卡支付方式出参：",rspjson.toJSONString());
+        log.info("-------------Update merchant bank card pay response is:"+rspjson);
+        AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
+    }
+
+    @Feature("买卖")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(dependsOnMethods = "testUserPmUpdateBankCard", description = "商户禁用支付方式")
+    public void testMerchantDisablePayMethod() throws IOException{
+        HashMap header = BaseCase.dataInit();
+        header.put("CEXTOKEN",merchanttoken);
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("id",merchantBankCarPayId);
+        jsonbody.put("type","BANKCARD");
+        jsonbody.put("securityPwd",securityPwd);
+        jsonbody.put("status","0");
+        Response response = OkHttpClientManager.post(c2cip+merchantEnablePayMethod,jsonbody.toJSONString(),"application/json",header);
+        JSONObject rspjson = JSON.parseObject(response.body().string());
+        Allure.addAttachment("商户禁用支付入参：",jsonbody.toJSONString());
+        Allure.addAttachment("商户禁用支付出参：",rspjson.toJSONString());
+        log.info("-------------Merchant disable pay method response is:"+rspjson);
+        AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
+    }
+
+
+    @Feature("数据准备")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(dependsOnMethods = "testMerchantDisablePayMethod", description = "充值")
     public void testDeposit() throws InterruptedException{
         String address1 = CexCommonOption.getAddress(randomPhoneMerchant,pwd,currencyCoin);
         String rspCode1 = withDraw(presetUsersecurityPwd,address1,presetToken,amount,currencyCoin);
@@ -273,7 +384,7 @@ public class C2CCoreProcessTest extends BaseCase {
         AssertTool.isContainsExpect("000000",rspCode2);
         String sql2 = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhoneUser,"USDT");
         log.info("--------Deposit sql is:"+sql2);
-        Thread.sleep(40000);
+        Thread.sleep(30000);
         AssertTool.isContainsExpect("{\"amount\":\"100.000000000000000000000000000000\"}",cexmysql,sql2);
     }
 
@@ -284,7 +395,6 @@ public class C2CCoreProcessTest extends BaseCase {
         usertoken = CexCommonOption.userCexLogin(randomPhoneUser, pwd, area);
         HashMap header = BaseCase.dataInit();
         header.put("CEXTOKEN",usertoken);
-        System.out.println(header.get("CEXTOKEN"));
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("currency",currencyCoin);
         jsonbody.put("amount",amount);
@@ -394,7 +504,6 @@ public class C2CCoreProcessTest extends BaseCase {
         log.info("-------------Add sell trade response is:"+rspjson);
         AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
         tradeMerchantSellId = JsonFileUtil.jsonToMap(rspjson,new HashMap<>()).get("tradeId").toString();
-        System.out.println("tradeId: "+tradeMerchantSellId);
         //查询冻结资产
         String freezeAmount = StringUtil.stripTrailingZeros(queryC2CAsset("freezeAmount",merchanttoken));
         AssertTool.assertEquals("50",freezeAmount);
@@ -424,7 +533,6 @@ public class C2CCoreProcessTest extends BaseCase {
                 " trade response is:"+rspjson);
         AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
         tradeMerchantSellId = JsonFileUtil.jsonToMap(rspjson,new HashMap<>()).get("tradeId").toString();
-        System.out.println("tradeId: "+tradeMerchantSellId);
         //查询冻结资产
         String freezeAmount = StringUtil.stripTrailingZeros(queryC2CAsset("freezeAmount",merchanttoken));
         AssertTool.assertEquals(freezeAmount,"100");
@@ -446,14 +554,35 @@ public class C2CCoreProcessTest extends BaseCase {
         log.info("-------------Submit buy order response is:"+rspjson);
         AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
         orderId = JsonFileUtil.jsonToMap(rspjson,new HashMap<>()).get("orderId").toString();
-        System.out.println("orderId: "+orderId);
         //查询冻结广告
         String remainAmount = StringUtil.stripTrailingZeros(selectOne(merchanttoken,tradeMerchantSellId,"remainAmount"));
         AssertTool.assertEquals(remainAmount,"90");
     }
+
     @Feature("买卖")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(dependsOnMethods = "testSubmitBuyOrder", description = "用户取消买入订单")
+    @Test(dependsOnMethods = "testSubmitBuyOrder", description = "用户确认支付")
+    public void testUserReConfirmPay() throws IOException,InterruptedException{
+        Thread.sleep(1000);
+        HashMap header = BaseCase.dataInit();
+        header.put("CEXTOKEN",usertoken);
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("orderId",orderId);
+        jsonbody.put("paymentMethod","BANKCARD");
+        jsonbody.put("receiptRealName","merchant"+randomPhoneMerchant);
+        jsonbody.put("receiptAccount",merchantBankAccount);
+        Response response = OkHttpClientManager.post(c2cip+userConfirmPayUrl,jsonbody.toJSONString(),"application/json",header);
+        JSONObject rspjson = JSON.parseObject(response.body().string());
+        Allure.addAttachment("用户再次确认支付入参：",jsonbody.toJSONString());
+        Allure.addAttachment("用户再次确认支付出参：",rspjson.toJSONString());
+        log.info("-------------User reconfirm pay response is:"+rspjson);
+        AssertTool.isContainsExpect("888023",rspjson.get("respCode").toString());
+    }
+
+
+    @Feature("买卖")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(dependsOnMethods = "testUserReConfirmPay", description = "用户取消买入订单")
     public void testUserCancelOrder() throws IOException {
         HashMap header = BaseCase.dataInit();
         header.put("CEXTOKEN", usertoken);
@@ -470,10 +599,28 @@ public class C2CCoreProcessTest extends BaseCase {
         AssertTool.assertEquals(remainAmount,"100");
     }
 
+    @Feature("买卖")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(dependsOnMethods = "testUserCancelOrder", description = "商户启用支付方式")
+    public void testMerchantEnablePayMethod() throws IOException{
+        HashMap header = BaseCase.dataInit();
+        header.put("CEXTOKEN",merchanttoken);
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("id",merchantBankCarPayId);
+        jsonbody.put("type","BANKCARD");
+        jsonbody.put("securityPwd",securityPwd);
+        jsonbody.put("status","1");
+        Response response = OkHttpClientManager.post(c2cip+merchantEnablePayMethod,jsonbody.toJSONString(),"application/json",header);
+        JSONObject rspjson = JSON.parseObject(response.body().string());
+        Allure.addAttachment("商户启用支付入参：",jsonbody.toJSONString());
+        Allure.addAttachment("商户启用支付出参：",rspjson.toJSONString());
+        log.info("-------------Merchant enable pay method response is:"+rspjson);
+        AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
+    }
 
     @Feature("买卖")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(dependsOnMethods = "testUserCancelOrder", description = "再次提交买入订单")
+    @Test(dependsOnMethods = "testMerchantEnablePayMethod", description = "再次提交买入订单")
     public void testReSubmitBuyOrder() throws IOException{
         HashMap header = BaseCase.dataInit();
         header.put("CEXTOKEN",usertoken);
@@ -495,7 +642,7 @@ public class C2CCoreProcessTest extends BaseCase {
 
     @Feature("买卖")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(dependsOnMethods = "testReSubmitBuyOrder", description = "用户确认支付")
+    @Test(dependsOnMethods = "testReSubmitBuyOrder", description = "用户再次确认支付")
     public void testUserConfirmPay() throws IOException{
         HashMap header = BaseCase.dataInit();
         header.put("CEXTOKEN",usertoken);
@@ -511,6 +658,9 @@ public class C2CCoreProcessTest extends BaseCase {
         log.info("-------------User confirm pay response is:"+rspjson);
         AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
     }
+
+
+
 
 
     @Feature("买卖")
@@ -544,7 +694,27 @@ public class C2CCoreProcessTest extends BaseCase {
 
     @Feature("买卖")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(dependsOnMethods = "testMerchantConfirm", description = "用户提交卖出订单")
+    @Test(dependsOnMethods = "testMerchantConfirm", description = "普通用户禁用支付方式")
+    public void testUserDisablePayMethod() throws IOException{
+        HashMap header = BaseCase.dataInit();
+        header.put("CEXTOKEN",usertoken);
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("id",userBankCardPayId);
+        jsonbody.put("type","BANKCARD");
+        jsonbody.put("securityPwd",securityPwd);
+        jsonbody.put("status","0");
+        Response response = OkHttpClientManager.post(c2cip+userEnablePayMethod,jsonbody.toJSONString(),"application/json",header);
+        JSONObject rspjson = JSON.parseObject(response.body().string());
+        Allure.addAttachment("普通用户禁用支付入参：",jsonbody.toJSONString());
+        Allure.addAttachment("普通用户禁用支付出参：",rspjson.toJSONString());
+        log.info("-------------User disable pay method response is:"+rspjson);
+        AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
+    }
+
+
+    @Feature("买卖")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(dependsOnMethods = "testUserDisablePayMethod", description = "用户提交卖出订单")
     public void testSubmitSellOrder() throws IOException{
         HashMap header = BaseCase.dataInit();
         header.put("CEXTOKEN",usertoken);
@@ -569,7 +739,28 @@ public class C2CCoreProcessTest extends BaseCase {
 
     @Feature("买卖")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(dependsOnMethods = "testSubmitSellOrder", description = "商户取消买入订单")
+    @Test(dependsOnMethods = "testSubmitSellOrder", description = "商家确认支付")
+    public void testMerchantConfirmPay() throws IOException,InterruptedException{
+        Thread.sleep(1000);
+        HashMap header = BaseCase.dataInit();
+        header.put("CEXTOKEN",merchanttoken);
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("orderId",orderId);
+        jsonbody.put("paymentMethod","BANKCARD");
+        jsonbody.put("receiptRealName","user"+randomPhoneUser);
+        jsonbody.put("receiptAccount",userBankAccount);
+        Response response = OkHttpClientManager.post(c2cip+merchantConfirmPayUrl,jsonbody.toJSONString(),"application/json",header);
+        JSONObject rspjson = JSON.parseObject(response.body().string());
+        Allure.addAttachment("商家确认支付入参：",jsonbody.toJSONString());
+        Allure.addAttachment("商家确认支付出参：",rspjson.toJSONString());
+        log.info("-------------Merchant confirm pay response is:"+rspjson);
+        AssertTool.isContainsExpect("888023",rspjson.get("respCode").toString());
+    }
+
+
+    @Feature("买卖")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(dependsOnMethods = "testMerchantConfirmPay", description = "商户取消买入订单")
     public void testUserCancelSellOrder() throws IOException {
         HashMap header = BaseCase.dataInit();
         header.put("CEXTOKEN", merchanttoken);
@@ -591,7 +782,28 @@ public class C2CCoreProcessTest extends BaseCase {
 
     @Feature("买卖")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(dependsOnMethods = "testUserCancelSellOrder", description = "用户再次提交卖出订单")
+    @Test(dependsOnMethods = "testUserCancelSellOrder", description = "普通用户启用支付方式")
+    public void testUserEnablePayMethod() throws IOException{
+        HashMap header = BaseCase.dataInit();
+        header.put("CEXTOKEN",usertoken);
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("id",userBankCardPayId);
+        jsonbody.put("type","BANKCARD");
+        jsonbody.put("securityPwd",securityPwd);
+        jsonbody.put("status","1");
+        Response response = OkHttpClientManager.post(c2cip+userEnablePayMethod,jsonbody.toJSONString(),"application/json",header);
+        JSONObject rspjson = JSON.parseObject(response.body().string());
+        Allure.addAttachment("普通用户启用支付入参：",jsonbody.toJSONString());
+        Allure.addAttachment("普通用户启用支付出参：",rspjson.toJSONString());
+        log.info("-------------User enable pay method response is:"+rspjson);
+        AssertTool.isContainsExpect("000000",rspjson.get("respCode").toString());
+    }
+
+
+
+    @Feature("买卖")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(dependsOnMethods = "testUserEnablePayMethod", description = "用户再次提交卖出订单")
     public void testSubmitReSellOrder() throws IOException{
         HashMap header = BaseCase.dataInit();
         header.put("CEXTOKEN",usertoken);
@@ -617,7 +829,8 @@ public class C2CCoreProcessTest extends BaseCase {
     @Feature("买卖")
     @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testSubmitReSellOrder", description = "商家确认支付")
-    public void testMerchantConfirmPay() throws IOException{
+    public void testMerchantReConfirmPay() throws IOException,InterruptedException{
+        Thread.sleep(1000);
         HashMap header = BaseCase.dataInit();
         header.put("CEXTOKEN",merchanttoken);
         JSONObject jsonbody = new JSONObject();
@@ -635,7 +848,7 @@ public class C2CCoreProcessTest extends BaseCase {
 
     @Feature("买卖")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(dependsOnMethods = "testMerchantConfirmPay", description = "用户确认收款")
+    @Test(dependsOnMethods = "testMerchantReConfirmPay", description = "用户确认收款")
     public void testUserConfirm() throws IOException{
         HashMap header = BaseCase.dataInit();
         header.put("CEXTOKEN",usertoken);

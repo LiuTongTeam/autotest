@@ -32,5 +32,14 @@ public class C2CConfig {
     public static final String merchantUploadImageUrl = "/admin/pm/uploadImage";
     public static final String merchantGetImageUrl = "/admin/pm/getImageUrl";
     public static final String userGetImageUrl = "/pm/getImageUrl";
+    public static final String userListUrl = "/pm/list";
+    public static final String merchantListUrl = "/admin/pm/list";
+    public static final String userUpdatePayMethod = "/pm/update";
+    public static final String merchantUpdatePayMethod = "/admin/pm/update";
+    public static final String userUpdateBankPayMethod = "/pm/updateBankcard";
+    public static final String merchantUpdateBankPayMethod = "/admin/pm/updateBankcard";
+    public static final String userEnablePayMethod = "/pm/enable";
+    public static final String merchantEnablePayMethod = "/admin/pm/enable";
+
 
 }

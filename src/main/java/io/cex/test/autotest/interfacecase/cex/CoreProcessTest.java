@@ -33,7 +33,7 @@ import static io.cex.test.autotest.interfacecase.cex.tool.CexCommonOption.*;
  * @desc 主流程测试类
  **/
 @Slf4j
-@Epic("CEX主流程")
+@Epic("AA【CEX----------主流程】")
 
 public class CoreProcessTest extends BaseCase {
     //cex登陆token
@@ -202,7 +202,7 @@ public class CoreProcessTest extends BaseCase {
         AssertTool.isContainsExpect("000000",rspCode);
         String sql = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhone,depositCurrency);
         log.info("--------Deposit sql is:"+sql);
-        Thread.sleep(60000);
+        Thread.sleep(30000);
         AssertTool.isContainsExpect("{\"amount\":\"20.000000000000000000000000000000\"}",cexmysql,sql);
     }
     @Feature("充提币")
@@ -214,7 +214,7 @@ public class CoreProcessTest extends BaseCase {
         AssertTool.isContainsExpect("000000",rspCode);
         String sql = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhone,productCoin);
         log.info("--------Deposit KOFO sql is:"+sql);
-        Thread.sleep(60000);
+        Thread.sleep(30000);
         AssertTool.isContainsExpect("{\"amount\":\"20.000000000000000000000000000000\"}",cexmysql,sql);
     }
     @Feature("充提币")
@@ -226,7 +226,7 @@ public class CoreProcessTest extends BaseCase {
         AssertTool.isContainsExpect("000000",rspCode);
         String sql = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhone,currencyCoin);
         log.info("--------Deposit USDT sql is:"+sql);
-        Thread.sleep(60000);
+        Thread.sleep(30000);
         AssertTool.isContainsExpect("{\"amount\":\"20.000000000000000000000000000000\"}",cexmysql,sql);
     }
     @Feature("充提币")
@@ -278,7 +278,7 @@ public class CoreProcessTest extends BaseCase {
     public void testCancelBuyOrder() throws InterruptedException{
         HashMap result = cancelOrder(token,cancelAllBuyNo);
         AssertTool.isContainsExpect("000000",result.get("code").toString());
-        Thread.sleep(60000);
+        Thread.sleep(30000);
         String frozeAmount = queryCexAsset(token,currencyCoin).get("frozenAmount").toString();
         Allure.addAttachment("撤单后冻结"+currencyCoin+"金额:",frozeAmount);
         AssertTool.assertEquals(StringUtil.numStringRound(frozeAmount),"0");

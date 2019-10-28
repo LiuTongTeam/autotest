@@ -57,7 +57,7 @@ public class CexCommonOption {
                     return null;
                 }
             }else {
-                log.error("----------------Server connect failed"+response.body()+"\n");
+                log.error("----------------Server connect failed"+response.body().string()+"\n");
                 return null;
             }
         }catch (IOException e){
@@ -96,7 +96,7 @@ public class CexCommonOption {
                     log.error("----------------Regist failed, trace id is:"+rspjson.get("traceId")+"\n");
                 }
             }else {
-                log.error("----------------Server connect failed"+response.body()+"\n");
+                log.error("----------------Server connect failed"+response.body().string()+"\n");
             }
         }catch (IOException e){
             e.printStackTrace();
@@ -135,7 +135,7 @@ public class CexCommonOption {
                 //    System.out.println("body:"+rspjson.toJSONString()+"header"+response.headers().toString());
                 return id;
             }else {
-                log.error("----------------Server connect failed"+response.body()+"\n");
+                log.error("----------------Server connect failed"+response.body().string()+"\n");
                 return id;
             }
 
@@ -189,7 +189,7 @@ public class CexCommonOption {
                     return certificate_no;
                 }
             }else {
-                log.error("----------------Server connect failed"+response.body()+"\n");
+                log.error("----------------Server connect failed"+response.body().string()+"\n");
                 return certificate_no;
             }
         }catch (IOException e){
@@ -225,7 +225,7 @@ public class CexCommonOption {
                     log.error("----------------SecurityPwd Set failed, trace id is:" + rspjson.get("traceId") + "\n");
                 }
             }else {
-                log.error("----------------Server connect failed"+response.body()+"\n");
+                log.error("----------------Server connect failed"+response.body().string()+"\n");
             }
         }catch (IOException e){
             e.printStackTrace();
@@ -503,5 +503,6 @@ public class CexCommonOption {
         BigDecimal result = beforNum.add(getNum.subtract(getNum.multiply(rateNum)));
         return result.toString();
     }
+
 
 }

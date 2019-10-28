@@ -12,10 +12,10 @@ import io.cex.test.framework.jsonutil.JsonFileUtil;
 import io.qameta.allure.Allure;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
-import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static io.cex.test.autotest.interfacecase.BaseCase.*;
@@ -47,7 +47,7 @@ public class C2CCommonOption {
                     return null;
                 }
             }else {
-                log.error("----------------Server connect failed"+response.body()+"\n");
+                log.error("----------------Server connect failed"+response.body().string()+"\n");
                 return null;
             }
 
@@ -82,7 +82,7 @@ public class C2CCommonOption {
                     return null;
                 }
             }else {
-                log.error("----------------Server connect failed"+response.body()+"\n");
+                log.error("----------------Server connect failed"+response.body().string()+"\n");
                 return null;
             }
         }catch (IOException e){
@@ -102,7 +102,7 @@ public class C2CCommonOption {
         header.put("CEXTOKEN", token);
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("tradeId",tradeId);
-        jsonbody.put("securityPwd","Lxm499125");
+        jsonbody.put("securityPwd",securityPwd);
         try {
             Response response = OkHttpClientManager.post(c2cip+tradeCancelUrl,jsonbody.toJSONString(),"application/json",header);
             JSONObject rspjson = JSON.parseObject(response.body().string());
@@ -156,7 +156,6 @@ public class C2CCommonOption {
             Response response = OkHttpClientManager.post(c2cip+url,
                     "multipart/form-data; boundary=----WebKitFormBoundarylsMUpMX3lOxQKla8", header,file,fileName);
             if (response.code()==200) {
-                // System.out.println("body:"+response.body().string()+"header"+response.headers().toString());
                 JSONObject rspjson = JSON.parseObject(response.body().string());
                 Allure.addAttachment("上传文件出参：",rspjson.toJSONString());
                 System.out.println("response"+rspjson.toJSONString());
@@ -166,10 +165,9 @@ public class C2CCommonOption {
                 } else {
                     log.error("----------------Upload File failed, trace id is:" + rspjson.get("traceId") + "\n");
                 }
-                //    System.out.println("body:"+rspjson.toJSONString()+"header"+response.headers().toString());
                 return id;
             }else {
-                log.error("----------------Server connect failed"+response.body()+"\n");
+                log.error("----------------Server connect failed"+response.body().string()+"\n");
                 return id;
             }
 
@@ -195,10 +193,8 @@ public class C2CCommonOption {
         try {
             Response response = OkHttpClientManager.post(c2cip+url,object.toJSONString(),"application/json",header);
             if (response.code()==200) {
-                // System.out.println("body:"+response.body().string()+"header"+response.headers().toString());
                 JSONObject rspjson = JSON.parseObject(response.body().string());
                 Allure.addAttachment("获取二维码图片出参：",rspjson.toJSONString());
-                System.out.println("response"+rspjson.toJSONString());
                 if (rspjson.get("respCode").equals("000000")) {
                     log.info("------------Get File success" + "body:"+rspjson.toJSONString()+ "\n");
                     id = rspjson.getString("data");
@@ -207,7 +203,7 @@ public class C2CCommonOption {
                 }
                 return id;
             }else {
-                log.error("----------------Server connect failed"+response.body()+"\n");
+                log.error("----------------Server connect failed"+response.body().string()+"\n");
                 return id;
             }
 
@@ -217,13 +213,46 @@ public class C2CCommonOption {
         }
 
     }
-    public static void main(String[] args) {
-        String token = CexCommonOption.userCexLogin("15073121922",pwd,area);
-        String ID = userUploadFile(fileUrl,token,"1.jpeg",userUploadImageUrl);
-        System.out.println(getImageFile(token,userGetImageUrl,ID));
-        String token1 = CexCommonOption.userCexLogin("13849254601",pwd,area);
-        ID = userUploadFile(fileUrl,token1,"1.jpeg",merchantUploadImageUrl);
-        System.out.println(getImageFile(token1,merchantGetImageUrl,ID));
+
+    /**
+    * @desc 查询用户支付方式的ID
+    * @param
+    **/
+    public static String getPayMethodId(String token,String type, String url){
+        HashMap header = BaseCase.dataInit();
+        header.put("CEXTOKEN",token);
+        JSONObject jsonbody = new JSONObject();
+        try {
+            Response response = OkHttpClientManager.post(c2cip+url,jsonbody.toJSONString(),"application/json",header);
+            if (response.code()==200) {
+                JSONObject rspjson = JSON.parseObject(response.body().string());
+                Allure.addAttachment("查询用户支付方式的ID出参：", rspjson.toJSONString());
+                if (rspjson.get("respCode").equals("000000")) {
+                    JSONObject data = JSON.parseObject(rspjson.get("data").toString());
+                    if (data.get("totalNum").equals(0)){
+                        return null;
+                    }else {
+                        //遍历接口返回的支付方式，根据支付type获取对应的ID，但是同种支付方式有多个时只返回第一个ID
+                        JSONArray rows = JSON.parseArray(data.get("rows").toString());
+                        for (int i = 0; i<rows.size();i++){
+                            JSONObject object = JSON.parseObject(rows.getString(i));
+                            if (object.get("type").toString().equals(type)){
+                                return object.get("id").toString();
+                            }
+                        }
+                        return null;
+                    }
+                }else {
+                    log.error("---------------Query failed, trace id is:" + rspjson.get("traceId") + "\n");
+                }
+            }
+            log.error("----------------Server connect failed"+response.body().string()+"\n");
+            return null;
+        }catch (IOException e){
+            e.printStackTrace();
+            return  null;
+        }
     }
+
 
 }

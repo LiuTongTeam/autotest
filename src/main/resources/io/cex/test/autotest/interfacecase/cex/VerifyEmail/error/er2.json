@@ -2,8 +2,9 @@
   "comment": "极验key为空，返回100006",
   "body": {
     "authType": "LOGIN",
-    "email": "24244855@qq.com",
+    "email": "WlWIYSTvEB27742311@chacuo.net",
     "captchaIdentifier": ""
   },
-  "assert":"infrastructure-100030"
+  "time":"120000",
+  "assert":"000000"
 }

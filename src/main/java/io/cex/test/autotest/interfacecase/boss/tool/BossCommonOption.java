@@ -72,7 +72,7 @@ public class BossCommonOption {
                     log.error("----------------FirstTrial failed, trace id is:"+rspjson.get("traceId")+"\n");
                 }
             }else {
-                log.error("----------------Server connect failed"+response.body()+"\n");
+                log.error("----------------Server connect failed"+response.body().string()+"\n");
             }
         }catch (IOException e){
             e.printStackTrace();
@@ -108,7 +108,7 @@ public class BossCommonOption {
                     log.error("----------------Identity reviewing failed, trace id is:"+rspjson.get("traceId")+"\n");
                 }
             }else {
-                log.error("----------------Server connect failed"+response.body()+"\n");
+                log.error("----------------Server connect failed"+response.body().string()+"\n");
             }
         }catch (IOException e){
             e.printStackTrace();
