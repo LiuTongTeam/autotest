@@ -19,11 +19,11 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
-import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.registerUrl;
-@Feature("LoginPwd登录后重置登录密码")
+import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.rssecurityPwdUrl;
+@Feature("rssecurityPwdTest重置资金密码接口")
 
-public class LoginPwdTest extends BaseCase {
-    //用随机手机号注册,然后修改手机号的登录密码
+public class rssecurityPwdTest extends BaseCase {
+    //用随机手机号注册,然后设置手机号的资金密码,再去重置资金密码
     //随机手机号，用于注册
     private String randomPhone = null;
     private String token = null;
@@ -59,17 +59,17 @@ public class LoginPwdTest extends BaseCase {
         Allure.addAttachment("登陆token：",token);
     }
     @Severity(SeverityLevel.CRITICAL)
-    @Test(dependsOnMethods = "testLogin", description = "登录后，重置登录密码")
-    public void loginPwdTest() throws IOException {
+    @Test(dependsOnMethods = "testLogin", description = "登录后，设置密码")
+    public void securityPwdTest() throws IOException {
         JSONObject object = new JSONObject();
-        object.put("newPwd", "afdd0b4ad2ec172c586e2160880fbf9e");
+        object.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
         object.put("verifyCode", "123456");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
         HashMap header = dataInit();
         header.put("CEXTOKEN", token);
-        Response response = OkHttpClientManager.post(ip + loginPwdUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip + securityPwdUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
         Allure.addAttachment("入参：", jsonbody.toJSONString());
@@ -77,15 +77,54 @@ public class LoginPwdTest extends BaseCase {
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
 
     }
-    @Test(description = "异常用例，没有token,重置登录密码")
-    public void loginPwdTestError() throws IOException {
+    @Test(dependsOnMethods = "securityPwdTest", description = "设置资金密码以后，重置资金密码为之前不同")
+    public void rssecurityPwdTest() throws IOException {
         JSONObject object = new JSONObject();
-        object.put("newPwd", "afdd0b4ad2ec172c586e2160880fbf9e");
-        object.put("verifyCode", "123456");
+        object.put("newPwd", "f3d3d3667220886d7a1a3f1eb9335d92");
+        object.put("verifyCode1", "123456");
+        object.put("verifyCode2", "123456");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
-        Response response = OkHttpClientManager.post(ip + loginPwdUrl, jsonbody.toJSONString(),
+        HashMap header = dataInit();
+        header.put("CEXTOKEN", token);
+        Response response = OkHttpClientManager.post(ip + rssecurityPwdUrl, jsonbody.toJSONString(),
+                "application/json", header);
+        JSONObject rspjson = JSON.parseObject(response.body().string());
+        Allure.addAttachment("入参：", jsonbody.toJSONString());
+        Allure.addAttachment("出参：", rspjson.toJSONString());
+        AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
+
+    }
+    @Test(dependsOnMethods = "rssecurityPwdTest", description = "异常用例，设置资金密码以后，重置资金密码和之前的资金密码相同")
+    public void rssecurityPwdTestError() throws IOException {
+        JSONObject object = new JSONObject();
+        object.put("newPwd", "f3d3d3667220886d7a1a3f1eb9335d92");
+        object.put("verifyCode1", "123456");
+        object.put("verifyCode2", "123456");
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("data", object);
+        jsonbody.put("lang", lang);
+        HashMap header = dataInit();
+        header.put("CEXTOKEN", token);
+        Response response = OkHttpClientManager.post(ip + rssecurityPwdUrl, jsonbody.toJSONString(),
+                "application/json", header);
+        JSONObject rspjson = JSON.parseObject(response.body().string());
+        Allure.addAttachment("入参：", jsonbody.toJSONString());
+        Allure.addAttachment("出参：", rspjson.toJSONString());
+        AssertTool.isContainsExpect("100009", rspjson.get("code").toString());
+
+    }
+    @Test(description = "异常用例，没有token,重置资金密码")
+    public void securityPwdTestError() throws IOException {
+        JSONObject object = new JSONObject();
+        object.put("newPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
+        object.put("verifyCode1", "123456");
+        object.put("verifyCode2", "123456");
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("data", object);
+        jsonbody.put("lang", lang);
+        Response response = OkHttpClientManager.post(ip + rssecurityPwdUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
         JSONObject rspjson = JSON.parseObject(response.body().string());
         Allure.addAttachment("入参：", jsonbody.toJSONString());

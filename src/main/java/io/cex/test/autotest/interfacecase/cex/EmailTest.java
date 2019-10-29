@@ -19,14 +19,15 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
-import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.registerUrl;
-@Feature("LoginPwd登录后重置登录密码")
+import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.emailUrl;
+@Feature("EmailTest绑定邮箱接口")
 
-public class LoginPwdTest extends BaseCase {
-    //用随机手机号注册,然后修改手机号的登录密码
+public class EmailTest extends BaseCase {
+    //用随机手机号注册,然后绑定邮箱
     //随机手机号，用于注册
     private String randomPhone = null;
     private String token = null;
+    private String randomEmail = null;
 
 
 
@@ -59,17 +60,40 @@ public class LoginPwdTest extends BaseCase {
         Allure.addAttachment("登陆token：",token);
     }
     @Severity(SeverityLevel.CRITICAL)
-    @Test(dependsOnMethods = "testLogin", description = "登录后，重置登录密码")
-    public void loginPwdTest() throws IOException {
+    @Test(dependsOnMethods = "testLogin", description = "登录后，绑定为已存在的邮箱")
+    public void emailTestError1() throws IOException {
+        //randomEmail = RandomUtil.getRandomMail();
         JSONObject object = new JSONObject();
-        object.put("newPwd", "afdd0b4ad2ec172c586e2160880fbf9e");
+        object.put("email","24244855@qq.com");
+        object.put("emailCheckCode", "123456");
         object.put("verifyCode", "123456");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
         HashMap header = dataInit();
         header.put("CEXTOKEN", token);
-        Response response = OkHttpClientManager.post(ip + loginPwdUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip + emailUrl, jsonbody.toJSONString(),
+                "application/json", header);
+        JSONObject rspjson = JSON.parseObject(response.body().string());
+        Allure.addAttachment("入参：", jsonbody.toJSONString());
+        Allure.addAttachment("出参：", rspjson.toJSONString());
+        AssertTool.isContainsExpect("user-100007", rspjson.get("code").toString());
+
+    }
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(dependsOnMethods = "emailTestError1", description = "登录后，绑定为随机生成的邮箱")
+    public void emailTest() throws IOException {
+        randomEmail = RandomUtil.getRandomMail();
+        JSONObject object = new JSONObject();
+        object.put("email",randomEmail);
+        object.put("emailCheckCode", "123456");
+        object.put("verifyCode", "123456");
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("data", object);
+        jsonbody.put("lang", lang);
+        HashMap header = dataInit();
+        header.put("CEXTOKEN", token);
+        Response response = OkHttpClientManager.post(ip + emailUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = JSON.parseObject(response.body().string());
         Allure.addAttachment("入参：", jsonbody.toJSONString());
@@ -77,15 +101,17 @@ public class LoginPwdTest extends BaseCase {
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
 
     }
-    @Test(description = "异常用例，没有token,重置登录密码")
-    public void loginPwdTestError() throws IOException {
+    @Test(description = "没有token，绑定邮箱")
+    public void emailTestError() throws IOException {
+        randomEmail = RandomUtil.getRandomMail();
         JSONObject object = new JSONObject();
-        object.put("newPwd", "afdd0b4ad2ec172c586e2160880fbf9e");
+        object.put("email",randomEmail);
+        object.put("emailCheckCode", "123456");
         object.put("verifyCode", "123456");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
-        Response response = OkHttpClientManager.post(ip + loginPwdUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip + emailUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
         JSONObject rspjson = JSON.parseObject(response.body().string());
         Allure.addAttachment("入参：", jsonbody.toJSONString());
@@ -93,5 +119,6 @@ public class LoginPwdTest extends BaseCase {
         AssertTool.isContainsExpect("100006", rspjson.get("code").toString());
 
     }
+
 
 }
