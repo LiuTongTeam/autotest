@@ -1,0 +1,10 @@
+{
+  "comment": "手机号地区为空",
+  "body": {
+    "mobileArea": " ",
+    "mobile":  "18912345678",
+    "smsCode":  "125432",
+    "verifyCode":  "123111"
+  },
+  "assert":"100006"
+}

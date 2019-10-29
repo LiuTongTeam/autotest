@@ -1,0 +1,7 @@
+{
+  "comment": "交易对传错",
+  "body": {
+    "symbol":"test"
+  },
+  "assert":"100091"
+}

@@ -1,0 +1,10 @@
+{
+  "comment": "已绑定的手机号",
+  "body": {
+    "mobileArea": "86",
+    "mobile":  "13558518558",
+    "smsCode":  "125432",
+    "oldSmsCode":  "123111"
+  },
+  "assert":"user-100007"
+}

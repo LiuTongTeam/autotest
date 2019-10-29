@@ -1,0 +1,10 @@
+{
+  "comment": "不传开始时间",
+  "body": {
+    "symbol": "IDA/USDT",
+    "startTime":  " ",
+    "endTime":  "1562590734808",
+    "range":  "300000"
+  },
+  "assert":"100006"
+}

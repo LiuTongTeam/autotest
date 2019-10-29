@@ -1,0 +1,10 @@
+{
+  "comment": "旧手机号验证码为空",
+  "body": {
+    "mobileArea": "86",
+    "mobile":  "18912345678",
+    "smsCode":  "125432",
+    "oldSmsCode":  " "
+  },
+  "assert":"100006"
+}

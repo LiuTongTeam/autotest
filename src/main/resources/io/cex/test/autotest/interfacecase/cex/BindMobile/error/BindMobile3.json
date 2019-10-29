@@ -1,0 +1,10 @@
+{
+  "comment": "新手机号验证码为空",
+  "body": {
+    "mobileArea": "86",
+    "mobile":  "18912345678",
+    "smsCode":  " ",
+    "verifyCode":  "123111"
+  },
+  "assert":"100006"
+}

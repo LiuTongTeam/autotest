@@ -98,5 +98,14 @@ public class CexConfig {
     public static final String rssecurityPwdUrl = "/user/password/reset/securityPwd";
     public static final String emailUrl = "/user/email/bind/email";
     public static final String rbemailUrl = "/user/email/rebind/email";
+    public static final String symbolLimitOrderStatUrl = "/user/mm/query/symbolLimitOrderStat";
+    public static final String preCreateInfoUrl = "/user/order/query/preCreateInfo";
+    public static final String tradeSymbolInfoUrl = "/user/order/query/tradeSymbolInfo";
+    public static final String depthStepUrl = "/order/query/depthStep";
+    public static final String systemTimeUrl = "/kline/get/systemTime";
+    public static final String quotationHistoryUrl = "/kline/get/quotationHistory";
+    public static final String rangesUrl = "/kline/get/ranges";
+    public static final String rebindmobileUrl = "/user/mobile/rebind/mobile";
+    public static final String bindmobileUrl = "/user/mobile/bind/mobile";
 
 }

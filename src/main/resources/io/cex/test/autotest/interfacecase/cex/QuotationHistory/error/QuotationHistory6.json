@@ -1,0 +1,10 @@
+{
+  "comment": "range传负数或0",
+  "body": {
+    "symbol": "IDA/USDT",
+    "startTime":  "1562554734808",
+    "endTime":  "1562590734808",
+    "range":  "0"
+  },
+  "assert":"100006"
+}
