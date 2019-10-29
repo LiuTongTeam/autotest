@@ -1,0 +1,10 @@
+{
+  "comment": "range不传规定值",
+  "body": {
+    "symbol": "IDA/USDT",
+    "startTime":  "1562554734808",
+    "endTime":  "1562590734808",
+    "range":  "55555"
+  },
+  "assert":"100006"
+}
