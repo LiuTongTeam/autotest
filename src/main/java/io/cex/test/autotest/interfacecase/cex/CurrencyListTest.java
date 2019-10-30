@@ -6,6 +6,7 @@ import io.cex.test.autotest.interfacecase.BaseCase;
 import io.cex.test.framework.assertutil.AssertTool;
 import io.cex.test.framework.httputil.OkHttpClientManager;
 import io.qameta.allure.Allure;
+import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import okhttp3.Response;
@@ -15,7 +16,7 @@ import java.io.IOException;
 
 import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.lang;
 import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.currencyListUrl;
-
+@Feature("CurrencyList接口")
 public class CurrencyListTest extends BaseCase {
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "正常用例，返回000000")

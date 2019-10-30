@@ -6,6 +6,7 @@ import io.cex.test.autotest.interfacecase.BaseCase;
 import io.cex.test.framework.assertutil.AssertTool;
 import io.cex.test.framework.httputil.OkHttpClientManager;
 import io.qameta.allure.Allure;
+import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import okhttp3.Response;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 
 import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
 import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.lastLoginInfoUrl;
-
+@Feature("LastLoginInfo接口测试")
 public class LastLoginInfoTest extends BaseCase {
     @Test(description = "异常用例没有token，返回100006")
     public void lastLoginInfoTestError() throws IOException {

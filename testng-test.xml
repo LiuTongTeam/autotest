@@ -1,28 +1,161 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="All Test Suite">
+<suite name="All Test Suite" parallel="classes" thread-count="200">
     <parameter name="file" value="test-application.properties"></parameter>
-    <test verbose="2" preserve-order="true" name="C:/code/autotest">
+    <test verbose="2" preserve-order="true" name="C:/code/autotest/autotest">
         <classes>
-            <!--<class name="io.cex.test.autotest.interfacecase.cex.BestPriceTest">
+            <class name="io.cex.test.autotest.interfacecase.c2c.C2CCoreProcessTest">
+                <methods>
+                    <include name="testRegistAndLogin"/>
+                    <include name="testC2CIdentity"/>
+                    <include name="testC2CSetSecurityPwd"/>
+                    <include name="testAddNickName"/>
+                    <include name="testMerchantAdd"/>
+                    <include name="testUploadImage"/>
+                    <include name="testMerchantPmCreateWe"/>
+                    <include name="testMerchantPmCreateBankCard"/>
+                    <include name="testUserPmCreateWe"/>
+                    <include name="testUserPmCreateBankCard"/>
+                    <include name="testGetPayMethod"/>
+                    <include name="testMerchantPmUpdateWe"/>
+                    <include name="testMerchantPmUpdateBankCard"/>
+                    <include name="testUserPmUpdateWe"/>
+                    <include name="testUserPmUpdateBankCard"/>
+                    <include name="testMerchantDisablePayMethod"/>
+                    <include name="testDeposit"/>
+                    <include name="testUserTransferIn"/>
+                    <include name="testMerchantTransferIn"/>
+                    <include name="testAddBuyTrade"/>
+                    <include name="testUpdateBuyTrade"/>
+                    <include name="testAddSellTrade"/>
+                    <include name="testUpdateSellTrade"/>
+                    <include name="testSubmitBuyOrder"/>
+                    <include name="testUserReConfirmPay"/>
+                    <include name="testUserCancelOrder"/>
+                    <include name="testMerchantEnablePayMethod"/>
+                    <include name="testReSubmitBuyOrder"/>
+                    <include name="testUserConfirmPay"/>
+                    <include name="testMerchantConfirm"/>
+                    <include name="testUserDisablePayMethod"/>
+                    <include name="testSubmitSellOrder"/>
+                    <include name="testMerchantConfirmPay"/>
+                    <include name="testUserCancelSellOrder"/>
+                    <include name="testUserEnablePayMethod"/>
+                    <include name="testSubmitReSellOrder"/>
+                    <include name="testMerchantReConfirmPay"/>
+                    <include name="testUserConfirm"/>
+                    <include name="testTradeBuyCancel"/>
+                    <include name="testTradeSellCancel"/>
+                    <include name="testMerchantTransferOut"/>
+                    <include name="testUserTransferOut"/>
+                    <include name="testReturnDeposit"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.AddressTest">
+                <methods>
+                    <include name="addressTestError1"/>
+                    <include name="addressTestError2"/>
+                    <include name="addressTestError3"/>
+                    <include name="addressTest"/>
+                    <include name="addressTestError4"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.AddsymbolTest">
+                <methods>
+                    <include name="addsymbol"/>
+                    <include name="addsymbolError1"/>
+                    <include name="addsymbolError2"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.AllArticleListTest">
+                <methods>
+                    <include name="allArticleList"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.AnnouncementTest">
+                <methods>
+                    <include name="announcementTest"/>
+                    <include name="announcementTest1"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.AuthAuditReasonTest">
+                <methods>
+                    <include name="authAuditReasonTestError"/>
+                    <include name="authAuditReasonTest"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.BatchChannelTokenTest">
+                <methods>
+                    <include name="batchChannelTokenTestError"/>
+                    <include name="batchChannelTokenTest"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.BestPriceTest">
                 <methods>
                     <include name="testBestPriceError"/>
                     <include name="testBestPrice"/>
                 </methods>
-            </class>-->
-            <!--<class name="io.cex.test.autotest.interfacecase.cex.CheckLoginTest">
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.BindMobileTest">
+                <methods>
+                    <include name="testRegister"/>
+                    <include name="testLogin"/>
+                    <include name="testBindMobileError"/>
+                    <include name="testBindMobile"/>
+                    <include name="testBindMobileError8"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.CaptchaTest">
+                <methods>
+                    <include name="captchaTest"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.ChannelTokenTest">
+                <methods>
+                    <include name="testchanneltoken"/>
+                    <include name="testchannelError1"/>
+                    <include name="testchannelError2"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.CheckEmailTest">
+                <methods>
+                    <include name="testCheckEmailError"/>
+                    <include name="testCheckEmailData"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.CheckLoginTest">
                 <methods>
                     <include name="testCheckLoginError"/>
                     <include name="testCheckLogin"/>
                 </methods>
-            </class>-->
-            <!--<class name="io.cex.test.autotest.interfacecase.cex.CheckMobileTest">
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.CheckMobileTest">
                 <methods>
                     <include name="testCheckMobileError"/>
                     <include name="testCheckMobile"/>
                 </methods>
-            </class>-->
-            <!--<class name="io.cex.test.autotest.interfacecase.cex.CoreProcessTest">
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.CheckWithdrawAddressTest">
+                <methods>
+                    <include name="testCheckWithdrawAddressError"/>
+                    <include name="testCheckWithdrawAddressList"/>
+                    <include name="testCheckWithdrawAddressData"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.CheckpwdTest">
+                <methods>
+                    <include name="checkpwdtest"/>
+                    <include name="checkpwderror1"/>
+                    <include name="checkpwderror2"/>
+                    <include name="checkpwderror3"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.ConfigInfoTest">
+                <methods>
+                    <include name="configInfoTest"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.CoreProcessTest">
                 <methods>
                     <include name="testRegister"/>
                     <include name="testLogin"/>
@@ -65,45 +198,383 @@
                     <include name="testWithdrawReturnProductCoin"/>
                     <include name="testWithdrawReturnCurrencyCoin"/>
                 </methods>
-            </class>-->
-            <!--<class name="io.cex.test.autotest.interfacecase.cex.DealListTest">
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.CountryListTest">
+                <methods>
+                    <include name="countryList"/>
+                    <include name="countryListError1"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.CurrencyChainTest">
+                <methods>
+                    <include name="currencyChainTest"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.CurrencyInfoTest">
+                <methods>
+                    <include name="currencyInfoTestError"/>
+                    <include name="currencyInfoTestError1"/>
+                    <include name="currencyInfoTest"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.CurrencyListTest">
+                <methods>
+                    <include name="currencyListTest"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.DealDetailTest">
+                <methods>
+                    <include name="dealDetail"/>
+                    <include name="dealDetailError1"/>
+                    <include name="dealDetailError2"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.DealListTest">
                 <methods>
                     <include name="testdealListError"/>
                     <include name="testdealList"/>
                 </methods>
-            </class>-->
-            <!--<class name="io.cex.test.autotest.interfacecase.cex.DemoTest">
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.DelsymbolTest">
                 <methods>
-                    <include name="testReadFileDemo"/>
-                    <include name="testDB"/>
+                    <include name="delsymbol"/>
+                    <include name="delsymbolError1"/>
+                    <include name="delsymbolError2"/>
                 </methods>
-            </class>-->
-            <!--<class name="io.cex.test.autotest.interfacecase.cex.OrderBookTest">
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.DepthDataTest">
+                <methods>
+                    <include name="testDepthDataError"/>
+                    <include name="testdepthDataTest"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.DepthStepTest">
+                <methods>
+                    <include name="testDepthStep"/>
+                    <include name="testDepthStepError"/>
+                    <include name="testDepthStepError3"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.EmailTest">
+                <methods>
+                    <include name="testRegister"/>
+                    <include name="testLogin"/>
+                    <include name="emailTestError1"/>
+                    <include name="emailTest"/>
+                    <include name="emailTestError"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.ExchangeRateTest">
+                <methods>
+                    <include name="exchangeRateTest"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.FullArticleTest">
+                <methods>
+                    <include name="fullArticleTest"/>
+                    <include name="fullArticleTest1"/>
+                    <include name="fullArticleTestError"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.GetSecurityTest">
+                <methods>
+                    <include name="getSecurityError"/>
+                    <include name="getSecurityTest"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.HelpCenterTest">
+                <methods>
+                    <include name="helpCenterTest"/>
+                    <include name="helpCenterTest1"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.LastLoginInfoTest">
+                <methods>
+                    <include name="lastLoginInfoTestError"/>
+                    <include name="lastLoginInfoTest"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.LoginHistoryTest">
+                <methods>
+                    <include name="loginHistoryTestError"/>
+                    <include name="loginHistoryTest"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.LoginOrRegisterTest">
+                <methods>
+                    <include name="testLoginOrRegister"/>
+                    <include name="testLoginOrRegisterError"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.LoginPwdTest">
+                <methods>
+                    <include name="testRegister"/>
+                    <include name="testLogin"/>
+                    <include name="loginPwdTest"/>
+                    <include name="loginPwdTestError"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.LoginPwdWithoutLoginTest">
+                <methods>
+                    <include name="testRegister"/>
+                    <include name="loginPwdWithoutLoginTest"/>
+                    <include name="testRegisterMail"/>
+                    <include name="loginPwdWithoutLoginMailTest"/>
+                    <include name="loginPwdWithoutLoginTestError1"/>
+                    <include name="loginPwdWithoutLoginTestError2"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.LoginoutTest">
+                <methods>
+                    <include name="testRegister"/>
+                    <include name="testLogin"/>
+                    <include name="testloginoutError1"/>
+                    <include name="testloginoutError2"/>
+                    <include name="testloginout"/>
+                    <include name="testloginoutError3"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.OnlineUserSummaryTest">
+                <methods>
+                    <include name="testonlineUserSummary"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.OrderBookTest">
                 <methods>
                     <include name="testorderBookDataError"/>
                     <include name="testorderBookData"/>
                 </methods>
-            </class>-->
-            <!--<class name="io.cex.test.autotest.interfacecase.cex.RegisterTest">
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.OrderDetailTest">
+                <methods>
+                    <include name="testorderDetail"/>
+                    <include name="orderDetailError2"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.OrderListTest">
+                <methods>
+                    <include name="testorderListError"/>
+                    <include name="testorderList"/>
+                    <include name="testorderListData"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.PreCreateInfoTest">
+                <methods>
+                    <include name="testPreCreateInfo"/>
+                    <include name="testPreCreateInfoError"/>
+                    <include name="testPreCreateInfoError3"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.QueryTransferTest">
+                <methods>
+                    <include name="testQueryTransferList"/>
+                    <include name="testQueryTransferData"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.QuotationHistoryTest">
+                <methods>
+                    <include name="testQuotationHistory"/>
+                    <include name="testQuotationHistoryError"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.RangesTest">
+                <methods>
+                    <include name="testRanges"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.RbemailTest">
+                <methods>
+                    <include name="testRegister"/>
+                    <include name="testLogin"/>
+                    <include name="rbemailTest"/>
+                    <include name="rbemailTestnew"/>
+                    <include name="rbemailTestnew1"/>
+                    <include name="emailTestError"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.RebindMobileTest">
+                <methods>
+                    <include name="testRegister"/>
+                    <include name="testLogin"/>
+                    <include name="testRebindMobileError"/>
+                    <include name="testRebindMobile"/>
+                    <include name="testRebindMobileError8"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.RechargeTest">
+                <methods>
+                    <include name="testrecharge"/>
+                    <include name="testrechargeError1"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.RecommendSymbolQuotationTest">
+                <methods>
+                    <include name="recommendSymbolQuotation"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.RegisterTest">
                 <methods>
                     <include name="testRegisterError"/>
                     <include name="testRegister"/>
                 </methods>
-            </class>-->
-            <class name="io.cex.test.autotest.interfacecase.cex.LoginoutTest">
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.SecurityPwdTest">
                 <methods>
-                    <include name="testloginoutError1"/>
-                    <include name="testloginoutError2"/>
-                    <include name="testloginoutError3"/>
-                    <include name="testloginout"/>
+                    <include name="testRegister"/>
+                    <include name="testLogin"/>
+                    <include name="securityPwdTest"/>
+                    <include name="securityPwdTestError"/>
                 </methods>
             </class>
-            <class name="io.cex.test.autotest.interfacecase.cex.CheckpwdTest">
+            <class name="io.cex.test.autotest.interfacecase.cex.SymbolAssetTest">
                 <methods>
-                    <include name="testcheckpwdError1"/>
-                    <include name="testcheckpwdError2"/>
-                    <include name="testcheckpwdError3"/>
-                    <include name="testcheckpwd"/>
+                    <include name="symbolAsset"/>
+                    <include name="symbolAssetError1"/>
+                    <include name="symbolAssetError2"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.SymbolDetailTest">
+                <methods>
+                    <include name="testsymbolDetailError"/>
+                    <include name="testsymbolDetail"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.SymbolLimitOrderStatTest">
+                <methods>
+                    <include name="testSymbolLimitOrderStat"/>
+                    <include name="testSymbolLimitOrderStatError"/>
+                    <include name="testSymbolLimitOrderStaterror3"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.SymbolListTest">
+                <methods>
+                    <include name="symbolListTest"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.SymbolQuotationGroupTest">
+                <methods>
+                    <include name="testsymbolQuotation"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.SymbolQuotationTest">
+                <methods>
+                    <include name="testsymbolQuotation"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.SymbolTest">
+                <methods>
+                    <include name="symbolTestError"/>
+                    <include name="symbolTest"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.SystemTimeTest">
+                <methods>
+                    <include name="testSystemTime"/>
+                    <include name="testSystemTimeError"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.TradeSymbolInfoTest">
+                <methods>
+                    <include name="testTradeSymbolInfo"/>
+                    <include name="testTradeSymbolInfoError"/>
+                    <include name="testTradeSymbolInfoError3"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.UserAuthInfoTest">
+                <methods>
+                    <include name="userAuthInfoTestError"/>
+                    <include name="userAuthInfoTest"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.UserBindStatusTest">
+                <methods>
+                    <include name="userBindStatus"/>
+                    <include name="userBindStatusError"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.UserInfoTest">
+                <methods>
+                    <include name="userInfo"/>
+                    <include name="userInfoError1"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.UverifyEmailTest">
+                <methods>
+                    <include name="uverifyEmailTestError1"/>
+                    <include name="uverifyEmailTestError2"/>
+                    <include name="uverifyEmailTestError3"/>
+                    <include name="uverifyEmailTest"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.UverifySmsTest">
+                <methods>
+                    <include name="uverifySmsTestError"/>
+                    <include name="uverifySmsTestError1"/>
+                    <include name="uverifySmsTestError2"/>
+                    <include name="uverifySmsTest"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.VcaptchaTest">
+                <methods>
+                    <include name="vcaptchaTest"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.VerifyEmailTest">
+                <methods>
+                    <include name="verifyEmailError"/>
+                    <include name="verifyEmail"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.VerifySmsTest">
+                <methods>
+                    <include name="verifySmsTestError"/>
+                    <include name="verifySmsTest"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.WithdrawAddressTest">
+                <methods>
+                    <include name="withdrawAddressError1"/>
+                    <include name="withdrawAddressError2"/>
+                    <include name="qwithdrawAddress"/>
+                    <include name="dwithdrawAddress"/>
+                    <include name="dwithdrawAddressError"/>
+                    <include name="awithdrawAddress"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.WithdrawInfoTest">
+                <methods>
+                    <include name="withdrawInfo"/>
+                    <include name="withdrawInfoError"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.WithdrawTest">
+                <methods>
+                    <include name="testwithdraw"/>
+                    <include name="testwithdrawError1"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.currencyAssetTest">
+                <methods>
+                    <include name="currencyAsset"/>
+                    <include name="currencyAssetError1"/>
+                    <include name="currencyAssetError2"/>
+                    <include name="currencyAssetError3"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.dealOrderListTest">
+                <methods>
+                    <include name="dealOrderListError"/>
+                    <include name="dealOrderList"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.rssecurityPwdTest">
+                <methods>
+                    <include name="testRegister"/>
+                    <include name="testLogin"/>
+                    <include name="securityPwdTest"/>
+                    <include name="rssecurityPwdTest"/>
+                    <include name="rssecurityPwdTestError"/>
+                    <include name="securityPwdTestError"/>
                 </methods>
             </class>
         </classes>
