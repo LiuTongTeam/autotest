@@ -31,7 +31,7 @@ public class VcaptchaTest extends BaseCase {
         jsonbody.put("data",object);
         Response response = OkHttpClientManager.post(ip+vcaptchaUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect("100087",rspjson.get("code").toString());

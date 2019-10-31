@@ -26,7 +26,7 @@ public class SymbolTest extends BaseCase {
         jsonbody.put("lang",lang);
         Response response = OkHttpClientManager.post(ip+symbolUrl, jsonbody.toJSONString(),
                 "application/json", BaseCase.dataInit());
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect("100006",rspjson.get("code").toString());
@@ -40,7 +40,7 @@ public class SymbolTest extends BaseCase {
         header.put("CEXTOKEN", presetToken);
         Response response = OkHttpClientManager.post(ip+symbolUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());

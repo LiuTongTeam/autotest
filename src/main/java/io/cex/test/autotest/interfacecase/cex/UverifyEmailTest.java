@@ -45,7 +45,7 @@ public class UverifyEmailTest extends BaseCase {
         System.out.println(jsonbody);
         Response response = OkHttpClientManager.post(ip + uverifyEmailUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("100006", rspjson.get("code").toString());
@@ -65,7 +65,7 @@ public class UverifyEmailTest extends BaseCase {
         System.out.println(jsonbody);
         Response response = OkHttpClientManager.post(ip + uverifyEmailUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         //System.out.println("-------------liuxm"+rspjson.toJSONString());
@@ -86,7 +86,7 @@ public class UverifyEmailTest extends BaseCase {
         System.out.println(jsonbody);
         Response response = OkHttpClientManager.post(ip + uverifyEmailUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         //System.out.println("-------------liuxm"+rspjson.toJSONString());
@@ -112,7 +112,7 @@ public class UverifyEmailTest extends BaseCase {
         header.put("CEXTOKEN", this.token);
         Response response = OkHttpClientManager.post(ip + uverifyEmailUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         System.out.println("-------------liuxm"+rspjson.toJSONString());

@@ -84,7 +84,7 @@ public class CoreProcessTest extends BaseCase {
         HashMap header = dataInit();
         Response response = OkHttpClientManager.post(ip+registerUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         log.info("-------------register response is:"+rspjson.toJSONString());
         Allure.addAttachment("入参：",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
@@ -120,7 +120,7 @@ public class CoreProcessTest extends BaseCase {
         header.put("CEXTOKEN",token);
         Response response = OkHttpClientManager.post(ip+identityUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         log.info("-------------Identity response is:"+rspjson);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
@@ -147,7 +147,7 @@ public class CoreProcessTest extends BaseCase {
         //调用初审接口
         Response response = OkHttpClientManager.post(boss_ip+firstTrial, object.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         log.info("-------------Identity first trial response is:"+rspjson);
         Allure.addAttachment("入参：",object.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
@@ -168,7 +168,7 @@ public class CoreProcessTest extends BaseCase {
         //调用复审接口
         Response response = OkHttpClientManager.post(boss_ip+reviewing, object.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",object.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
         log.info("-------------Identity reviewing response is:"+rspjson);
@@ -187,7 +187,7 @@ public class CoreProcessTest extends BaseCase {
         header.put("CEXTOKEN",token);
         Response response = OkHttpClientManager.post(ip+securityPwdUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
         log.info("-------------SecurityPwd response is:"+rspjson);

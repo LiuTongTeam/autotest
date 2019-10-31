@@ -113,7 +113,7 @@ public class C2CCoreProcessTest extends BaseCase {
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("nickname","merchant"+RandomUtil.generateString(6));
         Response response = OkHttpClientManager.post(c2cip+nikeNameAddUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("设置merchant昵称入参：",jsonbody.toJSONString());
         Allure.addAttachment("设置merchant昵称出参：",rspjson.toJSONString());
         log.info("-------------Set merchant nickname response is:"+rspjson);
@@ -121,7 +121,7 @@ public class C2CCoreProcessTest extends BaseCase {
         header.put("CEXTOKEN",usertoken);
         jsonbody.put("nickname","测试user"+RandomUtil.generateString(6));
         Response response1 = OkHttpClientManager.post(c2cip+nikeNameAddUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson1 = JSON.parseObject(response1.body().string());
+        JSONObject rspjson1 = resultDeal(response1);
         Allure.addAttachment("设置测试user昵称入参：",jsonbody.toJSONString());
         Allure.addAttachment("设置测试user昵称出参：",rspjson1.toJSONString());
         log.info("-------------Set user nickname response is:"+rspjson1);
@@ -142,7 +142,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("buyLimit","100");
         jsonbody.put("sellLimit","100");
         Response response = OkHttpClientManager.post(c2cip+merchantAddUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("商户添加入参：",jsonbody.toJSONString());
         Allure.addAttachment("商户添加出参：",rspjson.toJSONString());
         log.info("-------------Merchant add response is:"+rspjson);
@@ -172,7 +172,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("qrcodeUrl",merchantImageUrl);
         jsonbody.put("securityPwd",securityPwd);
         Response response = OkHttpClientManager.post(c2cip+merchantPmCreateUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("设置merchant微信支付方式入参：",jsonbody.toJSONString());
         Allure.addAttachment("设置merchant微信支付方式出参：",rspjson.toJSONString());
         log.info("-------------Set merchant wechat pay response is:"+rspjson);
@@ -195,7 +195,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("securityPwd",securityPwd);
         jsonbody.put("qrcodeUrl","http://172.29.16.161/2.jpeg");
         Response response = OkHttpClientManager.post(c2cip+merchantCreateBankCardUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("设置merchant银行卡支付方式入参：",jsonbody.toJSONString());
         Allure.addAttachment("设置merchant银行卡支付方式出参：",rspjson.toJSONString());
         log.info("-------------Set merchant bank card pay response is:"+rspjson);
@@ -214,9 +214,8 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("account","we1"+randomPhoneUser);
         jsonbody.put("qrcodeUrl",userImageUrl);
         jsonbody.put("securityPwd",securityPwd);
-        System.out.println(jsonbody.toJSONString());
         Response response = OkHttpClientManager.post(c2cip+pmCreateUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("设置user微信支付方式入参：",jsonbody.toJSONString());
         Allure.addAttachment("设置user微信支付方式出参：",rspjson.toJSONString());
         log.info("-------------Set merchant wechat pay response is:"+rspjson);
@@ -239,7 +238,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("bankSubName","test");
         System.out.println(jsonbody.toJSONString());
         Response response = OkHttpClientManager.post(c2cip+pmCreateUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("设置user银行卡支付方式入参：",jsonbody.toJSONString());
         Allure.addAttachment("设置user银行卡支付方式出参：",rspjson.toJSONString());
         log.info("-------------Set merchant bank card pay response is:"+rspjson);
@@ -271,7 +270,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("qrcodeUrl",merchantImageUrl);
         jsonbody.put("securityPwd",securityPwd);
         Response response = OkHttpClientManager.post(c2cip+merchantUpdatePayMethod,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("修改merchant微信支付方式入参：",jsonbody.toJSONString());
         Allure.addAttachment("修改merchant微信支付方式出参：",rspjson.toJSONString());
         log.info("-------------Update merchant wechat pay response is:"+rspjson);
@@ -295,7 +294,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("securityPwd",securityPwd);
         jsonbody.put("qrcodeUrl","http://172.29.16.161/2.jpeg");
         Response response = OkHttpClientManager.post(c2cip+merchantUpdateBankPayMethod,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("修改merchant银行卡支付方式入参：",jsonbody.toJSONString());
         Allure.addAttachment("修改merchant银行卡支付方式出参：",rspjson.toJSONString());
         log.info("-------------Update merchant bank card pay response is:"+rspjson);
@@ -317,7 +316,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("securityPwd",securityPwd);
         System.out.println(jsonbody.toJSONString());
         Response response = OkHttpClientManager.post(c2cip+userUpdatePayMethod,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("修改user微信支付方式入参：",jsonbody.toJSONString());
         Allure.addAttachment("修改user微信支付方式出参：",rspjson.toJSONString());
         log.info("-------------Update merchant wechat pay response is:"+rspjson);
@@ -341,7 +340,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("bankSubName","test支行");
         System.out.println(jsonbody.toJSONString());
         Response response = OkHttpClientManager.post(c2cip+userUpdateBankPayMethod,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("修改user银行卡支付方式入参：",jsonbody.toJSONString());
         Allure.addAttachment("修改user银行卡支付方式出参：",rspjson.toJSONString());
         log.info("-------------Update merchant bank card pay response is:"+rspjson);
@@ -360,7 +359,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("securityPwd",securityPwd);
         jsonbody.put("status","0");
         Response response = OkHttpClientManager.post(c2cip+merchantEnablePayMethod,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("商户禁用支付入参：",jsonbody.toJSONString());
         Allure.addAttachment("商户禁用支付出参：",rspjson.toJSONString());
         log.info("-------------Merchant disable pay method response is:"+rspjson);
@@ -399,7 +398,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("currency",currencyCoin);
         jsonbody.put("amount",amount);
         Response response = OkHttpClientManager.post(c2cip+transferInUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("用户转入入参：",jsonbody.toJSONString());
         Allure.addAttachment("用户转入出参：",rspjson.toJSONString());
         log.info("-------------User transfer in response is:"+rspjson);
@@ -416,7 +415,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("currency",currencyCoin);
         jsonbody.put("amount",amount);
         Response response = OkHttpClientManager.post(c2cip+transferInUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("商户转入入参：",jsonbody.toJSONString());
         Allure.addAttachment("商户转入出参：",rspjson.toJSONString());
         log.info("-------------User transfer in response is:"+rspjson);
@@ -441,7 +440,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("remark","autotest");
         jsonbody.put("securityPwd",securityPwd);
         Response response = OkHttpClientManager.post(c2cip+tradeAddUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("发布买入广告入参：",jsonbody.toJSONString());
         Allure.addAttachment("发布买入广告出参：",rspjson.toJSONString());
         log.info("-------------Add buy trade response is:"+rspjson);
@@ -469,7 +468,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("maxPriceLimit","1000");
         jsonbody.put("unitPrice","1");
         Response response = OkHttpClientManager.post(c2cip+tradeUpdateUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("修改买入广告入参：",jsonbody.toJSONString());
         Allure.addAttachment("修改买入广告出参：",rspjson.toJSONString());
         log.info("-------------Update buy trade response is:"+rspjson);
@@ -498,7 +497,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("maxPriceLimit","500");
         jsonbody.put("securityPwd",securityPwd);
         Response response = OkHttpClientManager.post(c2cip+tradeAddUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("发布卖出广告入参：",jsonbody.toJSONString());
         Allure.addAttachment("发布卖出广告出参：",rspjson.toJSONString());
         log.info("-------------Add sell trade response is:"+rspjson);
@@ -526,7 +525,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("maxPriceLimit","1000");
         jsonbody.put("unitPrice","2");
         Response response = OkHttpClientManager.post(c2cip+tradeUpdateUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("修改卖出广告入参：",jsonbody.toJSONString());
         Allure.addAttachment("修改卖出广告出参：",rspjson.toJSONString());
         log.info("-------------Update sell" +
@@ -548,7 +547,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("tradeId",tradeMerchantSellId);
         jsonbody.put("totalPrice","20");
         Response response = OkHttpClientManager.post(c2cip+submitBuyOrderUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("提交买入订单入参：",jsonbody.toJSONString());
         Allure.addAttachment("提交买入订单出参：",rspjson.toJSONString());
         log.info("-------------Submit buy order response is:"+rspjson);
@@ -572,7 +571,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("receiptRealName","merchant"+randomPhoneMerchant);
         jsonbody.put("receiptAccount",merchantBankAccount);
         Response response = OkHttpClientManager.post(c2cip+userConfirmPayUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("用户再次确认支付入参：",jsonbody.toJSONString());
         Allure.addAttachment("用户再次确认支付出参：",rspjson.toJSONString());
         log.info("-------------User reconfirm pay response is:"+rspjson);
@@ -589,7 +588,7 @@ public class C2CCoreProcessTest extends BaseCase {
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("orderId", orderId);
         Response response = OkHttpClientManager.post(c2cip+userCancelUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("用户取消买入订单入参：",jsonbody.toJSONString());
         Allure.addAttachment("用户取消买入订单出参：",rspjson.toJSONString());
         log.info("-------------Cancel buy order response is:"+rspjson);
@@ -611,7 +610,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("securityPwd",securityPwd);
         jsonbody.put("status","1");
         Response response = OkHttpClientManager.post(c2cip+merchantEnablePayMethod,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("商户启用支付入参：",jsonbody.toJSONString());
         Allure.addAttachment("商户启用支付出参：",rspjson.toJSONString());
         log.info("-------------Merchant enable pay method response is:"+rspjson);
@@ -628,7 +627,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("totalPrice","100");
         jsonbody.put("tradeId",tradeMerchantSellId);
         Response response = OkHttpClientManager.post(c2cip+submitBuyOrderUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("再次提交买入订单入参：",jsonbody.toJSONString());
         Allure.addAttachment("再次提交买入订单出参：",rspjson.toJSONString());
         log.info("-------------Submit buy order response is:"+rspjson);
@@ -652,7 +651,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("receiptRealName","merchant"+randomPhoneMerchant);
         jsonbody.put("receiptAccount",merchantBankAccount);
         Response response = OkHttpClientManager.post(c2cip+userConfirmPayUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("用户确认支付入参：",jsonbody.toJSONString());
         Allure.addAttachment("用户确认支付出参：",rspjson.toJSONString());
         log.info("-------------User confirm pay response is:"+rspjson);
@@ -673,7 +672,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("orderId",orderId);
         jsonbody.put("securityPwd",securityPwd);
         Response response = OkHttpClientManager.post(c2cip+merchantConfirmUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("商户确认收款入参：",jsonbody.toJSONString());
         Allure.addAttachment("商户确认收款出参：",rspjson.toJSONString());
         log.info("-------------User confirm pay response is:"+rspjson);
@@ -704,7 +703,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("securityPwd",securityPwd);
         jsonbody.put("status","0");
         Response response = OkHttpClientManager.post(c2cip+userEnablePayMethod,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("普通用户禁用支付入参：",jsonbody.toJSONString());
         Allure.addAttachment("普通用户禁用支付出参：",rspjson.toJSONString());
         log.info("-------------User disable pay method response is:"+rspjson);
@@ -723,7 +722,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("tradeId",tradeMerchantBuyId);
         jsonbody.put("securityPwd",securityPwd);
         Response response = OkHttpClientManager.post(c2cip+submitBuyOrderUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("提交卖出订单入参：",jsonbody.toJSONString());
         Allure.addAttachment("提交卖出订单出参：",rspjson.toJSONString());
         log.info("-------------Submit buy order response is:"+rspjson);
@@ -750,7 +749,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("receiptRealName","user"+randomPhoneUser);
         jsonbody.put("receiptAccount",userBankAccount);
         Response response = OkHttpClientManager.post(c2cip+merchantConfirmPayUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("商家确认支付入参：",jsonbody.toJSONString());
         Allure.addAttachment("商家确认支付出参：",rspjson.toJSONString());
         log.info("-------------Merchant confirm pay response is:"+rspjson);
@@ -767,7 +766,7 @@ public class C2CCoreProcessTest extends BaseCase {
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("orderId", orderId);
         Response response = OkHttpClientManager.post(c2cip+merchantCancelUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("商户取消买入订单入参：",jsonbody.toJSONString());
         Allure.addAttachment("商户取消买入订单出参：",rspjson.toJSONString());
         log.info("-------------Cancel buy order response is:"+rspjson);
@@ -792,7 +791,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("securityPwd",securityPwd);
         jsonbody.put("status","1");
         Response response = OkHttpClientManager.post(c2cip+userEnablePayMethod,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("普通用户启用支付入参：",jsonbody.toJSONString());
         Allure.addAttachment("普通用户启用支付出参：",rspjson.toJSONString());
         log.info("-------------User enable pay method response is:"+rspjson);
@@ -812,7 +811,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("tradeId",tradeMerchantBuyId);
         jsonbody.put("securityPwd",securityPwd);
         Response response = OkHttpClientManager.post(c2cip+submitBuyOrderUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("再次提交卖出订单入参：",jsonbody.toJSONString());
         Allure.addAttachment("再次提交卖出订单出参：",rspjson.toJSONString());
         log.info("-------------Resubmit buy order response is:"+rspjson);
@@ -839,7 +838,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("receiptRealName","user"+randomPhoneUser);
         jsonbody.put("receiptAccount",userBankAccount);
         Response response = OkHttpClientManager.post(c2cip+merchantConfirmPayUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("商家确认支付入参：",jsonbody.toJSONString());
         Allure.addAttachment("商家确认支付出参：",rspjson.toJSONString());
         log.info("-------------Merchant confirm pay response is:"+rspjson);
@@ -856,7 +855,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("orderId",orderId);
         jsonbody.put("securityPwd",securityPwd);
         Response response = OkHttpClientManager.post(c2cip+userConfirmUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("用户确认收款入参：",jsonbody.toJSONString());
         Allure.addAttachment("用户确认收款出参：",rspjson.toJSONString());
         log.info("-------------User confirm receive response is:"+rspjson);
@@ -886,7 +885,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("tradeId",tradeMerchantBuyId);
         jsonbody.put("securityPwd",securityPwd);
         Response response = OkHttpClientManager.post(c2cip+tradeCancelUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("商户取消买入广告入参：",jsonbody.toJSONString());
         Allure.addAttachment("商户取消买入广告出参：",rspjson.toJSONString());
         log.info("-------------Cancel buy trade response is:"+rspjson);
@@ -903,7 +902,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbody.put("tradeId",tradeMerchantSellId);
         jsonbody.put("securityPwd",securityPwd);
         Response response = OkHttpClientManager.post(c2cip+tradeCancelUrl,jsonbody.toJSONString(),"application/json",header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("商户取消卖出广告入参：",jsonbody.toJSONString());
         Allure.addAttachment("商户取消卖出广告出参：",rspjson.toJSONString());
         log.info("-------------Cancel sell trade response is:"+rspjson);
@@ -922,7 +921,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbodyTransferOut.put("currency",currencyCoin);
         jsonbodyTransferOut.put("amount",merchantReturnAmount);
         Response response1 = OkHttpClientManager.post(c2cip+transferOutUrl,jsonbodyTransferOut.toJSONString(),"application/json",header);
-        JSONObject rspjson1 = JSON.parseObject(response1.body().string());
+        JSONObject rspjson1 = resultDeal(response1);
         Allure.addAttachment("商户划出入参：",jsonbodyTransferOut.toJSONString());
         Allure.addAttachment("商户划出出参：",rspjson1.toJSONString());
         log.info("-------------Cancel buy order response is:"+rspjson1);
@@ -941,7 +940,7 @@ public class C2CCoreProcessTest extends BaseCase {
         jsonbodyTransferOut.put("currency",currencyCoin);
         jsonbodyTransferOut.put("amount",userReturnAmount);
         Response response1 = OkHttpClientManager.post(c2cip+transferOutUrl,jsonbodyTransferOut.toJSONString(),"application/json",header);
-        JSONObject rspjson1 = JSON.parseObject(response1.body().string());
+        JSONObject rspjson1 = resultDeal(response1);
         Allure.addAttachment("用户划出入参：",jsonbodyTransferOut.toJSONString());
         Allure.addAttachment("用户划出出参：",rspjson1.toJSONString());
         log.info("-------------Cancel buy order response is:"+rspjson1);

@@ -12,8 +12,7 @@ import okhttp3.Response;
 import java.io.IOException;
 import java.util.HashMap;
 
-import static io.cex.test.autotest.interfacecase.BaseCase.boss_ip;
-import static io.cex.test.autotest.interfacecase.BaseCase.dataInit;
+import static io.cex.test.autotest.interfacecase.BaseCase.*;
 import static io.cex.test.autotest.interfacecase.boss.tool.BossConfig.*;
 
 @Slf4j
@@ -57,14 +56,14 @@ public class BossCommonOption {
         object.put("auditStatus","1");
         object.put("auditType","USER_CERT_AUTH");
         object.put("bid",certificateNo);
+        Allure.addAttachment("认证初审入参：", object.toJSONString());
         try {
             //调用初审接口
             Response response = OkHttpClientManager.post(boss_ip+firstTrial, object.toJSONString(),
                     "application/json", header);
             if (response.code()==200) {
-                JSONObject rspjson = JSON.parseObject(response.body().string());
+                JSONObject rspjson = resultDeal(response);
                 log.info("-------------Identity first trial response is:" + rspjson);
-                Allure.addAttachment("认证初审入参：", object.toJSONString());
                 Allure.addAttachment("认证初审出参：", rspjson.toJSONString());
                 if (rspjson.get("respCode").equals("000000")){
                     log.info("-------------FirstTrial success"+"body:"+rspjson.toJSONString()+"\n");
@@ -72,7 +71,9 @@ public class BossCommonOption {
                     log.error("----------------FirstTrial failed, trace id is:"+rspjson.get("traceId")+"\n");
                 }
             }else {
-                log.error("----------------Server connect failed"+response.body().string()+"\n");
+                String errorMsg = response.body().string();
+                Allure.addAttachment("认证初审出错：", errorMsg);
+                log.error("----------------Server connect failed"+errorMsg+"\n");
             }
         }catch (IOException e){
             e.printStackTrace();
@@ -93,13 +94,13 @@ public class BossCommonOption {
         object.put("auditType","USER_CERT_AUTH");
         object.put("auditStatus","1");
         object.put("bid",certificateNo);
+        Allure.addAttachment("认证复审入参：", object.toJSONString());
         try {
             //调用复审接口
             Response response = OkHttpClientManager.post(boss_ip+reviewing, object.toJSONString(),
                     "application/json", header);
             if (response.code()==200) {
-                JSONObject rspjson = JSON.parseObject(response.body().string());
-                Allure.addAttachment("认证复审入参：", object.toJSONString());
+                JSONObject rspjson = resultDeal(response);
                 Allure.addAttachment("认证复审出参：", rspjson.toJSONString());
                 log.info("-------------Identity reviewing response is:" + rspjson);
                 if (rspjson.get("respCode").equals("000000")){
@@ -108,7 +109,9 @@ public class BossCommonOption {
                     log.error("----------------Identity reviewing failed, trace id is:"+rspjson.get("traceId")+"\n");
                 }
             }else {
-                log.error("----------------Server connect failed"+response.body().string()+"\n");
+                String errorMsg = response.body().string();
+                Allure.addAttachment("认证复审出错：", errorMsg);
+                log.error("----------------Server connect failed"+errorMsg+"\n");
             }
         }catch (IOException e){
             e.printStackTrace();

@@ -45,7 +45,7 @@ public class LoginoutTest extends BaseCase {
         HashMap header = dataInit();
         Response response = OkHttpClientManager.post(ip + registerUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         log.info("-------------register response is:" + rspjson.toJSONString());
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
@@ -70,7 +70,7 @@ public class LoginoutTest extends BaseCase {
         header.put("CEXTOKEN", token);
         Response response = OkHttpClientManager.post(ip + loginoutUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("100006", rspjson.get("code").toString());
@@ -83,7 +83,7 @@ public class LoginoutTest extends BaseCase {
         jsonbody.put("lang", lang);
         Response response = OkHttpClientManager.post(ip + loginoutUrl, jsonbody.toJSONString(),
                 "application/json");
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("100006", rspjson.get("code").toString());
@@ -99,7 +99,7 @@ public class LoginoutTest extends BaseCase {
         header.put("CEXTOKEN", token);
         Response response = OkHttpClientManager.post(ip + loginoutUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
@@ -114,7 +114,7 @@ public class LoginoutTest extends BaseCase {
         header.put("CEXTOKEN", token);
         Response response = OkHttpClientManager.post(ip + loginoutUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("100000", rspjson.get("code").toString());

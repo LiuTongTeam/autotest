@@ -28,7 +28,7 @@ public class SymbolQuotationGroupTest extends BaseCase {
         jsonbody.put("data","");
         Response response = OkHttpClientManager.post(ip+symbolquotationgroupUrl, jsonbody.toJSONString(),
                 "application/json", BaseCase.dataInit());
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());

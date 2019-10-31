@@ -46,7 +46,7 @@ public class CheckMobileTest extends BaseCase {
         Allure.addAttachment(param.get("comment").toString()+"入参",jsonbody.toJSONString());
         Response response = OkHttpClientManager.post(ip+CheckMobileUrl, jsonbody.toJSONString(),
                 "application/json", BaseCase.dataInit());
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("code").toString());
     }
@@ -70,7 +70,7 @@ public class CheckMobileTest extends BaseCase {
         Allure.addAttachment(param.get("comment").toString()+"入参",jsonbody.toJSONString());
         Response response = OkHttpClientManager.post(ip+CheckMobileUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("code").toString());
     }

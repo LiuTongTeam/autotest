@@ -1,7 +1,10 @@
 package io.cex.test.autotest.interfacecase;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.Response;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
@@ -80,6 +83,25 @@ public class BaseCase {
         return header;
     }
 
+    /**
+     * @desc 处理http响应的body,返回一个json对象
+     **/
+    public static JSONObject resultDeal(Response response) {
+        JSONObject object = new JSONObject();
+        String res = null;
+        try {
+            res = response.body().string();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        try {
+            object = JSON.parseObject(res);
+        } catch (Exception e) {
+            e.printStackTrace();
+            object.put("error",res);
+        }
+        return object;
+    }
 }
 
 

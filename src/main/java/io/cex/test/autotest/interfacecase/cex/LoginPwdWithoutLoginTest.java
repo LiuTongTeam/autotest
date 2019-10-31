@@ -49,7 +49,7 @@ public class LoginPwdWithoutLoginTest extends BaseCase {
         HashMap header = dataInit();
         Response response = OkHttpClientManager.post(ip + registerUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
@@ -77,7 +77,7 @@ public class LoginPwdWithoutLoginTest extends BaseCase {
         jsonbody.put("data",object);
         Response response = OkHttpClientManager.post(ip + loginPwdWithoutLoginUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
-        JSONObject rspjson= JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
@@ -98,7 +98,7 @@ public class LoginPwdWithoutLoginTest extends BaseCase {
         HashMap header = dataInit();
         Response response = OkHttpClientManager.post(ip + registerUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
@@ -116,7 +116,7 @@ public class LoginPwdWithoutLoginTest extends BaseCase {
         jsonbody.put("data",object);
         Response response = OkHttpClientManager.post(ip + loginPwdWithoutLoginUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
-        JSONObject rspjson= JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
@@ -134,7 +134,7 @@ public class LoginPwdWithoutLoginTest extends BaseCase {
         jsonbody.put("data",object);
         Response response = OkHttpClientManager.post(ip + loginPwdWithoutLoginUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
-        JSONObject rspjson= JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect("user-100008",rspjson.get("code").toString());
@@ -152,7 +152,7 @@ public class LoginPwdWithoutLoginTest extends BaseCase {
         jsonbody.put("data",object);
         Response response = OkHttpClientManager.post(ip + loginPwdWithoutLoginUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
-        JSONObject rspjson= JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect("user-100008",rspjson.get("code").toString());

@@ -51,7 +51,7 @@ public class BindMobileTest extends BaseCase {
         HashMap header = dataInit();
         Response response = OkHttpClientManager.post(ip + registerUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         log.info("-------------register response is:" + rspjson.toJSONString());
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
@@ -93,7 +93,7 @@ public class BindMobileTest extends BaseCase {
         Allure.addAttachment(param.get("comment").toString() + "入参", jsonbody.toJSONString());
         Response response = OkHttpClientManager.post(ip + bindmobileUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect(param.get("assert").toString(), rspjson.get("code").toString());
     }
@@ -116,7 +116,7 @@ public class BindMobileTest extends BaseCase {
         System.out.println("rucan"+jsonbody.toJSONString());
         Response response = OkHttpClientManager.post(ip + bindmobileUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         System.out.println("chucan" +rspjson.toJSONString());
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
@@ -138,7 +138,7 @@ public class BindMobileTest extends BaseCase {
         System.out.println("rucan"+jsonbody.toJSONString());
         Response response = OkHttpClientManager.post(ip + bindmobileUrl, jsonbody.toJSONString(),
                 "application/json", BaseCase.dataInit());
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         System.out.println("chucan" +rspjson.toJSONString());
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());

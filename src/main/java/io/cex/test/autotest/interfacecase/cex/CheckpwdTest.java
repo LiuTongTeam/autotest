@@ -36,7 +36,7 @@ public class CheckpwdTest extends BaseCase {
         header.put("CEXTOKEN",presetToken);
         Response response = OkHttpClientManager.post(ip + checkpwdTestUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         log.info("-------------checkpwdtest response is:" + rspjson.toJSONString());
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
@@ -55,7 +55,7 @@ public class CheckpwdTest extends BaseCase {
         header.put("CEXTOKEN",presetToken);
         Response response = OkHttpClientManager.post(ip + checkpwdTestUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         log.info("-------------checkpwderror1 response is:" + rspjson.toJSONString());
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
@@ -74,7 +74,7 @@ public class CheckpwdTest extends BaseCase {
         header.put("CEXTOKEN",presetToken);
         Response response = OkHttpClientManager.post(ip + checkpwdTestUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         log.info("-------------checkpwderror2 response is:" + rspjson.toJSONString());
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
@@ -92,7 +92,7 @@ public class CheckpwdTest extends BaseCase {
         HashMap header = dataInit();
         Response response = OkHttpClientManager.post(ip + checkpwdTestUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         log.info("-------------checkpwderror3 response is:" + rspjson.toJSONString());
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());

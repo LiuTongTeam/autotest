@@ -46,7 +46,7 @@ public class QueryTransferTest extends BaseCase{
         jsonbody.put("lang",lang);
         Response response = OkHttpClientManager.post(ip+querytransferUrl, jsonbody.toJSONString(),
                 "application/json", BaseCase.dataInit());
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect("100006",rspjson.get("code").toString());
@@ -72,7 +72,7 @@ public class QueryTransferTest extends BaseCase{
         Allure.addAttachment(param.get("comment").toString()+"入参",jsonbody.toJSONString());
         Response response = OkHttpClientManager.post(ip+querytransferUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("code").toString());
     }
