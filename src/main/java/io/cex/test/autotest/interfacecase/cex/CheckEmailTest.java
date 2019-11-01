@@ -61,7 +61,7 @@ public class CheckEmailTest extends BaseCase {
         return arrymap;
     }
     @Severity(SeverityLevel.CRITICAL)
-    @Test(dataProvider = "provideCheckemailData",description = "给一个系统没有注册的账号，检查返回是否成功")
+    @Test(dataProvider = "provideCheckemailData",description = "通过随机邮箱号去检查，没有注册才返回成功")
     public void testCheckEmailData(Map<?,?> param) throws IOException {
         dataInit();
         JSONObject object = JSON.parseObject(param.get("body").toString());
@@ -72,6 +72,7 @@ public class CheckEmailTest extends BaseCase {
         Response response = OkHttpClientManager.post(ip+CheckemailUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
         JSONObject rspjson = resultDeal(response);
+        System.out.println(rspjson.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("code").toString());
     }
