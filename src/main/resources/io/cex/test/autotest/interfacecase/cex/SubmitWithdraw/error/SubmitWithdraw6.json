@@ -1,0 +1,12 @@
+{
+  "comment": "提币地址与提币币种不属于同一条链",
+  "body": {
+    "amount":"4",
+    "currency":"BTC",
+    "isLabelCoin": false,
+    "securityPwd":"f3d3d3667220886d7a1a3f1eb9335d91",
+    "verifyCode1":"536478",
+    "walletAddress":"0x274cC789096337D12eB5A17159845CBf3ebB8610"
+  },
+  "assert":"100107"
+}

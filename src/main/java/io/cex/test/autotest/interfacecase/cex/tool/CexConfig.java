@@ -107,5 +107,6 @@ public class CexConfig {
     public static final String rangesUrl = "/kline/get/ranges";
     public static final String rebindmobileUrl = "/user/mobile/rebind/mobile";
     public static final String bindmobileUrl = "/user/mobile/bind/mobile";
+    public static final String submitwithdrawUrl = "/user/withdraw/submit/withdraw";
 
 }

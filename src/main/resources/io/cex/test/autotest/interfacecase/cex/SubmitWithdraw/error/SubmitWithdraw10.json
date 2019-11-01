@@ -1,0 +1,12 @@
+{
+  "comment": "提币地址输入不合法",
+  "body": {
+    "amount":"5",
+    "currency":"UPT",
+    "isLabelCoin": false,
+    "securityPwd":"f3d3d3667220886d7a1a3f1eb9335d91",
+    "verifyCode1":"536478",
+    "walletAddress":"0x274cC789093717159845CBf3ebB8610"
+  },
+  "assert":"100107"
+}

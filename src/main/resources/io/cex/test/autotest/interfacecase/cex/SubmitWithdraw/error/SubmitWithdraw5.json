@@ -1,0 +1,12 @@
+{
+  "comment": "资金密码为空",
+  "body": {
+    "amount":" ",
+    "currency":"UPT",
+    "isLabelCoin": false,
+    "securityPwd":" ",
+    "verifyCode1":"536478",
+    "walletAddress":"0x274cC789096337D12eB5A17159845CBf3ebB8610"
+  },
+  "assert":"100006"
+}
