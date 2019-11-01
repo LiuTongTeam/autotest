@@ -56,7 +56,7 @@ public class CheckEmailTest extends BaseCase {
      */
     @DataProvider(parallel=true)
     public Object[][] provideCheckemailData(Method method){
-        String path = "./src/main/resources/io/cex/test/autotest/interfacecase/cex/CheckEmail/Checkemail.json";
+        String path = "./src/main/resources/io/cex/test/autotest/interfacecase/cex/CheckEmail/right";
         HashMap<String, String>[][] arrymap = (HashMap<String, String>[][]) JsonFileUtil.jsonFileToArry(path);
         return arrymap;
     }
