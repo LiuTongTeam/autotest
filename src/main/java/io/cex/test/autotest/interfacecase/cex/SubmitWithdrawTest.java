@@ -64,9 +64,9 @@ public class SubmitWithdrawTest extends BaseCase{
     @Feature("数据准备")
     @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testRegistAndLogin",description = "身份认证")
-    public void testIdentity(){
+    public void testIdentity()throws InterruptedException{
         //提交认证
-        String certifercationUser = cexIdentity(usertoken);
+        String certifercationUser = CexCommonOption.cexIdentity(usertoken);
         //初审
         firstTrial(certifercationUser);
         //复审
