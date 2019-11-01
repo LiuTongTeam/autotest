@@ -83,7 +83,7 @@ public class C2CCoreProcessTest extends BaseCase {
     @Feature("数据准备")
     @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testRegistAndLogin",description = "身份认证")
-    public void testC2CIdentity(){
+    public void testC2CIdentity() throws InterruptedException{
         //提交认证
         String certifercationMerchant = cexIdentity(merchanttoken);
         String certifercationUser = cexIdentity(usertoken);

@@ -55,7 +55,7 @@ public class CheckMobileTest extends BaseCase {
      */
     @DataProvider(parallel=true)
     public Object[][] provideCheckMobileData(Method method){
-        String path = "./src/main/resources/io/cex/test/autotest/interfacecase/cex/CheckMobile/CheckMobile.json";
+        String path = "./src/main/resources/io/cex/test/autotest/interfacecase/cex/CheckMobile/right";
         HashMap<String, String>[][] arrymap = (HashMap<String, String>[][]) JsonFileUtil.jsonFileToArry(path);
         return arrymap;
     }

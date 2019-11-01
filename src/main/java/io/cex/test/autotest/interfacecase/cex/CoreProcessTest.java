@@ -101,17 +101,20 @@ public class CoreProcessTest extends BaseCase {
     @Feature("实名认证")
     @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testLogin",description = "身份认证")
-    public void testIdentity() throws IOException{
+    public void testIdentity() throws IOException,InterruptedException{
         //认证姓名随机字符串
         String userName = RandomUtil.generateString(10);
         JSONObject object = new JSONObject();
         object.put("countryId",countryId);
         //图片ID由上传文件接口返回
         object.put("backId", CexCommonOption.uploadFile(fileUrl,token,"1.jpeg"));
+        Thread.sleep(5000);
         object.put("frontId", CexCommonOption.uploadFile(fileUrl,token,"2.jpg"));
+        Thread.sleep(5000);
         object.put("userName", userName);
         object.put("certificateNo",RandomUtil.generateLong(18));
         object.put("personId", CexCommonOption.uploadFile(fileUrl,token,"3.png"));
+        Thread.sleep(5000);
         object.put("certificateType",certificateType);
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data",object);
