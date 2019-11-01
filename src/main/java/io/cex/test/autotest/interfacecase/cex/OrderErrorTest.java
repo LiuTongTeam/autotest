@@ -36,7 +36,7 @@ public class OrderErrorTest extends BaseCase {
         jsonbody.put("lang", lang);
         Response response = OkHttpClientManager.post(ip + orderUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("100006", rspjson.get("code").toString());
@@ -58,7 +58,7 @@ public class OrderErrorTest extends BaseCase {
         header.put("CEXTOKEN", presetToken);
         Response response = OkHttpClientManager.post(ip + orderUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("100006", rspjson.get("code").toString());
@@ -80,13 +80,13 @@ public class OrderErrorTest extends BaseCase {
         header.put("CEXTOKEN", presetToken);
         Response response = OkHttpClientManager.post(ip + orderUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("100006", rspjson.get("code").toString());
     }
     //订单价格为空:后端返回系统错误，后面再优化，先注释
-    /*
+  /*
     @Test(description = "订单价格为空")
     public void orderErrorTest4() throws IOException {
         JSONObject object = new JSONObject();
@@ -103,14 +103,14 @@ public class OrderErrorTest extends BaseCase {
         header.put("CEXTOKEN", presetToken);
         Response response = OkHttpClientManager.post(ip + orderUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("100006", rspjson.get("code").toString());
     }*/
     //订单价格为0:
 
-    @Test(description = "订单价格为空")
+    @Test(description = "订单价格为0")
     public void orderErrorTest5() throws IOException {
         JSONObject object = new JSONObject();
         object.put("symbol",symbol);
@@ -126,7 +126,7 @@ public class OrderErrorTest extends BaseCase {
         header.put("CEXTOKEN", presetToken);
         Response response = OkHttpClientManager.post(ip + orderUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("100048", rspjson.get("code").toString());
@@ -148,7 +148,7 @@ public class OrderErrorTest extends BaseCase {
         header.put("CEXTOKEN", presetToken);
         Response response = OkHttpClientManager.post(ip + orderUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("100048", rspjson.get("code").toString());
@@ -170,7 +170,7 @@ public class OrderErrorTest extends BaseCase {
         header.put("CEXTOKEN", presetToken);
         Response response = OkHttpClientManager.post(ip + orderUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("100048", rspjson.get("code").toString());
@@ -191,7 +191,7 @@ public class OrderErrorTest extends BaseCase {
         header.put("CEXTOKEN", presetToken);
         Response response = OkHttpClientManager.post(ip + orderUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("100049", rspjson.get("code").toString());
@@ -212,7 +212,7 @@ public class OrderErrorTest extends BaseCase {
         header.put("CEXTOKEN", presetToken);
         Response response = OkHttpClientManager.post(ip + orderUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("100050", rspjson.get("code").toString());
@@ -234,7 +234,7 @@ public class OrderErrorTest extends BaseCase {
         header.put("CEXTOKEN", presetToken);
         Response response = OkHttpClientManager.post(ip + orderUrl, jsonbody.toJSONString(),
                 "application/json", header);
-        JSONObject rspjson = JSON.parseObject(response.body().string());
+        JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("100050", rspjson.get("code").toString());
