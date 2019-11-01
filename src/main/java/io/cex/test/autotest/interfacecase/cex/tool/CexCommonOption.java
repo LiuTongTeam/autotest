@@ -154,17 +154,20 @@ public class CexCommonOption {
      * @param  token 登陆cex token
      * @return BOSS身份认证ID
      **/
-    public static String cexIdentity(String token){
+    public static String cexIdentity(String token) throws InterruptedException{
         //认证姓名随机字符串
         String userName = RandomUtil.generateString(10);
         JSONObject object = new JSONObject();
         object.put("countryId",countryId);
         //图片ID由上传文件接口返回
         object.put("backId", CexCommonOption.uploadFile(fileUrl,token,"1.jpeg"));
+        Thread.sleep(5000);
         object.put("frontId", CexCommonOption.uploadFile(fileUrl,token,"1.jpeg"));
+        Thread.sleep(5000);
         object.put("userName", "TEST"+userName);
         object.put("certificateNo",RandomUtil.generateLong(18));
         object.put("personId", CexCommonOption.uploadFile(fileUrl,token,"1.jpeg"));
+        Thread.sleep(5000);
         object.put("certificateType",certificateType);
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data",object);
