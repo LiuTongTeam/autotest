@@ -1,12 +1,10 @@
 package io.cex.test.autotest.interfacecase.cex;
-import bsh.InterpreterError;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import io.cex.test.autotest.interfacecase.BaseCase;
 import io.cex.test.autotest.interfacecase.cex.tool.CexCommonOption;
 import io.cex.test.framework.assertutil.AssertTool;
 import io.cex.test.framework.common.RandomUtil;
-import io.cex.test.framework.dbutil.DataBaseManager;
 import io.cex.test.framework.httputil.OkHttpClientManager;
 import io.cex.test.framework.jsonutil.JsonFileUtil;
 import io.cex.test.framework.testng.Retry;
@@ -136,9 +134,8 @@ public class SubmitWithdrawTest extends BaseCase{
         Thread.sleep(2000);
         String sql = String.format("SELECT freeze_amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = 'UPT';\n",randomPhoneUser);
         AssertTool.isContainsExpect("{\"freeze_amount\":\"10.000000000000000000000000000000\"}",cexmysql,sql);
-        Thread.sleep(300000);
-        String sql1 = String.format("SELECT freeze_amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = 'UPT';\n",randomPhoneUser);
-        AssertTool.isContainsExpect("{\"freeze_amount\":\"0.000000000000000000000000000000\"}",cexmysql,sql1);
+        Thread.sleep(700000);
+        AssertTool.isContainsExpect("{\"freeze_amount\":\"0.000000000000000000000000000000\"}",cexmysql,sql);
     }
 
     /**
