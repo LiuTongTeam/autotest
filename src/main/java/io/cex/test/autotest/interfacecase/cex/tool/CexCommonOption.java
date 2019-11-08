@@ -292,6 +292,54 @@ public class CexCommonOption {
     }
 
     /**
+     * @desc 获取用户对应currency的标签
+     * @param  user 用户名
+     * @param pwd 密码
+     * @param currency 币种
+     * @return 标签
+     **/
+        public static String getLabel(String user ,String pwd,String currency){
+        JSONObject object = new JSONObject();
+        object.put("currency",currency);
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("data",object);
+        jsonbody.put("lang",lang);
+        HashMap header = dataInit();
+        String token = null;
+        if (user.equals(presetUser)){
+            token = presetToken;
+        }else {
+            token = userCexLogin(user,pwd,area);
+        }
+        header.put("CEXTOKEN",token);
+        Allure.addAttachment("获取币种标签入参：",jsonbody.toJSONString());
+        try {
+            Response response = OkHttpClientManager.post(ip+rechargeAddrUrl,jsonbody.toJSONString(),"application/json",header);
+            JSONObject rspjson = resultDeal(response);
+            Allure.addAttachment("获取币种标签出参：",rspjson.toJSONString());
+            if (response.code()==200){
+                if (rspjson.get("code").equals("000000")){
+                    log.info("------------Get address success"+"body:"+rspjson.toJSONString()+"\n");
+                    return JsonFileUtil.jsonToMap(rspjson,new HashMap<String, Object>()).get("labelContent").toString();
+                }else {
+                    log.error("----------------Get label failed, trace id is:"+rspjson.get("traceId")+"\n");
+                    return null;
+                }
+            }else {
+                String errorMsg = rspjson.getString("error");
+                log.error("----------------Server connect failed"+errorMsg+"\n");
+                Allure.addAttachment("获取币种标签出错：",errorMsg);
+                return null;
+            }
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    /**
      * @desc 提币
      * @param securityPwd 资金密码
      * @param walletAddress 提币地址
