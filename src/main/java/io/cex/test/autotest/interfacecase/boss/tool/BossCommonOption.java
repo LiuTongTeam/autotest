@@ -30,8 +30,8 @@ public class BossCommonOption {
         Allure.addAttachment("BOSS登陆入参：",object.toJSONString());
         try {
             String response = OkHttpClientManager.postAsString(boss_ip+bossLoginUrl,object.toJSONString());
+            Allure.addAttachment("BOSS登陆出参：",response);
             try {
-                Allure.addAttachment("BOSS登陆出参：",response);
                 bossToken = JsonFileUtil.jsonToMap(JSONObject.parseObject(response),new HashMap<String, Object>()).get("token").toString();
             }catch (Exception e){
                 e.printStackTrace();
@@ -61,17 +61,17 @@ public class BossCommonOption {
             //调用初审接口
             Response response = OkHttpClientManager.post(boss_ip+firstTrial, object.toJSONString(),
                     "application/json", header);
+            JSONObject rspjson = resultDeal(response);
+            log.info("-------------Identity first trial response is:" + rspjson);
+            Allure.addAttachment("认证初审出参：", rspjson.toJSONString());
             if (response.code()==200) {
-                JSONObject rspjson = resultDeal(response);
-                log.info("-------------Identity first trial response is:" + rspjson);
-                Allure.addAttachment("认证初审出参：", rspjson.toJSONString());
                 if (rspjson.get("respCode").equals("000000")){
                     log.info("-------------FirstTrial success"+"body:"+rspjson.toJSONString()+"\n");
                 }else {
                     log.error("----------------FirstTrial failed, trace id is:"+rspjson.get("traceId")+"\n");
                 }
             }else {
-                String errorMsg = response.body().string();
+                String errorMsg = rspjson.getString("error");
                 Allure.addAttachment("认证初审出错：", errorMsg);
                 log.error("----------------Server connect failed"+errorMsg+"\n");
             }
@@ -99,9 +99,9 @@ public class BossCommonOption {
             //调用复审接口
             Response response = OkHttpClientManager.post(boss_ip+reviewing, object.toJSONString(),
                     "application/json", header);
+            JSONObject rspjson = resultDeal(response);
+            Allure.addAttachment("认证复审出参：", rspjson.toJSONString());
             if (response.code()==200) {
-                JSONObject rspjson = resultDeal(response);
-                Allure.addAttachment("认证复审出参：", rspjson.toJSONString());
                 log.info("-------------Identity reviewing response is:" + rspjson);
                 if (rspjson.get("respCode").equals("000000")){
                     log.info("-------------Identity reviewing success"+"body:"+rspjson.toJSONString()+"\n");
@@ -109,7 +109,7 @@ public class BossCommonOption {
                     log.error("----------------Identity reviewing failed, trace id is:"+rspjson.get("traceId")+"\n");
                 }
             }else {
-                String errorMsg = response.body().string();
+                String errorMsg = rspjson.getString("error");
                 Allure.addAttachment("认证复审出错：", errorMsg);
                 log.error("----------------Server connect failed"+errorMsg+"\n");
             }

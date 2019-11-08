@@ -12,6 +12,7 @@ import io.cex.test.framework.jsonutil.JsonFileUtil;
 import io.qameta.allure.Allure;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
+import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,9 +47,9 @@ public class CexCommonOption {
         try {
             Response response = OkHttpClientManager.post(ip+loginUrl, jsonbody.toJSONString(),
                     "application/json", dataInit());
+            JSONObject rspjson = resultDeal(response);
+            Allure.addAttachment("CEX登陆出参：",rspjson.toJSONString());
             if (response.code()==200){
-                JSONObject rspjson = resultDeal(response);
-                Allure.addAttachment("CEX登陆出参：",rspjson.toJSONString());
                 if (rspjson.get("code").equals("000000")){
                     log.info("-------------Login success"+"body:"+rspjson.toJSONString()+"\n");
                     return JsonFileUtil.jsonToMap(rspjson,new HashMap<String, Object>()).get("token").toString();
@@ -57,7 +58,7 @@ public class CexCommonOption {
                     return null;
                 }
             }else {
-                log.error("----------------Server connect failed"+response.body().string()+"\n");
+                log.error("----------------Server connect failed"+rspjson.getString("error")+"\n");
                 return null;
             }
         }catch (IOException e){
@@ -87,16 +88,16 @@ public class CexCommonOption {
         try {
             Response response = OkHttpClientManager.post(ip+registerUrl, jsonbody.toJSONString(),
                     "application/json", dataInit());
+            JSONObject rspjson = resultDeal(response);
+            Allure.addAttachment("注册出参：",rspjson.toJSONString());
             if (response.code()==200){
-                JSONObject rspjson = resultDeal(response);
-                Allure.addAttachment("注册出参：",rspjson.toJSONString());
                 if (rspjson.get("code").equals("000000")){
                     log.info("-------------Regist success"+"body:"+rspjson.toJSONString()+"\n");
                 }else {
                     log.error("----------------Regist failed, trace id is:"+rspjson.get("traceId")+"\n");
                 }
             }else {
-                log.error("----------------Server connect failed"+response.body().string()+"\n");
+                log.error("----------------Server connect failed"+rspjson.getString("error")+"\n");
             }
         }catch (IOException e){
             e.printStackTrace();
@@ -122,10 +123,10 @@ public class CexCommonOption {
             //调用上传图片接口，获取图片ID
             Response response = OkHttpClientManager.post(ip+upLoadFileUrl,
                     "multipart/form-data; boundary=----WebKitFormBoundarylsMUpMX3lOxQKla8", iheader,file,fileName);
+            JSONObject rspjson = resultDeal(response);
+            Allure.addAttachment("上传文件出参：",rspjson.toJSONString());
             if (response.code()==200) {
                 // System.out.println("body:"+response.body().string()+"header"+response.headers().toString());
-                JSONObject rspjson = resultDeal(response);
-                Allure.addAttachment("上传文件出参：",rspjson.toJSONString());
                 if (rspjson.get("code").equals("000000")) {
                     log.info("-------------Upload Files success" + "body:"+rspjson.toJSONString()+ "\n");
                     id = rspjson.getString("data");
@@ -135,7 +136,7 @@ public class CexCommonOption {
                 //    System.out.println("body:"+rspjson.toJSONString()+"header"+response.headers().toString());
                 return id;
             }else {
-                String errorMsg = response.body().string();
+                String errorMsg = rspjson.getString("error");
                 log.error("----------------Server connect failed"+errorMsg+"\n");
                 Allure.addAttachment("上传文件出错：",errorMsg);
                 return id;
@@ -178,11 +179,11 @@ public class CexCommonOption {
         try {
             Response response = OkHttpClientManager.post(ip+identityUrl, jsonbody.toJSONString(),
                     "application/json", header);
+            JSONObject rspjson = resultDeal(response);
+            log.info("------------Identity response is:" + rspjson);
+            Allure.addAttachment("认证入参：", jsonbody.toJSONString());
+            Allure.addAttachment("认证出参：", rspjson.toJSONString());
             if (response.code()==200) {
-                JSONObject rspjson = resultDeal(response);
-                log.info("------------Identity response is:" + rspjson);
-                Allure.addAttachment("认证入参：", jsonbody.toJSONString());
-                Allure.addAttachment("认证出参：", rspjson.toJSONString());
                 if (rspjson.get("code").equals("000000")) {
                     String sql = String.format("SELECT certificate_no FROM member_certification_record WHERE first_name = '%s';", "TEST"+userName);
                     DataBaseManager dataBaseManager = new DataBaseManager();
@@ -194,7 +195,7 @@ public class CexCommonOption {
                     return certificate_no;
                 }
             }else {
-                String errorMsg = response.body().string();
+                String errorMsg = rspjson.getString("error");
                 log.error("----------------Server connect failed"+errorMsg+"\n");
                 Allure.addAttachment("认证出错：", errorMsg);
                 return certificate_no;
@@ -221,10 +222,10 @@ public class CexCommonOption {
         try {
             Response response = OkHttpClientManager.post(ip+securityPwdUrl, jsonbody.toJSONString(),
                     "application/json", header);
+            JSONObject rspjson = resultDeal(response);
+            Allure.addAttachment("设置资金密码入参：", jsonbody.toJSONString());
+            Allure.addAttachment("设置资金密码出参：", rspjson.toJSONString());
             if (response.code()==200) {
-                JSONObject rspjson = resultDeal(response);
-                Allure.addAttachment("设置资金密码入参：", jsonbody.toJSONString());
-                Allure.addAttachment("设置资金密码出参：", rspjson.toJSONString());
                 log.info("-------------SecurityPwd response is:" + rspjson);
                 if (rspjson.get("code").equals("000000")) {
                     log.info("-------------SecurityPwd Set success" + "body:"+rspjson.toJSONString()+ "\n");
@@ -232,7 +233,7 @@ public class CexCommonOption {
                     log.error("----------------SecurityPwd Set failed, trace id is:" + rspjson.get("traceId") + "\n");
                 }
             }else {
-                String errorMsg = response.body().string();
+                String errorMsg = rspjson.getString("error");
                 Allure.addAttachment("设置资金密码出错：",errorMsg );
                 log.error("----------------Server connect failed"+errorMsg+"\n");
             }
@@ -267,9 +268,9 @@ public class CexCommonOption {
         Allure.addAttachment("获取充币地址入参：",jsonbody.toJSONString());
         try {
             Response response = OkHttpClientManager.post(ip+rechargeAddrUrl,jsonbody.toJSONString(),"application/json",header);
+            JSONObject rspjson = resultDeal(response);
+            Allure.addAttachment("获取充币地址出参：",rspjson.toJSONString());
             if (response.code()==200){
-                JSONObject rspjson = resultDeal(response);
-                Allure.addAttachment("获取充币地址出参：",rspjson.toJSONString());
                 if (rspjson.get("code").equals("000000")){
                     log.info("------------Get address success"+"body:"+rspjson.toJSONString()+"\n");
                     return JsonFileUtil.jsonToMap(rspjson,new HashMap<String, Object>()).get("rechargeAddress").toString();
@@ -278,7 +279,7 @@ public class CexCommonOption {
                     return null;
                 }
             }else {
-                String errorMsg = response.body().string();
+                String errorMsg = rspjson.getString("error");
                 log.error("----------------Server connect failed"+errorMsg+"\n");
                 Allure.addAttachment("获取充币地址出错：",errorMsg);
                 return null;
@@ -316,13 +317,13 @@ public class CexCommonOption {
 
         try {
             Response response = OkHttpClientManager.post(ip+withdrawUrl,jsonbody.toJSONString(),"application/json",header);
+            JSONObject rspjson = resultDeal(response);
+            Allure.addAttachment("提币出参：",rspjson.toJSONString());
             if (response.code()==200){
-                JSONObject rspjson = resultDeal(response);
-                Allure.addAttachment("提币出参：",rspjson.toJSONString());
                 log.info("-------------Withdraw response is:"+rspjson);
                 return rspjson.get("code").toString();
             }else {
-                String errorMsg = response.body().string();
+                String errorMsg = rspjson.getString("error");
                 log.error("----------------Server connect failed"+errorMsg+"\n");
                 Allure.addAttachment("提币出错：",errorMsg);
             }
@@ -355,9 +356,9 @@ public class CexCommonOption {
         HashMap result = new HashMap();
         try {
             Response response = OkHttpClientManager.post(ip + orderUrl, jsonbody.toJSONString(), "application/json", header);
+            JSONObject rspjson = resultDeal(response);
+            Allure.addAttachment("下单出参：",rspjson.toJSONString());
             if (response.code() == 200) {
-                JSONObject rspjson = resultDeal(response);
-                Allure.addAttachment("下单出参：",rspjson.toJSONString());
                 log.info("-------------Order response is:" + rspjson);
                 result.put("code", rspjson.get("code").toString());
                 if (result.get("code").equals("000000")) {
@@ -368,7 +369,7 @@ public class CexCommonOption {
                     log.error("----------------Server connect failed" + response.body() + "\n");
                 }
             }else {
-                String errorMsg = response.body().string();
+                String errorMsg = rspjson.getString("error");
                 Allure.addAttachment("下单出错：",errorMsg);
             }
         }catch (IOException e){
@@ -395,14 +396,14 @@ public class CexCommonOption {
         HashMap result = new HashMap();
         try {
             Response response = OkHttpClientManager.post(ip + cancelOrderUrl, jsonbody.toJSONString(), "application/json", header);
+            JSONObject rspjson = resultDeal(response);
+            Allure.addAttachment("撤单出参：", rspjson.toJSONString());
             if (response.code() == 200) {
-                JSONObject rspjson = resultDeal(response);
-                Allure.addAttachment("撤单出参：", rspjson.toJSONString());
                 result.put("code", rspjson.get("code").toString());
                 log.info(("撤单出参："+ rspjson.toJSONString()));
                 return result;
             }else {
-                String errorMsg = response.body().string();
+                String errorMsg = rspjson.getString("error");
                 log.error("----------------Server connect failed" + errorMsg + "\n");
                 Allure.addAttachment("撤单出错：", errorMsg);
                 return null;
@@ -465,9 +466,9 @@ public class CexCommonOption {
         header.put("CEXTOKEN",token);
         try {
             Response response = OkHttpClientManager.post(ip + queryAssetUrl,jsonbody.toJSONString(),"application/json", header);
+            JSONObject rspjson = resultDeal(response);
+            Allure.addAttachment("获取资产信息出参：",rspjson.toJSONString());
             if (response.code() == 200) {
-                JSONObject rspjson = resultDeal(response);
-                Allure.addAttachment("获取资产信息出参：",rspjson.toJSONString());
                 if (rspjson.get("code").toString().equals("000000")){
                     JSONObject data = rspjson.getJSONObject("data");
                     JSONArray array = JSON.parseArray(data.get("currencyList").toString());
@@ -491,7 +492,7 @@ public class CexCommonOption {
                     return null;
                 }
             }else {
-                String errorMsg = response.body().string();
+                String errorMsg = rspjson.getString("error");
                 log.error("----------------Server connect failed" + errorMsg + "\n");
                 Allure.addAttachment("获取资产信息出错：",errorMsg);
                 return null;
@@ -502,6 +503,51 @@ public class CexCommonOption {
         }
 
     }
+
+    /**
+     * @desc 获取最优价
+     * @param action 交易方向，buy或者sell
+     * @param symbol 币种信息
+     * @return HashMap中存放币种的totalAmount、availableAmount、frozenAmount
+     **/
+    public static String queryBestPrice(String action,String symbol){
+        String price = null;
+        JSONObject object = new JSONObject();
+        object.put("action",action);
+        object.put("symbol",symbol);
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("data",object);
+        jsonbody.put("lang",lang);
+        HashMap header = dataInit();
+        try {
+            Response response = OkHttpClientManager.post(ip + BestPriceUrl, jsonbody.toJSONString(), "application/json", header);
+            JSONObject rspjson = resultDeal(response);
+            Allure.addAttachment("获取最优价出参：",rspjson.toJSONString());
+            if (response.code() == 200) {
+                if (rspjson.get("code").toString().equals("000000")){
+                    JSONObject data = rspjson.getJSONObject("data");
+                    price = StringUtil.stripTrailingZeros(data.getString("bestPrice"));
+                    return price;
+                    }else {
+                        log.info("----------------QueryBest failed,response is "+rspjson+"\n");
+                        return null;
+                    }
+                }else {
+                    log.error("----------------QueryBest failed, trace id is:"+rspjson.getString("error")+"\n");
+                    return null;
+                }
+        }catch (IOException e){
+            e.printStackTrace();
+
+        }
+        return  price;
+    }
+
+/*
+    public static void main(String[] args){
+        String n = queryBestPrice("SELL","KOFO/USDT");
+    }
+*/
 
     /**
      * @desc 根据费率计算实际成交后的可用数量
@@ -523,5 +569,8 @@ public class CexCommonOption {
         return result.toString();
     }
 
-
+    @Test
+    public void test11(){
+        CexCommonOption.userCexLogin("shengyan1@126.com",pwd,area);
+    }
 }

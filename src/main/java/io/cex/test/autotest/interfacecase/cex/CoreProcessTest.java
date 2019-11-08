@@ -333,10 +333,11 @@ public class CoreProcessTest extends BaseCase {
     @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testPartBuyOrder",description = "预置账户下卖单")
     public void testPartBuyOrder1() throws InterruptedException{
+        String bestPrice = CexCommonOption.queryBestPrice("SELL",symbol);
         //获取成交前测试账户币个数
         preAvailableCoinAmount = new BigDecimal(queryCexAsset(token,productCoin).get("availableAmount").toString());
         //预置账户下卖单
-        Map result = order(symbol,"SELL","LMT",limitPrice,"3","3",presetToken);
+        Map result = order(symbol,"SELL","LMT",bestPrice,"3","3",presetToken);
         AssertTool.isContainsExpect("000000",result.get("code").toString());
         Thread.sleep(30000);
         //成交后查询测试账户的支付余额冻结金额
@@ -384,12 +385,13 @@ public class CoreProcessTest extends BaseCase {
     @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testPartSellOrder",description = "预置账户下买单")
     public void testPartSellOrder1() throws InterruptedException{
+        String bestPrice = CexCommonOption.queryBestPrice("BUY",symbol);
         //获取成交前测试账户计价币个数
         preAvailableAmount = new BigDecimal(queryCexAsset(token,currencyCoin).get("availableAmount").toString());
         Allure.addAttachment("成交前可用"+currencyCoin+"金额为：",StringUtil.stripTrailingZeros(preAvailableAmount.toString()));
         log.info("成交前可用金额："+preAvailableAmount.toString());
         //预置账户下买单
-        Map result = order(symbol,"BUY","LMT",limitPrice,"1","1",presetToken);
+        Map result = order(symbol,"BUY","LMT",bestPrice,"1","1",presetToken);
         Thread.sleep(30000);
         AssertTool.isContainsExpect("000000",result.get("code").toString());
         //成交后查询测试账户的卖出币种冻结数量

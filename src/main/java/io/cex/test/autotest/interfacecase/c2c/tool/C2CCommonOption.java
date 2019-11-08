@@ -36,9 +36,9 @@ public class C2CCommonOption {
         JSONObject jsonbody = new JSONObject();
         try {
             Response response = OkHttpClientManager.post(c2cip+assetsDetailUrl,jsonbody.toJSONString(),"application/json",header);
+            JSONObject rspjson = resultDeal(response);
+            Allure.addAttachment("查询用户资产出参：",rspjson.toJSONString());
             if (response.code()==200){
-                JSONObject rspjson = resultDeal(response);
-                Allure.addAttachment("查询用户资产出参：",rspjson.toJSONString());
                 if (rspjson.get("respCode").equals("000000")){
                     String amount = JsonFileUtil.jsonToMap(rspjson,new HashMap<>()).get(assetType).toString();
                     return amount;
@@ -47,7 +47,8 @@ public class C2CCommonOption {
                     return null;
                 }
             }else {
-                log.error("----------------Server connect failed"+response.body().string()+"\n");
+                log.error("----------------Server connect failed"+rspjson.getString("error")+"\n");
+                Allure.addAttachment("查询用户资产出错：",rspjson.getString("error"));
                 return null;
             }
 
@@ -71,9 +72,9 @@ public class C2CCommonOption {
         Allure.addAttachment("查询广告详情入参：",jsonbody.toJSONString());
         try {
             Response response = OkHttpClientManager.post(c2cip+selectOneUrl,jsonbody.toJSONString(),"application/json",header);
+            JSONObject rspjson = resultDeal(response);
+            Allure.addAttachment("查询广告详情出参：",rspjson.toJSONString());
             if (response.code()==200){
-                JSONObject rspjson = resultDeal(response);
-                Allure.addAttachment("查询广告详情出参：",rspjson.toJSONString());
                 if (rspjson.get("respCode").equals("000000")){
                     String amount = JsonFileUtil.jsonToMap(rspjson,new HashMap<>()).get(type).toString();
                     return amount;
@@ -82,7 +83,7 @@ public class C2CCommonOption {
                     return null;
                 }
             }else {
-                String errorMsg = response.body().string();
+                String errorMsg = rspjson.getString("error");
                 log.error("----------------Server connect failed"+errorMsg+"\n");
                 Allure.addAttachment("查询广告详情出错：",errorMsg);
                 return null;
@@ -157,9 +158,9 @@ public class C2CCommonOption {
             //调用上传图片接口，获取图片ID
             Response response = OkHttpClientManager.post(c2cip+url,
                     "multipart/form-data; boundary=----WebKitFormBoundarylsMUpMX3lOxQKla8", header,file,fileName);
+            JSONObject rspjson = resultDeal(response);
+            Allure.addAttachment("上传文件出参：",rspjson.toJSONString());
             if (response.code()==200) {
-                JSONObject rspjson = JSON.parseObject(response.body().string());
-                Allure.addAttachment("上传文件出参：",rspjson.toJSONString());
                 System.out.println("response"+rspjson.toJSONString());
                 if (rspjson.get("respCode").equals("000000")) {
                     log.info("-------------Upload File success" + "body:"+rspjson.toJSONString()+ "\n");
@@ -169,7 +170,7 @@ public class C2CCommonOption {
                 }
                 return id;
             }else {
-                String errorMsg = response.body().string();
+                String errorMsg = rspjson.getString("error");
                 log.error("----------------Server connect failed"+errorMsg+"\n");
                 Allure.addAttachment("上传文件出参：",errorMsg);
                 return id;
@@ -196,9 +197,9 @@ public class C2CCommonOption {
         object.put("fileId",fileId);
         try {
             Response response = OkHttpClientManager.post(c2cip+url,object.toJSONString(),"application/json",header);
+            JSONObject rspjson = resultDeal(response);
+            Allure.addAttachment("获取二维码图片出参：",rspjson.toJSONString());
             if (response.code()==200) {
-                JSONObject rspjson = JSON.parseObject(response.body().string());
-                Allure.addAttachment("获取二维码图片出参：",rspjson.toJSONString());
                 if (rspjson.get("respCode").equals("000000")) {
                     log.info("------------Get File success" + "body:"+rspjson.toJSONString()+ "\n");
                     id = rspjson.getString("data");
@@ -207,7 +208,7 @@ public class C2CCommonOption {
                 }
                 return id;
             }else {
-                String errorMsg = response.body().string();
+                String errorMsg = rspjson.getString("error");
                 Allure.addAttachment("获取二维码图片出参：",errorMsg);
                 log.error("----------------Server connect failed"+errorMsg+"\n");
                 return id;
@@ -230,9 +231,9 @@ public class C2CCommonOption {
         JSONObject jsonbody = new JSONObject();
         try {
             Response response = OkHttpClientManager.post(c2cip+url,jsonbody.toJSONString(),"application/json",header);
+            JSONObject rspjson = resultDeal(response);
+            Allure.addAttachment("查询用户支付方式的ID出参：", rspjson.toJSONString());
             if (response.code()==200) {
-                JSONObject rspjson = JSON.parseObject(response.body().string());
-                Allure.addAttachment("查询用户支付方式的ID出参：", rspjson.toJSONString());
                 if (rspjson.get("respCode").equals("000000")) {
                     JSONObject data = JSON.parseObject(rspjson.get("data").toString());
                     if (data.get("totalNum").equals(0)){
@@ -252,7 +253,7 @@ public class C2CCommonOption {
                     log.error("---------------Query failed, trace id is:" + rspjson.get("traceId") + "\n");
                 }
             }
-            String errorMsg = response.body().string();
+            String errorMsg = rspjson.getString("error");
             Allure.addAttachment("查询用户支付方式的ID出参：", errorMsg);
             log.error("----------------Server connect failed"+errorMsg+"\n");
             return null;
