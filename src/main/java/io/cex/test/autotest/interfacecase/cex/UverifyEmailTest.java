@@ -43,7 +43,7 @@ public class UverifyEmailTest extends BaseCase {
         object.put("email", email);
         jsonbody.put("data",object);
         System.out.println(jsonbody);
-        Response response = OkHttpClientManager.post(ip + uverifyEmailUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + uverifyEmailUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
@@ -63,7 +63,7 @@ public class UverifyEmailTest extends BaseCase {
         //String token = userCexLogin("18780050294",pwd,area);
         header.put("CEXTOKEN", this.token);
         System.out.println(jsonbody);
-        Response response = OkHttpClientManager.post(ip + uverifyEmailUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + uverifyEmailUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
@@ -84,7 +84,7 @@ public class UverifyEmailTest extends BaseCase {
         //String token = userCexLogin("18780050294",pwd,area);
         header.put("CEXTOKEN", this.token);
         System.out.println(jsonbody);
-        Response response = OkHttpClientManager.post(ip + uverifyEmailUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + uverifyEmailUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
@@ -110,7 +110,7 @@ public class UverifyEmailTest extends BaseCase {
         System.out.println(jsonbody);
         //String token = userCexLogin("18780050294",pwd,area);
         header.put("CEXTOKEN", this.token);
-        Response response = OkHttpClientManager.post(ip + uverifyEmailUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + uverifyEmailUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());

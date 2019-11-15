@@ -29,7 +29,7 @@ public class FullArticleTest extends BaseCase {
         jsonbody.put("data",object);
         HashMap header = dataInit();
         header.put("CEXTOKEN", presetToken);
-        Response response = OkHttpClientManager.post(ip+fullArticleUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+fullArticleUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
@@ -44,7 +44,7 @@ public class FullArticleTest extends BaseCase {
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
-        Response response = OkHttpClientManager.post(ip+fullArticleUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+fullArticleUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
@@ -58,7 +58,7 @@ public class FullArticleTest extends BaseCase {
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
-        Response response = OkHttpClientManager.post(ip+fullArticleUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+fullArticleUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());

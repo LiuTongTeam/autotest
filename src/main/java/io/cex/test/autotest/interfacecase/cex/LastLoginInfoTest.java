@@ -23,7 +23,7 @@ public class LastLoginInfoTest extends BaseCase {
     public void lastLoginInfoTestError() throws IOException {
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);
-        Response response = OkHttpClientManager.post(ip+lastLoginInfoUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+lastLoginInfoUrl, jsonbody.toJSONString(),
                 "application/json", BaseCase.dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
@@ -37,11 +37,13 @@ public class LastLoginInfoTest extends BaseCase {
         jsonbody.put("lang",lang);
         HashMap header = dataInit();
         header.put("CEXTOKEN", presetToken);
-        Response response = OkHttpClientManager.post(ip+lastLoginInfoUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+lastLoginInfoUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
+        System.out.println(jsonbody);
         Allure.addAttachment("出参：",rspjson.toJSONString());
+        System.out.println(rspjson.toJSONString());
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
     }
 

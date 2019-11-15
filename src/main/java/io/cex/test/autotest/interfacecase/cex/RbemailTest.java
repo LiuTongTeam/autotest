@@ -44,7 +44,7 @@ public class RbemailTest extends BaseCase {
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
         HashMap header = dataInit();
-        Response response = OkHttpClientManager.post(ip + registerUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + registerUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
@@ -74,7 +74,7 @@ public class RbemailTest extends BaseCase {
         jsonbody.put("lang", lang);
         HashMap header = dataInit();
         header.put("CEXTOKEN", token);
-        Response response = OkHttpClientManager.post(ip + emailUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + emailUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
@@ -96,7 +96,7 @@ public class RbemailTest extends BaseCase {
         jsonbody.put("lang", lang);
         HashMap header = dataInit();
         header.put("CEXTOKEN", token);
-        Response response = OkHttpClientManager.post(ip + rbemailUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + rbemailUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
@@ -119,7 +119,7 @@ public class RbemailTest extends BaseCase {
         jsonbody.put("lang", lang);
         HashMap header = dataInit();
         header.put("CEXTOKEN", token);
-        Response response = OkHttpClientManager.post(ip + rbemailUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + rbemailUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
@@ -138,7 +138,7 @@ public class RbemailTest extends BaseCase {
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
-        Response response = OkHttpClientManager.post(ip + rbemailUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + rbemailUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());

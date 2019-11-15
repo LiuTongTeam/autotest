@@ -34,7 +34,7 @@ public class CheckpwdTest extends BaseCase {
         jsonbody.put("lang", lang);
         HashMap header = dataInit();
         header.put("CEXTOKEN",presetToken);
-        Response response = OkHttpClientManager.post(ip + checkpwdTestUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + checkpwdTestUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         log.info("-------------checkpwdtest response is:" + rspjson.toJSONString());
@@ -53,7 +53,7 @@ public class CheckpwdTest extends BaseCase {
         jsonbody.put("lang", lang);
         HashMap header = dataInit();
         header.put("CEXTOKEN",presetToken);
-        Response response = OkHttpClientManager.post(ip + checkpwdTestUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+ checkpwdTestUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         log.info("-------------checkpwderror1 response is:" + rspjson.toJSONString());
@@ -72,7 +72,7 @@ public class CheckpwdTest extends BaseCase {
         jsonbody.put("lang", lang);
         HashMap header = dataInit();
         header.put("CEXTOKEN",presetToken);
-        Response response = OkHttpClientManager.post(ip + checkpwdTestUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + checkpwdTestUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         log.info("-------------checkpwderror2 response is:" + rspjson.toJSONString());
@@ -90,7 +90,7 @@ public class CheckpwdTest extends BaseCase {
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
         HashMap header = dataInit();
-        Response response = OkHttpClientManager.post(ip + checkpwdTestUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + checkpwdTestUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         log.info("-------------checkpwderror3 response is:" + rspjson.toJSONString());

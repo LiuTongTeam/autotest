@@ -47,7 +47,7 @@ public class LoginOrRegisterTest extends BaseCase {
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
         HashMap header = dataInit();
-        Response response = OkHttpClientManager.post(ip + loginorregisterUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + loginorregisterUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         log.info("-------------loginorregister response is:" + rspjson.toJSONString());
@@ -78,7 +78,7 @@ public class LoginOrRegisterTest extends BaseCase {
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
         Allure.addAttachment(param.get("comment").toString()+"入参",jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(ip+loginorregisterUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+loginorregisterUrl, jsonbody.toJSONString(),
                 "application/json", BaseCase.dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：",rspjson.toJSONString());

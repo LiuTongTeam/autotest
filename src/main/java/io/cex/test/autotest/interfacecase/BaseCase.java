@@ -27,6 +27,8 @@ import static io.cex.test.autotest.interfacecase.cex.tool.CexCommonOption.userCe
 public class BaseCase {
     //测试环境信息
     public static String ip = "http://139.9.55.125/apis";
+    //测试环境信息
+    public static String ip_gateway = "http://139.9.55.125";
     //Boss url，默认使用测试环境url
     public static String boss_ip = "https://cex-boss-test.up.top";
     //c2c测试环境信息

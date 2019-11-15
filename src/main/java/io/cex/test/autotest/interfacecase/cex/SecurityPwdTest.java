@@ -42,7 +42,7 @@ public class SecurityPwdTest extends BaseCase {
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
         HashMap header = dataInit();
-        Response response = OkHttpClientManager.post(ip + registerUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + registerUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
@@ -68,7 +68,7 @@ public class SecurityPwdTest extends BaseCase {
         jsonbody.put("lang", lang);
         HashMap header = dataInit();
         header.put("CEXTOKEN", token);
-        Response response = OkHttpClientManager.post(ip + securityPwdUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + securityPwdUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
@@ -84,7 +84,7 @@ public class SecurityPwdTest extends BaseCase {
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
-        Response response = OkHttpClientManager.post(ip + securityPwdUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + securityPwdUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());

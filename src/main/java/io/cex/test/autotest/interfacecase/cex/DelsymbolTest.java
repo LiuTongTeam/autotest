@@ -31,7 +31,7 @@ public class DelsymbolTest extends BaseCase {
         jsonbody.put("lang", lang);
         HashMap header = dataInit();
         header.put("CEXTOKEN", presetToken);
-        Response response = OkHttpClientManager.post(ip + delsymbolUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + delsymbolUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
@@ -45,7 +45,7 @@ public class DelsymbolTest extends BaseCase {
         object.put("symbol", "KOFO/USDT");
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
-        Response response = OkHttpClientManager.post(ip + delsymbolUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + delsymbolUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
@@ -61,7 +61,7 @@ public class DelsymbolTest extends BaseCase {
         jsonbody.put("lang", lang);
         HashMap header = dataInit();
         header.put("CEXTOKEN", presetToken);
-        Response response = OkHttpClientManager.post(ip + delsymbolUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + delsymbolUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());

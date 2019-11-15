@@ -28,7 +28,7 @@ public class LoginHistoryTest extends BaseCase {
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
-        Response response = OkHttpClientManager.post(ip+loginHistoryUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+loginHistoryUrl, jsonbody.toJSONString(),
                 "application/json", BaseCase.dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
@@ -46,7 +46,7 @@ public class LoginHistoryTest extends BaseCase {
         jsonbody.put("data",object);
         HashMap header = dataInit();
         header.put("CEXTOKEN", presetToken);
-        Response response = OkHttpClientManager.post(ip+loginHistoryUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+loginHistoryUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());

@@ -59,7 +59,7 @@ public class RegisterTest extends BaseCase {
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
         Allure.addAttachment(param.get("comment").toString()+"入参",jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(ip+registerUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+registerUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：",rspjson.toJSONString());
@@ -90,7 +90,7 @@ public class RegisterTest extends BaseCase {
         jsonbody.put("lang",lang);
         Allure.addAttachment(param.get("comment").toString()+"入参",jsonbody.toJSONString());
         System.out.printf("json:"+jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(ip+registerUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+registerUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：",rspjson.toJSONString());

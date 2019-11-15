@@ -47,7 +47,7 @@ public class LoginPwdWithoutLoginTest extends BaseCase {
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
         HashMap header = dataInit();
-        Response response = OkHttpClientManager.post(ip + registerUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + registerUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
@@ -75,7 +75,7 @@ public class LoginPwdWithoutLoginTest extends BaseCase {
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
-        Response response = OkHttpClientManager.post(ip + loginPwdWithoutLoginUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + loginPwdWithoutLoginUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
@@ -96,7 +96,7 @@ public class LoginPwdWithoutLoginTest extends BaseCase {
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
         HashMap header = dataInit();
-        Response response = OkHttpClientManager.post(ip + registerUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + registerUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
@@ -114,7 +114,7 @@ public class LoginPwdWithoutLoginTest extends BaseCase {
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
-        Response response = OkHttpClientManager.post(ip + loginPwdWithoutLoginUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + loginPwdWithoutLoginUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
@@ -132,7 +132,7 @@ public class LoginPwdWithoutLoginTest extends BaseCase {
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
-        Response response = OkHttpClientManager.post(ip + loginPwdWithoutLoginUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + loginPwdWithoutLoginUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
@@ -150,7 +150,7 @@ public class LoginPwdWithoutLoginTest extends BaseCase {
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
-        Response response = OkHttpClientManager.post(ip + loginPwdWithoutLoginUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + loginPwdWithoutLoginUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());

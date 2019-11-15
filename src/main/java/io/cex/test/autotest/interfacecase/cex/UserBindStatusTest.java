@@ -27,7 +27,7 @@ public class UserBindStatusTest extends BaseCase {
         jsonbody.put("lang", lang);
         HashMap header = dataInit();
         header.put("CEXTOKEN", presetToken);
-        Response response = OkHttpClientManager.post(ip + userBindStatusUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + userBindStatusUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
@@ -38,7 +38,7 @@ public class UserBindStatusTest extends BaseCase {
     public void userBindStatusError() throws IOException {
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang", lang);
-        Response response = OkHttpClientManager.post(ip + userBindStatusUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + userBindStatusUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());

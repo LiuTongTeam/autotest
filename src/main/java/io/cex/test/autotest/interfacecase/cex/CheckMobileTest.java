@@ -44,7 +44,7 @@ public class CheckMobileTest extends BaseCase {
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
         Allure.addAttachment(param.get("comment").toString()+"入参",jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(ip+CheckMobileUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+CheckMobileUrl, jsonbody.toJSONString(),
                 "application/json", BaseCase.dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：",rspjson.toJSONString());
@@ -68,7 +68,7 @@ public class CheckMobileTest extends BaseCase {
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
         Allure.addAttachment(param.get("comment").toString()+"入参",jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(ip+CheckMobileUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+CheckMobileUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：",rspjson.toJSONString());

@@ -29,7 +29,7 @@ public class UserInfoTest extends BaseCase {
         jsonbody.put("lang", lang);
         HashMap header = dataInit();
         header.put("CEXTOKEN", presetToken);
-        Response response = OkHttpClientManager.post(ip + userInfoUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + userInfoUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
@@ -42,11 +42,13 @@ public class UserInfoTest extends BaseCase {
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
-        Response response = OkHttpClientManager.post(ip + querySymbolAsset, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + userInfoUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
+        System.out.println(jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
+        System.out.println(rspjson.toJSONString());
         AssertTool.isContainsExpect("100006", rspjson.get("code").toString());
     }
 

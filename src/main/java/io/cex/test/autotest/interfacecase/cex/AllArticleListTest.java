@@ -24,7 +24,7 @@ public class AllArticleListTest extends BaseCase {
     public void allArticleList() throws IOException {
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);
-        Response response = OkHttpClientManager.post(ip+allArticleListUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+allArticleListUrl, jsonbody.toJSONString(),
                 "application/json", BaseCase.dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());

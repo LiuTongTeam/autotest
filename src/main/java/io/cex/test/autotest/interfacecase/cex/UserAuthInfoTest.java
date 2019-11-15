@@ -24,7 +24,7 @@ public class UserAuthInfoTest extends BaseCase {
     public void userAuthInfoTestError() throws IOException {
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);
-        Response response = OkHttpClientManager.post(ip+userAuthInfoUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+userAuthInfoUrl, jsonbody.toJSONString(),
                 "application/json", BaseCase.dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
@@ -38,7 +38,7 @@ public class UserAuthInfoTest extends BaseCase {
         jsonbody.put("lang",lang);
         HashMap header = dataInit();
         header.put("CEXTOKEN", presetToken);
-        Response response = OkHttpClientManager.post(ip+userAuthInfoUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+userAuthInfoUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());

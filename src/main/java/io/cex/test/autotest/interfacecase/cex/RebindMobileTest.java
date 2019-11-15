@@ -48,7 +48,7 @@ public class RebindMobileTest extends BaseCase {
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
         HashMap header = dataInit();
-        Response response = OkHttpClientManager.post(ip + registerUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + registerUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         log.info("-------------register response is:" + rspjson.toJSONString());
@@ -90,7 +90,7 @@ public class RebindMobileTest extends BaseCase {
         HashMap header = dataInit();
         header.put("CEXTOKEN", token);
         Allure.addAttachment(param.get("comment").toString() + "入参", jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(ip + rebindmobileUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + rebindmobileUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：", rspjson.toJSONString());
@@ -113,7 +113,7 @@ public class RebindMobileTest extends BaseCase {
         HashMap header = dataInit();
         header.put("CEXTOKEN", token);
         System.out.println("rucan"+jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(ip + rebindmobileUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + rebindmobileUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         System.out.println("chucan" +rspjson.toJSONString());
@@ -135,7 +135,7 @@ public class RebindMobileTest extends BaseCase {
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
         System.out.println("rucan"+jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(ip + rebindmobileUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + rebindmobileUrl, jsonbody.toJSONString(),
                 "application/json", BaseCase.dataInit());
         JSONObject rspjson = resultDeal(response);
         System.out.println("chucan" +rspjson.toJSONString());

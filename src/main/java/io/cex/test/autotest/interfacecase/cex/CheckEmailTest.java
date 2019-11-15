@@ -45,7 +45,7 @@ public class CheckEmailTest extends BaseCase {
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
         Allure.addAttachment(param.get("comment").toString()+"入参",jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(ip+CheckemailUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+CheckemailUrl, jsonbody.toJSONString(),
                 "application/json", BaseCase.dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：",rspjson.toJSONString());
@@ -69,7 +69,7 @@ public class CheckEmailTest extends BaseCase {
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
         Allure.addAttachment(param.get("comment").toString()+"入参",jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(ip+CheckemailUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+CheckemailUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
         JSONObject rspjson = resultDeal(response);
         System.out.println(rspjson.toJSONString());

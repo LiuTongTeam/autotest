@@ -45,7 +45,7 @@ public class CexCommonOption {
         jsonbody.put("lang",lang);
         Allure.addAttachment("CEX登陆入参：",jsonbody.toJSONString());
         try {
-            Response response = OkHttpClientManager.post(ip+loginUrl, jsonbody.toJSONString(),
+            Response response = OkHttpClientManager.post(ip_gateway+loginUrl, jsonbody.toJSONString(),
                     "application/json", dataInit());
             JSONObject rspjson = resultDeal(response);
             Allure.addAttachment("CEX登陆出参：",rspjson.toJSONString());
@@ -86,7 +86,7 @@ public class CexCommonOption {
         jsonbody.put("lang",lang);
         Allure.addAttachment("注册入参：",jsonbody.toJSONString());
         try {
-            Response response = OkHttpClientManager.post(ip+registerUrl, jsonbody.toJSONString(),
+            Response response = OkHttpClientManager.post(ip_gateway+registerUrl, jsonbody.toJSONString(),
                     "application/json", dataInit());
             JSONObject rspjson = resultDeal(response);
             Allure.addAttachment("注册出参：",rspjson.toJSONString());
@@ -220,7 +220,7 @@ public class CexCommonOption {
         HashMap header = dataInit();
         header.put("CEXTOKEN",token);
         try {
-            Response response = OkHttpClientManager.post(ip+securityPwdUrl, jsonbody.toJSONString(),
+            Response response = OkHttpClientManager.post(ip_gateway+securityPwdUrl, jsonbody.toJSONString(),
                     "application/json", header);
             JSONObject rspjson = resultDeal(response);
             Allure.addAttachment("设置资金密码入参：", jsonbody.toJSONString());
@@ -617,8 +617,5 @@ public class CexCommonOption {
         return result.toString();
     }
 
-    @Test
-    public void test11(){
-        CexCommonOption.userCexLogin("shengyan1@126.com",pwd,area);
-    }
+
 }
