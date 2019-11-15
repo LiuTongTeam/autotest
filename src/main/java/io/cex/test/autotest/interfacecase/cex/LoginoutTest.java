@@ -43,7 +43,7 @@ public class LoginoutTest extends BaseCase {
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
         HashMap header = dataInit();
-        Response response = OkHttpClientManager.post(ip + registerUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + registerUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         log.info("-------------register response is:" + rspjson.toJSONString());
@@ -68,20 +68,20 @@ public class LoginoutTest extends BaseCase {
         jsonbody.put("lang", "");
         HashMap header = dataInit();
         header.put("CEXTOKEN", token);
-        Response response = OkHttpClientManager.post(ip + loginoutUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + loginoutUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
-        AssertTool.isContainsExpect("100006", rspjson.get("code").toString());
+        AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
     }
 
     //异常测试不传token
-    @Test(description = "Loginout异常用例2:不传token")
+    @Test(description = "Loginout异常用例2:不传token",dependsOnMethods = "testloginoutError1")
     public void testloginoutError2() throws IOException {
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang", lang);
-        Response response = OkHttpClientManager.post(ip + loginoutUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + loginoutUrl, jsonbody.toJSONString(),
                 "application/json");
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
@@ -89,19 +89,32 @@ public class LoginoutTest extends BaseCase {
         AssertTool.isContainsExpect("100006", rspjson.get("code").toString());
     }
 
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(dependsOnMethods = "testloginoutError2", description = "重新登陆")
+    public void testReLogin(){
+        token = CexCommonOption.userCexLogin(randomPhone, pwd, area);
+        AssertTool.assertNotEquals(null, token);
+        log.info("------------cex token:" + token);
+        Allure.addAttachment("重新登陆token：", token);
+    }
+
+
     //正常测试
     @Severity(SeverityLevel.CRITICAL)
-    @Test(dependsOnMethods = "testloginoutError1", description = "Loginout正常登录后退出")
+    @Test(dependsOnMethods = "testReLogin", description = "Loginout正常登录后退出")
     public void testloginout() throws IOException {
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang", lang);
         HashMap header = dataInit();
         header.put("CEXTOKEN", token);
-        Response response = OkHttpClientManager.post(ip + loginoutUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + loginoutUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
+        System.out.println(jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
+        System.out.println(rspjson.toJSONString());
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
     }
 
@@ -112,7 +125,7 @@ public class LoginoutTest extends BaseCase {
         jsonbody.put("lang", lang);
         HashMap header = dataInit();
         header.put("CEXTOKEN", token);
-        Response response = OkHttpClientManager.post(ip + loginoutUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + loginoutUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
