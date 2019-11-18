@@ -1,0 +1,10 @@
+{
+  "comment": "手机号格式不对",
+  "body": {
+    "mobileArea": "86",
+    "mobile":  "测试",
+    "smsCode":  "125432",
+    "oldSmsCode":  "123111"
+  },
+  "assert":"user-100006"
+}

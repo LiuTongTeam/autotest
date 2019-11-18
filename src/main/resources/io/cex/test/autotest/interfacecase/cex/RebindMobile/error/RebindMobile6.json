@@ -1,0 +1,10 @@
+{
+  "comment": "手机号长度低于8位",
+  "body": {
+    "mobileArea": "86",
+    "mobile":  "9876543",
+    "smsCode":  "125432",
+    "oldSmsCode":  "123111"
+  },
+  "assert":"user-100006"
+}
