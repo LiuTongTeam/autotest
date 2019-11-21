@@ -13,5 +13,8 @@ public class BossConfig {
     public static final String reviewing = "/boss/cex/userAuth/reviewing";
     public static final String bossUserName = "admin";
     public static final String bossLoginPwd = "admin";
+    public static final String authfirstTrial = "/boss/cex/asset/withdraw/auth/firstTrial";
+    public static final String authreviewing = "/boss/cex/asset/withdraw/auth/reviewing";
+
 
 }

@@ -1,0 +1,13 @@
+{
+  "comment": "EOS提币超过四位小数",
+  "body": {
+    "amount":"0.12345",
+    "currency":"EOS",
+    "isLabelCoin": true,
+    "securityPwd":"f3d3d3667220886d7a1a3f1eb9335d91",
+    "verifyCode1":"536478",
+    "walletAddress":"yjt123454321",
+    "labelContent": "100080819"
+  },
+  "assert":"100084"
+}
