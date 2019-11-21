@@ -1,7 +1,7 @@
 {
   "comment": "手机号未注册，密码为空",
   "body": {
-      "mobileArea": "86",
+      "mobileArea": "87",
       "identifier": "17702310001",
       "loginPwd": " ",
       "verifyCode": "123456",

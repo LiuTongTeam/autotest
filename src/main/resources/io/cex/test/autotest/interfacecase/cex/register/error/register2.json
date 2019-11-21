@@ -3,7 +3,7 @@
   "body": {
     "loginPwd": "",
     "identifier": "1345678978",
-    "mobileArea": "86",
+    "mobileArea": "87",
     "verifyCode": "123456"
   },
   "assert":"may not be empty"

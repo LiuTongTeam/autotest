@@ -1,7 +1,7 @@
 {
   "comment": "手机号为空",
   "body": {
-    "mobileArea":"86",
+    "mobileArea":"87",
     "mobile":" "
   },
   "assert":"100006"

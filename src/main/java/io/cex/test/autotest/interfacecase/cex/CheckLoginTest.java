@@ -21,8 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static io.cex.test.autotest.interfacecase.cex.tool.CexCommonOption.register;
-import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.CheckLoginUrl;
-import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.lang;
+import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
 
 @Feature("CheckLogin接口")
 
@@ -30,7 +29,7 @@ public class CheckLoginTest extends BaseCase {
     @BeforeClass
     public void beforClass(){
         try {
-            register("17702829192","123qweQWE","86","111111");
+            register("17702829192","123qweQWE",area,"111111");
         }catch (Exception e){
             e.printStackTrace();
         }

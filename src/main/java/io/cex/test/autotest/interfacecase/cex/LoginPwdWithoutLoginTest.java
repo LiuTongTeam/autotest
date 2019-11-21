@@ -68,7 +68,7 @@ public class LoginPwdWithoutLoginTest extends BaseCase {
     @Test(dependsOnMethods = "testRegister", description = "手机重置登陆密码，返回000000")
     public void loginPwdWithoutLoginTest() throws IOException {
         JSONObject object = new JSONObject();
-        object.put("mobileArea", "86");
+        object.put("mobileArea", "87");
         object.put("identifier", randomPhone);
         object.put("newPwd", "afdd0b4ad2ec172c586e2150770fb54g");
         object.put("verifyCode", "123456");
@@ -125,7 +125,7 @@ public class LoginPwdWithoutLoginTest extends BaseCase {
     @Test(description = "没有注册过的手机号去修改登录密码，报错返回")
     public void loginPwdWithoutLoginTestError1() throws IOException {
         JSONObject object = new JSONObject();
-        object.put("mobileArea", "86");
+        object.put("mobileArea", "87");
         object.put("identifier", "11111111111");
         object.put("newPwd", "afdd0b4ad2ec172c586e2150770fb54g");
         object.put("verifyCode", "123456");

@@ -21,8 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static io.cex.test.autotest.interfacecase.cex.tool.CexCommonOption.register;
-import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.lang;
-import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.registerUrl;
+import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
 
 @Feature("注册接口")
 public class RegisterTest extends BaseCase {
@@ -33,7 +32,7 @@ public class RegisterTest extends BaseCase {
     @BeforeClass
     public void beforClass(){
         try {
-            register("16602829192","123qweQWE","86","111111");
+            register("16602829192","123qweQWE",area,"111111");
         }catch (Exception e){
             e.printStackTrace();
         }

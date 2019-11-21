@@ -14,7 +14,7 @@ public class CexConfig {
     public static final String productCoin = "KOFO";
     public static final String currencyCoin = "USDT";
     public static final String depositAmount = "20";
-    public static final String area = "86";
+    public static final String area = "87";
     public static final String lang = "en-US";
     public static final String countryId = "40";
     public static final String certificateType = "0";
@@ -108,5 +108,6 @@ public class CexConfig {
     public static final String rebindmobileUrl = "/app/userCenter/user/mobile/rebind/mobile";
     public static final String bindmobileUrl = "/app/userCenter/user/mobile/bind/mobile";
     public static final String submitwithdrawUrl = "/user/withdraw/submit/withdraw";
+
 
 }

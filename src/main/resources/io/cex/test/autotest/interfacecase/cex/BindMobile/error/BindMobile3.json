@@ -1,7 +1,7 @@
 {
   "comment": "新手机号验证码为空",
   "body": {
-    "mobileArea": "86",
+    "mobileArea": "87",
     "mobile":  "18912345678",
     "smsCode":  " ",
     "verifyCode":  "123111"

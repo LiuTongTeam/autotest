@@ -104,7 +104,7 @@ public class BindMobileTest extends BaseCase {
     public void testBindMobile() throws IOException {
         JSONObject object = new JSONObject();
         randomPhone = RandomUtil.getRandomPhoneNum();
-        object.put("mobileArea", "86");
+        object.put("mobileArea", area);
         object.put("mobile", randomPhone);
         object.put("smsCode", "123456");
         object.put("verifyCode", "654321");
@@ -128,7 +128,7 @@ public class BindMobileTest extends BaseCase {
     @Test(dependsOnMethods = "testBindMobileError",description = "BindMobile异常用例8")
     public void testBindMobileError8() throws IOException {
         JSONObject object = new JSONObject();
-        object.put("mobileArea", "86");
+        object.put("mobileArea", area);
         object.put("mobile", "17812345678");
         object.put("smsCode", "123456");
         object.put("verifyCode", "654321");

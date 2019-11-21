@@ -103,7 +103,7 @@ public class RebindMobileTest extends BaseCase {
     public void testRebindMobile() throws IOException {
         JSONObject object = new JSONObject();
         randomPhone = RandomUtil.getRandomPhoneNum();
-        object.put("mobileArea", "86");
+        object.put("mobileArea", area);
         object.put("mobile", randomPhone);
         object.put("smsCode", "123456");
         object.put("oldSmsCode", "654321");
@@ -127,7 +127,7 @@ public class RebindMobileTest extends BaseCase {
     @Test(dependsOnMethods = "testRebindMobileError",description = "RebindMobile异常用例8")
     public void testRebindMobileError8() throws IOException {
         JSONObject object = new JSONObject();
-        object.put("mobileArea", "86");
+        object.put("mobileArea", area);
         object.put("mobile", "17812345678");
         object.put("smsCode", "123456");
         object.put("oldSmsCode", "654321");

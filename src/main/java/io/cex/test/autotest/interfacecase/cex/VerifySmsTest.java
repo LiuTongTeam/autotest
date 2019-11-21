@@ -27,7 +27,7 @@ import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
 
 public class VerifySmsTest extends BaseCase {
 
-    private String token = CexCommonOption.userCexLogin("13331053186",pwd,"86");
+    private String token = CexCommonOption.userCexLogin("13331053186",pwd,area);
 
     /**
      * @desc 异常用例的数据驱动

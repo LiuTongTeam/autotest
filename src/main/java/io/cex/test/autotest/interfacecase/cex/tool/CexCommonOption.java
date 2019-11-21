@@ -383,6 +383,10 @@ public class CexCommonOption {
         return null;
     }
 
+    public static void main(String[] args){
+        System.out.println(CexCommonOption.userCexLogin("18413986742",pwd,"86"));
+    }
+
     /**
      * @desc 下单
      * @param
