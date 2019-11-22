@@ -330,6 +330,7 @@
                     <include name="testLogin"/>
                     <include name="testloginoutError1"/>
                     <include name="testloginoutError2"/>
+                    <include name="testReLogin"/>
                     <include name="testloginout"/>
                     <include name="testloginoutError3"/>
                 </methods>
@@ -349,6 +350,20 @@
                 <methods>
                     <include name="testorderDetail"/>
                     <include name="orderDetailError2"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.OrderErrorTest">
+                <methods>
+                    <include name="orderErrorTest1"/>
+                    <include name="orderErrorTest2"/>
+                    <include name="orderErrorTest3"/>
+                    <include name="orderErrorTest4"/>
+                    <include name="orderErrorTest5"/>
+                    <include name="orderErrorTest6"/>
+                    <include name="orderErrorTest7"/>
+                    <include name="orderErrorTest8"/>
+                    <include name="orderErrorTest9"/>
+                    <include name="orderErrorTest10"/>
                 </methods>
             </class>
             <class name="io.cex.test.autotest.interfacecase.cex.OrderListTest">
@@ -424,6 +439,24 @@
                     <include name="testLogin"/>
                     <include name="securityPwdTest"/>
                     <include name="securityPwdTestError"/>
+                </methods>
+            </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.SubmitWithdrawTest">
+                <methods>
+                    <include name="testRegistAndLogin"/>
+                    <include name="testIdentity"/>
+                    <include name="testSetSecurityPwd"/>
+                    <include name="testSubmitWithdrawupt"/>
+                    <include name="testSubmitWithdraw1"/>
+                    <include name="testSubmitWithdraw2"/>
+                    <include name="testauthfirstTrial"/>
+                    <include name="testauthreviewing"/>
+                    <include name="testSubmitWithdraw3"/>
+                    <include name="testSubmitWithdrawneo"/>
+                    <include name="testSubmitWithdraw4"/>
+                    <include name="testSubmitWithdraweos"/>
+                    <include name="testDepthStepError"/>
+                    <include name="testSubmitWithdrawError1"/>
                 </methods>
             </class>
             <class name="io.cex.test.autotest.interfacecase.cex.SymbolAssetTest">
