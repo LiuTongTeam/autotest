@@ -42,7 +42,7 @@ public class RebindMobileTest extends BaseCase {
         JSONObject object = new JSONObject();
         object.put("identifier", randomPhone);
         object.put("loginPwd", pwd);
-        object.put("mobileArea", area);
+        object.put("mobileArea", "87");
         object.put("verifyCode", "111111");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);

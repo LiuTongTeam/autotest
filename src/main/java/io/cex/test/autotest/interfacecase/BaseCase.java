@@ -65,12 +65,12 @@ public class BaseCase {
             log.info("获取到c2cip地址为："+c2cip);
             c2cmysql = properties.getProperty("c2cmysql");
             log.info("获取到c2cmysql连接信息为："+c2cmysql);
-            presetToken = userCexLogin(presetUser,presetUserPwd,area);
+            presetToken = userCexLogin(presetUser,presetUserPwd,"86");
             log.info("------------预置账户token:"+presetToken);
         }catch (IOException e){
             e.printStackTrace();
             log.error("------------未获取到properties配置文件，默认使用测试环境信息");
-            presetToken = userCexLogin(presetUser,presetUserPwd,area);
+            presetToken = userCexLogin(presetUser,presetUserPwd,"86");
             log.info("------------预置账户token:"+presetToken);
         }
     }

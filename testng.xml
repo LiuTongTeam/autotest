@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="All Test Suite" parallel="classes" thread-count="200">
+<suite name="All Test Suite" parallel="classes" thread-count="100">
     <parameter name="file" value="test-application.properties"></parameter>
     <test verbose="2" preserve-order="true" name="C:/code/autotest/autotest">
         <classes>
@@ -330,8 +330,8 @@
                     <include name="testLogin"/>
                     <include name="testloginoutError1"/>
                     <include name="testloginoutError2"/>
-                    <include name="testloginout"/>
                     <include name="testReLogin"/>
+                    <include name="testloginout"/>
                     <include name="testloginoutError3"/>
                 </methods>
             </class>
@@ -446,8 +446,15 @@
                     <include name="testRegistAndLogin"/>
                     <include name="testIdentity"/>
                     <include name="testSetSecurityPwd"/>
+                    <include name="testSubmitWithdrawupt"/>
                     <include name="testSubmitWithdraw1"/>
-                    <include name="testSubmitWithdraw"/>
+                    <include name="testSubmitWithdraw2"/>
+                    <include name="testauthfirstTrial"/>
+                    <include name="testauthreviewing"/>
+                    <include name="testSubmitWithdraw3"/>
+                    <include name="testSubmitWithdrawneo"/>
+                    <include name="testSubmitWithdraw4"/>
+                    <include name="testSubmitWithdraweos"/>
                     <include name="testDepthStepError"/>
                     <include name="testSubmitWithdrawError1"/>
                 </methods>
