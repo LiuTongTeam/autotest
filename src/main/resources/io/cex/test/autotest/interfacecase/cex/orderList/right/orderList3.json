@@ -1,9 +1,9 @@
 {
-  "comment": "查询当前已完成委托，返回成功",
+  "comment": "查询所有状态订单，返回成功",
   "body": {
     "gmtStart":"0000000000000",
     "currPage":1,
-    "orderStatus":"CLOSED",
+    "orderStatus":"ALL",
     "pageRows":9,
     "gmtEnd":"1652473552000"
   },

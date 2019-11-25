@@ -595,11 +595,7 @@ public class CexCommonOption {
         return  price;
     }
 
-/*
-    public static void main(String[] args){
-        String n = queryBestPrice("SELL","KOFO/USDT");
-    }
-*/
+
 
     /**
      * @desc 根据费率计算实际成交后的可用数量
