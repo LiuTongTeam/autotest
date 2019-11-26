@@ -8,6 +8,8 @@ public class CexConfig {
     //加密后的密码，对应明文：Lxm499125
     public static String presetUsersecurityPwd = "f3d3d3667220886d7a1a3f1eb9335d91";
     public static String presetToken = null;
+    public static String cexpassport = "1629310746677555201.123";
+    //提供给regandlogin接口邀请绑定的passport
     public static final String pwd = "afdd0b4ad2ec172c586e2150770fbf9e";
     public static final String securityPwd = "f3d3d3667220886d7a1a3f1eb9335d91";
     public static final String depositCurrency = "IDA";
@@ -108,6 +110,7 @@ public class CexConfig {
     public static final String rebindmobileUrl = "/app/userCenter/user/mobile/rebind/mobile";
     public static final String bindmobileUrl = "/app/userCenter/user/mobile/bind/mobile";
     public static final String submitwithdrawUrl = "/user/withdraw/submit/withdraw";
+    public static final String regandloginUrl = "/commission-web/v2/user/regandlogin";
 
 
 }

@@ -1,0 +1,12 @@
+{
+  "comment": "type为空",
+  "body": {
+    "phone": "176524351",
+    "email": "",
+    "loginPwd": "Aa123456",
+    "verifyCode": "123456",
+    "type": "",
+    "inviteCode": "0ktejS"
+  },
+  "assert":"888001"
+}

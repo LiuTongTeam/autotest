@@ -1,0 +1,12 @@
+{
+  "comment": "手机号未注册，密码为空",
+  "body": {
+    "phone": "13765243561",
+    "email": "",
+    "loginPwd": "",
+    "verifyCode": "123456",
+    "type": "1",
+    "inviteCode": "0ktejS"
+  },
+  "assert":"888001"
+}

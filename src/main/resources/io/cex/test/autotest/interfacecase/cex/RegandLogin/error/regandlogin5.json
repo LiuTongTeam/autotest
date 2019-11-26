@@ -1,0 +1,12 @@
+{
+  "comment": "邮箱未注册，验证码为空",
+  "body": {
+    "phone": "",
+    "email": "111666333@163.com",
+    "loginPwd": "Aa123456",
+    "verifyCode": "",
+    "type": "1",
+    "inviteCode": "0ktejS"
+  },
+  "assert":"888001"
+}

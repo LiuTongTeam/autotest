@@ -1,0 +1,12 @@
+{
+  "comment": "邀请码为空",
+  "body": {
+    "phone": "18654323456",
+    "email": "",
+    "loginPwd": "Aa123456",
+    "verifyCode": "123456",
+    "type": "1",
+    "inviteCode": ""
+  },
+  "assert":"888001"
+}

@@ -1,0 +1,12 @@
+{
+  "comment": "已注册手机号",
+  "body": {
+    "phone": "17721557403",
+    "email": "",
+    "loginPwd": "Aa123456",
+    "verifyCode": "123456",
+    "type": "1",
+    "inviteCode": "0ktejS"
+  },
+  "assert":"999001"
+}
