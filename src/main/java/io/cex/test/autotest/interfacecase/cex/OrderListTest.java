@@ -2,6 +2,7 @@ package io.cex.test.autotest.interfacecase.cex;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.jayway.jsonpath.JsonPath;
 import io.cex.test.autotest.interfacecase.BaseCase;
 import io.cex.test.framework.assertutil.AssertTool;
 import io.cex.test.framework.httputil.OkHttpClientManager;
@@ -13,6 +14,8 @@ import io.qameta.allure.SeverityLevel;
 import okhttp3.Response;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import lombok.extern.slf4j.Slf4j;
+import static org.testng.Assert.fail;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -21,6 +24,7 @@ import java.util.Map;
 
 import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
 
+@Slf4j
 @Feature("orderList接口")
 
 public class OrderListTest extends BaseCase {
@@ -94,5 +98,20 @@ public class OrderListTest extends BaseCase {
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("code").toString());
+        if(object.get("orderStatus").toString()=="ALL" || object.get("orderStatus").toString()=="CLOSED")
+        {
+            String totalRows = JsonPath.read(rspjson,"$.data.pagination.totalRows").toString();
+            //AssertTool.isContainsExpect("false",isValid);
+            try {
+                int actualReal =Integer.parseInt(totalRows);
+                if (actualReal>0){
+                    log.info("------Assert true：acutal is greater than except");
+                }else {
+                    fail("----Assert failed：Actual number not greater than expect number");
+                }
+            }catch (NumberFormatException e){
+                fail("----Assert failed：NumberFormatException，please input  String than can transform into number----");
+            }
+        }
     }
 }
