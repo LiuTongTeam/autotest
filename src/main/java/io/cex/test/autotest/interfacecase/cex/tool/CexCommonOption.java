@@ -39,7 +39,7 @@ public class CexCommonOption {
         object.put("loginPwd",pwd);
         object.put("identifier",user);
         object.put("mobileArea",area);
-        object.put("verifyCode","111111");
+        object.put("verifyCode","912121");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data",object);
         jsonbody.put("lang",lang);
@@ -82,7 +82,7 @@ public class CexCommonOption {
         object.put("identifier",user);
         object.put("invitationCode",inviteCode);
         object.put("mobileArea",area);
-        object.put("verifyCode","123456");
+        object.put("verifyCode","912121");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data",object);
         jsonbody.put("lang",lang);
@@ -215,7 +215,7 @@ public class CexCommonOption {
     public static void setSecurityPwd(String token){
         JSONObject object = new JSONObject();
         object.put("securityPwd",securityPwd);
-        object.put("verifyCode","111112");
+        object.put("verifyCode","912121");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data",object);
         jsonbody.put("lang",lang);
@@ -354,7 +354,7 @@ public class CexCommonOption {
         JSONObject object = new JSONObject();
         object.put("amount",amount);
         object.put("currency",currency);
-        object.put("verifyCode1","111111");
+        object.put("verifyCode1","912121");
         object.put("walletAddress",walletAddress);
         object.put("securityPwd",securityPwd);
         object.put("verifyCode2","");

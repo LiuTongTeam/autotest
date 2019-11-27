@@ -29,7 +29,7 @@ public class CheckLoginTest extends BaseCase {
     @BeforeClass
     public void beforClass(){
         try {
-            register("17702829192","123qweQWE",area,"111111");
+            register("17702829192","123qweQWE",area,"998388");
         }catch (Exception e){
             e.printStackTrace();
         }

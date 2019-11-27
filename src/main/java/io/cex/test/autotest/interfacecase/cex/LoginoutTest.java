@@ -38,7 +38,7 @@ public class LoginoutTest extends BaseCase {
         object.put("identifier", randomPhone);
         object.put("loginPwd", pwd);
         object.put("mobileArea", area);
-        object.put("verifyCode", "111111");
+        object.put("verifyCode", "912121");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);

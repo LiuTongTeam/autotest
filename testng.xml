@@ -427,6 +427,12 @@
                     <include name="recommendSymbolQuotation"/>
                 </methods>
             </class>
+            <class name="io.cex.test.autotest.interfacecase.cex.RegandLoginTest">
+                <methods>
+                    <include name="testRegandLogin"/>
+                    <include name="testRegandLoginError"/>
+                </methods>
+            </class>
             <class name="io.cex.test.autotest.interfacecase.cex.RegisterTest">
                 <methods>
                     <include name="testRegisterError"/>

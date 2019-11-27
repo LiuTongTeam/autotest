@@ -42,7 +42,7 @@ public class LoginPwdWithoutLoginTest extends BaseCase {
         object.put("identifier", randomPhone);
         object.put("loginPwd", pwd);
         object.put("mobileArea", area);
-        object.put("verifyCode", "111111");
+        object.put("verifyCode", "912121");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
@@ -71,7 +71,7 @@ public class LoginPwdWithoutLoginTest extends BaseCase {
         object.put("mobileArea", "87");
         object.put("identifier", randomPhone);
         object.put("newPwd", "afdd0b4ad2ec172c586e2150770fb54g");
-        object.put("verifyCode", "123456");
+        object.put("verifyCode", "912121");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
@@ -91,7 +91,7 @@ public class LoginPwdWithoutLoginTest extends BaseCase {
         object.put("identifier", randonMail);
         object.put("loginPwd", pwd);
         object.put("mobileArea", "");
-        object.put("verifyCode", "111111");
+        object.put("verifyCode", "912121");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
@@ -110,7 +110,7 @@ public class LoginPwdWithoutLoginTest extends BaseCase {
         object.put("mobileArea", "");
         object.put("identifier", randonMail);
         object.put("newPwd", "afdd0b4ad2ec172c586e2150770fb54g");
-        object.put("verifyCode", "123456");
+        object.put("verifyCode", "912121");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
@@ -128,7 +128,7 @@ public class LoginPwdWithoutLoginTest extends BaseCase {
         object.put("mobileArea", "87");
         object.put("identifier", "11111111111");
         object.put("newPwd", "afdd0b4ad2ec172c586e2150770fb54g");
-        object.put("verifyCode", "123456");
+        object.put("verifyCode", "912121");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
@@ -146,7 +146,7 @@ public class LoginPwdWithoutLoginTest extends BaseCase {
         object.put("mobileArea", "");
         object.put("identifier", "11111111111@11.com");
         object.put("newPwd", "afdd0b4ad2ec172c586e2150770fb54g");
-        object.put("verifyCode", "123456");
+        object.put("verifyCode", "912121");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);

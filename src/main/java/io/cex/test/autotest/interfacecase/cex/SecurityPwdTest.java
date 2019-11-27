@@ -37,7 +37,7 @@ public class SecurityPwdTest extends BaseCase {
         object.put("identifier", randomPhone);
         object.put("loginPwd", pwd);
         object.put("mobileArea", area);
-        object.put("verifyCode", "111111");
+        object.put("verifyCode", "912121");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
@@ -62,7 +62,7 @@ public class SecurityPwdTest extends BaseCase {
     public void securityPwdTest() throws IOException {
         JSONObject object = new JSONObject();
         object.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
-        object.put("verifyCode", "123456");
+        object.put("verifyCode", "912121");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
@@ -80,7 +80,7 @@ public class SecurityPwdTest extends BaseCase {
     public void securityPwdTestError() throws IOException {
         JSONObject object = new JSONObject();
         object.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
-        object.put("verifyCode", "123456");
+        object.put("verifyCode", "912121");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);

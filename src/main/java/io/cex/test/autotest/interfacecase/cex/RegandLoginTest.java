@@ -41,7 +41,7 @@ public class RegandLoginTest extends BaseCase {
         object.put("phone", randomPhone);
         object.put("email", "");
         object.put("loginPwd", pwd);
-        object.put("verifyCode", "111111");
+        object.put("verifyCode", "912121");
         object.put("type", "1");
         object.put("inviteCode","0ktejS");
         HashMap header = dataInit();

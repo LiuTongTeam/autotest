@@ -99,7 +99,7 @@ public class SubmitWithdrawTest extends BaseCase{
         object.put("currency", "UPT");
         object.put("isLabelCoin", false);
         object.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
-        object.put("verifyCode1", "123456 ");
+        object.put("verifyCode1", "912121");
         object.put("walletAddress", address);
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
@@ -125,7 +125,7 @@ public class SubmitWithdrawTest extends BaseCase{
         object.put("currency", "UPT");
         object.put("isLabelCoin", false);
         object.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
-        object.put("verifyCode1", "123456 ");
+        object.put("verifyCode1", "912121");
         object.put("walletAddress", "0x274cC789096337D12eB5A17159845CBf3ebB8610");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
@@ -160,7 +160,7 @@ public class SubmitWithdrawTest extends BaseCase{
         object.put("currency", "UPT");
         object.put("isLabelCoin", false);
         object.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
-        object.put("verifyCode1", "123456 ");
+        object.put("verifyCode1", "912121");
         object.put("walletAddress", address);
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
@@ -240,7 +240,7 @@ public class SubmitWithdrawTest extends BaseCase{
         object.put("currency", "NEO");
         object.put("isLabelCoin", false);
         object.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
-        object.put("verifyCode1", "123456 ");
+        object.put("verifyCode1", "912121");
         object.put("walletAddress", address);
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
@@ -266,7 +266,7 @@ public class SubmitWithdrawTest extends BaseCase{
         object.put("currency", "NEO");
         object.put("isLabelCoin", false);
         object.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
-        object.put("verifyCode1", "123456 ");
+        object.put("verifyCode1", "912121");
         object.put("walletAddress", "AWgnvpuC9Rc9Su635r94bhZu5ty8dbqdbA");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
@@ -297,7 +297,7 @@ public class SubmitWithdrawTest extends BaseCase{
         object.put("isLabelCoin", true);
         object.put("labelContent", label);
         object.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
-        object.put("verifyCode1", "123456 ");
+        object.put("verifyCode1", "912121");
         object.put("walletAddress", address);
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
@@ -324,7 +324,7 @@ public class SubmitWithdrawTest extends BaseCase{
         object.put("isLabelCoin", true);
         object.put("labelContent", "100085097");
         object.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
-        object.put("verifyCode1", "123456 ");
+        object.put("verifyCode1", "912121");
         object.put("walletAddress", "yjt123454321");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
@@ -386,7 +386,7 @@ public class SubmitWithdrawTest extends BaseCase{
         object.put("currency", "UPT");
         object.put("isLabelCoin", false);
         object.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
-        object.put("verifyCode1", "123456 ");
+        object.put("verifyCode1", "912121");
         object.put("walletAddress", "0x274cC789096337D12eB5A17159845CBf3ebB8610");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);

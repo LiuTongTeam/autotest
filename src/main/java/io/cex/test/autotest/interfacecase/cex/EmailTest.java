@@ -39,7 +39,7 @@ public class EmailTest extends BaseCase {
         object.put("identifier", randomPhone);
         object.put("loginPwd", pwd);
         object.put("mobileArea", area);
-        object.put("verifyCode", "111111");
+        object.put("verifyCode", "912121");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
@@ -65,8 +65,8 @@ public class EmailTest extends BaseCase {
         //randomEmail = RandomUtil.getRandomMail();
         JSONObject object = new JSONObject();
         object.put("email","24244855@qq.com");
-        object.put("emailCheckCode", "123456");
-        object.put("verifyCode", "123456");
+        object.put("emailCheckCode", "912121");
+        object.put("verifyCode", "912121");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
@@ -86,8 +86,8 @@ public class EmailTest extends BaseCase {
         randomEmail = RandomUtil.getRandomMail();
         JSONObject object = new JSONObject();
         object.put("email",randomEmail);
-        object.put("emailCheckCode", "123456");
-        object.put("verifyCode", "123456");
+        object.put("emailCheckCode", "912121");
+        object.put("verifyCode", "912121");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
@@ -106,8 +106,8 @@ public class EmailTest extends BaseCase {
         randomEmail = RandomUtil.getRandomMail();
         JSONObject object = new JSONObject();
         object.put("email",randomEmail);
-        object.put("emailCheckCode", "123456");
-        object.put("verifyCode", "123456");
+        object.put("emailCheckCode", "912121");
+        object.put("verifyCode", "912121");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);

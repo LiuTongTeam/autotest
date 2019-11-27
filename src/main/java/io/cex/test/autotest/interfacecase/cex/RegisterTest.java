@@ -32,7 +32,7 @@ public class RegisterTest extends BaseCase {
     @BeforeClass
     public void beforClass(){
         try {
-            register("16602829192","123qweQWE",area,"111111");
+            register("16602829192","123qweQWE",area,"950493");
         }catch (Exception e){
             e.printStackTrace();
         }

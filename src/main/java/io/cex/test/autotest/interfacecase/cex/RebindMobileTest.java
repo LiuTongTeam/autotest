@@ -43,7 +43,7 @@ public class RebindMobileTest extends BaseCase {
         object.put("identifier", randomPhone);
         object.put("loginPwd", pwd);
         object.put("mobileArea", "87");
-        object.put("verifyCode", "111111");
+        object.put("verifyCode", "912121");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
@@ -105,8 +105,8 @@ public class RebindMobileTest extends BaseCase {
         randomPhone = RandomUtil.getRandomPhoneNum();
         object.put("mobileArea", area);
         object.put("mobile", randomPhone);
-        object.put("smsCode", "123456");
-        object.put("oldSmsCode", "654321");
+        object.put("smsCode", "912121");
+        object.put("oldSmsCode", "912121");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);
@@ -129,8 +129,8 @@ public class RebindMobileTest extends BaseCase {
         JSONObject object = new JSONObject();
         object.put("mobileArea", area);
         object.put("mobile", "17812345678");
-        object.put("smsCode", "123456");
-        object.put("oldSmsCode", "654321");
+        object.put("smsCode", "912121");
+        object.put("oldSmsCode", "912121");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("data", object);
         jsonbody.put("lang", lang);

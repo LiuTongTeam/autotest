@@ -95,11 +95,14 @@ public class BaseCase {
             res = response.body().string();
         }catch (Exception e){
             e.printStackTrace();
+            log.error("get response string error");
+            object.put("error",res);
         }
         try {
             object = JSON.parseObject(res);
         } catch (Exception e) {
             e.printStackTrace();
+            log.error("translate response json error");
             object.put("error",res);
         }
         return object;

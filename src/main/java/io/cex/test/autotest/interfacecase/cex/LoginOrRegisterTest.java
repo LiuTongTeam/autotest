@@ -40,7 +40,7 @@ public class LoginOrRegisterTest extends BaseCase {
         object.put("identifier", randomPhone);
         object.put("loginPwd", pwd);
         object.put("mobileArea", area);
-        object.put("verifyCode", "111111");
+        object.put("verifyCode", "912121");
         object.put("type", "1");
         object.put("invitationCode","0ktejS");
         JSONObject jsonbody = new JSONObject();

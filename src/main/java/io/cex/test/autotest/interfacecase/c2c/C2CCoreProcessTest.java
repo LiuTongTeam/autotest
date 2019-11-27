@@ -76,6 +76,8 @@ public class C2CCoreProcessTest extends BaseCase {
         //登陆
         merchanttoken = userCexLogin(randomPhoneMerchant, pwd, area);
         usertoken = userCexLogin(randomPhoneUser, pwd, area);
+        log.info("mechant用户token:"+merchanttoken);
+        log.info("user用户token:"+usertoken);
         AssertTool.assertNotEquals(merchanttoken,null);
         AssertTool.assertNotEquals(usertoken,null);
     }
