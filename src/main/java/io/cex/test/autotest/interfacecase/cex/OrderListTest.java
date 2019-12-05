@@ -98,7 +98,7 @@ public class OrderListTest extends BaseCase {
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("code").toString());
-        if(object.get("orderStatus").toString()=="ALL" || object.get("orderStatus").toString()=="CLOSED")
+        if(object.get("orderStatus").toString()=="CLOSED")
         {
             String totalRows = JsonPath.read(rspjson,"$.data.pagination.totalRows").toString();
             //AssertTool.isContainsExpect("false",isValid);
