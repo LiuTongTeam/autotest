@@ -128,6 +128,7 @@ public class CoreProcessTest extends BaseCase {
         Allure.addAttachment("入参：",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
+        Thread.sleep(1000);
         //从数据库中获取身份认证ID
         String sql = String.format("SELECT certificate_no FROM member_certification_record WHERE first_name = '%s';",userName);
         DataBaseManager dataBaseManager = new DataBaseManager();
