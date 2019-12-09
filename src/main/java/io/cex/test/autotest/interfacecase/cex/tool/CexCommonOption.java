@@ -68,6 +68,7 @@ public class CexCommonOption {
     }
 
 
+
     /**
      * @desc 注册工具
      * @param user 用户名
@@ -179,7 +180,7 @@ public class CexCommonOption {
         HashMap header = dataInit();
         header.put("CEXTOKEN",token);
         try {
-            Response response = OkHttpClientManager.post(ip+identityUrl, jsonbody.toJSONString(),
+            Response response = OkHttpClientManager.post(ip_gateway+identityUrl, jsonbody.toJSONString(),
                     "application/json", header);
             JSONObject rspjson = resultDeal(response);
             log.info("------------Identity response is:" + rspjson);

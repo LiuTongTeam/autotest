@@ -121,7 +121,7 @@ public class CoreProcessTest extends BaseCase {
         jsonbody.put("lang",lang);
         HashMap header = dataInit();
         header.put("CEXTOKEN",token);
-        Response response = OkHttpClientManager.post(ip+identityUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+identityUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         log.info("-------------Identity response is:"+rspjson);

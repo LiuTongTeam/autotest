@@ -29,7 +29,7 @@ public class CexConfig {
     public static final String loginUrl = "/app/userCenter/login";
     public static final String registerUrl = "/app/userCenter/register";
     public static final String upLoadFileUrl = "/user/file/upload/file";
-    public static final String identityUrl = "/user/authenticate/submit/identity";
+    public static final String identityUrl = "/app/userCenter/user/authenticate/submit/identity";
     public static final String securityPwdUrl = "/app/userCenter/user/set/securityPwd";
     public static final String CheckMobileUrl = "/app/userCenter/message/check/mobile";
     public static final String CheckLoginUrl = "/app/userCenter/checkLogin";
