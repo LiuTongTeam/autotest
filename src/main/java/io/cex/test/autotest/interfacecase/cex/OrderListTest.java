@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jayway.jsonpath.JsonPath;
 import io.cex.test.autotest.interfacecase.BaseCase;
 import io.cex.test.framework.assertutil.AssertTool;
+import io.cex.test.framework.common.DateUtil;
 import io.cex.test.framework.httputil.OkHttpClientManager;
 import io.cex.test.framework.jsonutil.JsonFileUtil;
 import io.qameta.allure.Allure;
@@ -88,10 +89,13 @@ public class OrderListTest extends BaseCase {
     public void testorderListData(Map<?,?> param) throws IOException {
         JSONObject object = JSON.parseObject(param.get("body").toString());
         JSONObject jsonbody = new JSONObject();
+        object.put("gmtStart", System.currentTimeMillis()- + 30 * 60 * 1000);
+        object.put("gmtEnd",System.currentTimeMillis());
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
         HashMap header = dataInit();
         header.put("CEXTOKEN",presetToken);
+        System.out.println("body:"+object.toJSONString());
         Allure.addAttachment(param.get("comment").toString()+"入参",jsonbody.toJSONString());
         Response response = OkHttpClientManager.post(ip+orderListUrl, jsonbody.toJSONString(),
                 "application/json", header);
