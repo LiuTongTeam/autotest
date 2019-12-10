@@ -97,7 +97,8 @@ public class CheckWithdrawAddressTest extends BaseCase {
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：",rspjson.toJSONString());
-        AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("code").toString());
+        AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
+        AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("data").toString());
     }
 }
 

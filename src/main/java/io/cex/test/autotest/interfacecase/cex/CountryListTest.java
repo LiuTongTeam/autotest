@@ -29,6 +29,7 @@ public class CountryListTest extends BaseCase {
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
+        AssertTool.isContainsExpect("{\"code\":\"US\",\"mobileArea\":\"1\",\"name\":\"United States\",\"countryId\":5}", rspjson.get("data").toString());
     }
     @Test(description = "异常用例：body为空,也返回成功，该接口依靠header的语言来的")
     public void countryListError1() throws IOException {

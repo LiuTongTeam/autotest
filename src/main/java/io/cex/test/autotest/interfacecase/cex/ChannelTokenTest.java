@@ -37,6 +37,7 @@ public class ChannelTokenTest extends BaseCase {
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
+        AssertTool.isContainsExpect("\"channelToken\"", rspjson.get("data").toString());
     }
 
     //不传渠道，返回100006

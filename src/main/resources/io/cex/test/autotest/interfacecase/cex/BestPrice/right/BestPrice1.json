@@ -2,7 +2,7 @@
   "comment": "查询该交易对最优买价，返回成功",
   "body": {
     "action":"BUY",
-    "symbol":"KOFO/USDT"
+    "symbol":"UPT/USDT"
   },
   "assert":"000000"
 }

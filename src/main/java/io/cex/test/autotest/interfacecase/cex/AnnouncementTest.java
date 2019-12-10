@@ -34,10 +34,9 @@ public class AnnouncementTest extends BaseCase {
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
-        System.out.println(jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
-        System.out.println(rspjson.toJSONString());
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
+        AssertTool.isContainsExpect("\"summary\"",rspjson.get("data").toString());
     }
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "正常用例，没有token返回000000")
@@ -54,5 +53,6 @@ public class AnnouncementTest extends BaseCase {
         Allure.addAttachment("入参：",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
+        AssertTool.isContainsExpect("\"summary\"",rspjson.get("data").toString());
     }
 }

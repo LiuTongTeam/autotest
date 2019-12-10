@@ -42,10 +42,12 @@ public class dealOrderListTest extends BaseCase {
     public void dealOrderListError(Map<?,?> param) throws IOException {
         JSONObject object = JSON.parseObject(param.get("body").toString());
         JSONObject jsonbody = new JSONObject();
+        object.put("gmtStart", System.currentTimeMillis()- + 30 * 60 * 1000);
+        object.put("gmtEnd",System.currentTimeMillis());
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
         HashMap header = dataInit();
-        header.put("CEXTOKEN", presetToken);
+        header.put("CEXTOKEN", orderToken);
         Allure.addAttachment(param.get("comment").toString()+"入参",jsonbody.toJSONString());
         Response response = OkHttpClientManager.post(ip+dealOrderListUrl, jsonbody.toJSONString(),
                 "application/json",header );
@@ -68,10 +70,12 @@ public class dealOrderListTest extends BaseCase {
         dataInit();
         JSONObject object = JSON.parseObject(param.get("body").toString());
         JSONObject jsonbody = new JSONObject();
+        object.put("gmtStart", System.currentTimeMillis()- + 30 * 60 * 1000);
+        object.put("gmtEnd",System.currentTimeMillis());
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
         HashMap header = dataInit();
-        header.put("CEXTOKEN", presetToken);
+        header.put("CEXTOKEN", orderToken);
         Allure.addAttachment(param.get("comment").toString()+"入参",jsonbody.toJSONString());
         Response response = OkHttpClientManager.post(ip+dealOrderListUrl, jsonbody.toJSONString(),
                 "application/json", header);

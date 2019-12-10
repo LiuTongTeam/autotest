@@ -37,6 +37,8 @@ public class BaseCase {
     public static String c2cmysql = "jdbc:mysql://172.29.19.71:3306/c2c?useUnicode=true&characterEncoding=UTF8&user=root&password=48rm@hd2o3EX";
     //cex数据库连接信息
     public static String cexmysql = "jdbc:mysql://172.29.19.71:3306/cex?useUnicode=true&characterEncoding=UTF8&user=root&password=48rm@hd2o3EX";
+    //持续下单用户使用的token(15095998872)
+    public static String orderToken = "pihavvm8dse50d8tav841uqnc37my7uru1wva73uf26uvrmam9tmh3exynwbc4mz_CEX";
 
 
     /**
@@ -53,6 +55,8 @@ public class BaseCase {
             properties.load(inputStream);
             ip = properties.getProperty("cexip");
             log.info("获取到ip地址为："+ip);
+            orderToken = properties.getProperty("orderToken");
+            log.info("获取到下单用户token为："+orderToken);
             cexmysql = properties.getProperty("cexmysql");
             log.info("获取到cexmysql连接信息为："+cexmysql);
             presetUser = properties.getProperty("presetUser");

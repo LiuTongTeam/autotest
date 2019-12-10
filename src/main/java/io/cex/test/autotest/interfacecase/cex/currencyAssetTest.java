@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import io.cex.test.autotest.interfacecase.BaseCase;
 import io.cex.test.framework.assertutil.AssertTool;
+import io.cex.test.framework.common.StringUtil;
 import io.cex.test.framework.httputil.OkHttpClientManager;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Feature;
@@ -13,6 +14,7 @@ import okhttp3.Response;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
@@ -35,6 +37,9 @@ public class currencyAssetTest extends BaseCase {
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
+        BigDecimal price = new BigDecimal(StringUtil.stripTrailingZeros(JSONObject.parseObject(rspjson.get("data").toString()).getString("availableAmount")));
+        //断言出参余额大于0
+        AssertTool.assertEquals(1,price.compareTo(new BigDecimal(0)));
     }
     @Test(description = "异常用例：没有输入token")
     public void currencyAssetError1() throws IOException {

@@ -94,20 +94,16 @@ public class OrderListTest extends BaseCase {
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
         HashMap header = dataInit();
-    //    header.put("CEXTOKEN","3pbjbisgx9rsmd6ardur64p2ypy3keyz0idyj4d0rfyk9m37ksqr2ep682azkjqn_CEX");
-        header.put("CEXTOKEN","pihavvm8dse50d8tav841uqnc37my7uru1wva73uf26uvrmam9tmh3exynwbc4mz_CEX");
-        System.out.println("body:"+object.toJSONString());
+        header.put("CEXTOKEN",orderToken);
         Allure.addAttachment(param.get("comment").toString()+"入参",jsonbody.toJSONString());
         Response response = OkHttpClientManager.post(ip+orderListUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("code").toString());
-        System.out.println("rs:"+rspjson.toJSONString());
         if(object.get("orderStatus").toString().equals("CLOSED"))
         {
             String totalRows = JsonPath.read(rspjson,"$.data.pagination.totalRows").toString();
-            //AssertTool.isContainsExpect("false",isValid);
             try {
                 int actualReal =Integer.parseInt(totalRows);
                 if (actualReal>0){

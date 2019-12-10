@@ -30,6 +30,7 @@ public class AllArticleListTest extends BaseCase {
         Allure.addAttachment("入参：",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
+        AssertTool.isContainsExpect("http://139.9.55.125/upload/upload/",rspjson.get("data").toString());
     }
 
 }

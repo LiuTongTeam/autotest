@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import io.cex.test.autotest.interfacecase.BaseCase;
 import io.cex.test.framework.assertutil.AssertTool;
+import io.cex.test.framework.common.StringUtil;
 import io.cex.test.framework.httputil.OkHttpClientManager;
 import io.cex.test.framework.jsonutil.JsonFileUtil;
 import io.qameta.allure.Allure;
@@ -16,6 +17,7 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -75,5 +77,8 @@ public class BestPriceTest extends BaseCase {
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("code").toString());
+        BigDecimal price = new BigDecimal(StringUtil.stripTrailingZeros(JSONObject.parseObject(rspjson.get("data").toString()).getString("bestPrice")));
+        //断言出参最优价格大于0
+        AssertTool.assertEquals(1,price.compareTo(new BigDecimal(0)));
     }
 }
