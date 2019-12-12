@@ -44,6 +44,8 @@ public class UserAuthInfoTest extends BaseCase {
         Allure.addAttachment("入参：",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
+        //TODO 做市商用户查询出的认证信息为空,需要修改此bug后增加
+//        AssertTool.isContainsExpect("\"userNo\":\"1629161555866214401\",",rspjson.getString("data"));
     }
 
 }

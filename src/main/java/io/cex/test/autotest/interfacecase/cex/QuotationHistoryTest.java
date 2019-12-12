@@ -2,6 +2,7 @@ package io.cex.test.autotest.interfacecase.cex;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.jayway.jsonpath.JsonPath;
 import io.cex.test.autotest.interfacecase.BaseCase;
 import io.cex.test.framework.assertutil.AssertTool;
 import io.cex.test.framework.httputil.OkHttpClientManager;
@@ -45,6 +46,8 @@ public class QuotationHistoryTest extends BaseCase {
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
+        //断言行情历史列表不为空
+        AssertTool.assertEquals(JSON.parseArray(JsonPath.read(rspjson,"$.data.quotationHistory").toString()).size()>0,true);
     }
 
     /**

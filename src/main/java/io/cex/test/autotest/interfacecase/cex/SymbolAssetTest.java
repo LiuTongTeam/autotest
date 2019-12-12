@@ -36,6 +36,7 @@ public class SymbolAssetTest extends BaseCase {
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
+        AssertTool.assertEquals(JSON.parseArray(rspjson.get("data").toString()).size()>0,true);
     }
     //异常用例1：没有输入正常的token
     @Test(description = "SymbolAssetTest异常用例：没有输入token")

@@ -33,6 +33,7 @@ public class UserBindStatusTest extends BaseCase {
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
+        AssertTool.isContainsExpect("\"googleStatus\":0,\"emailStatus\":1,\"mobileStatus\":1",rspjson.getString("data"));
     }
     @Test(description = "异常用例：没有输入token")
     public void userBindStatusError() throws IOException {

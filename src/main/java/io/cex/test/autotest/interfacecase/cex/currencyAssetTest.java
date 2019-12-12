@@ -39,7 +39,7 @@ public class currencyAssetTest extends BaseCase {
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
         BigDecimal price = new BigDecimal(StringUtil.stripTrailingZeros(JSONObject.parseObject(rspjson.get("data").toString()).getString("availableAmount")));
         //断言出参余额大于0
-        AssertTool.assertEquals(1,price.compareTo(new BigDecimal(0)));
+        AssertTool.assertEquals(price.compareTo(new BigDecimal(0)),1);
     }
     @Test(description = "异常用例：没有输入token")
     public void currencyAssetError1() throws IOException {

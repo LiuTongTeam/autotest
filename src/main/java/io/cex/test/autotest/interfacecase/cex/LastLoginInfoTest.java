@@ -45,6 +45,7 @@ public class LastLoginInfoTest extends BaseCase {
         Allure.addAttachment("出参：",rspjson.toJSONString());
         System.out.println(rspjson.toJSONString());
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
+        AssertTool.isContainsExpect("\"loginSource\":\"native\"",rspjson.get("data").toString());
     }
 
 

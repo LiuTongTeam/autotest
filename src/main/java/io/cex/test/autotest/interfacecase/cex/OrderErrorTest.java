@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
 import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.currencyCoin;
-@Feature("交易下单的异常校验测试")
+@Feature("OrderError接口测试")
 
 public class OrderErrorTest extends BaseCase {
     String symbol = String.format("%s/%s",productCoin,currencyCoin);

@@ -75,5 +75,6 @@ public class DealListTest extends BaseCase {
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("code").toString());
+        AssertTool.assertEquals( JSON.parseArray(rspjson.get("data").toString()).size()>0,true);
     }
 }

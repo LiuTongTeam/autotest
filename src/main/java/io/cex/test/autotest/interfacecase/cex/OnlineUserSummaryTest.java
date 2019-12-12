@@ -2,6 +2,7 @@ package io.cex.test.autotest.interfacecase.cex;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.jayway.jsonpath.JsonPath;
 import io.cex.test.autotest.interfacecase.BaseCase;
 import io.cex.test.framework.assertutil.AssertTool;
 import io.cex.test.framework.httputil.OkHttpClientManager;
@@ -13,6 +14,7 @@ import okhttp3.Response;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
@@ -33,5 +35,8 @@ public class OnlineUserSummaryTest extends BaseCase {
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
+        String totalRows = JsonPath.read(rspjson,"$.data.onlineUser").toString();
+        //断言xMaxPrice大于0
+        AssertTool.assertEquals( new BigDecimal(totalRows).compareTo(new BigDecimal(0)),1);
     }
 }

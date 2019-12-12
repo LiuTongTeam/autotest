@@ -74,5 +74,6 @@ public class SymbolDetailTest extends BaseCase {
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("code").toString());
+        AssertTool.isContainsExpect("\"symbol\":\"KOFO/USDT\"",rspjson.get("data").toString());
     }
 }

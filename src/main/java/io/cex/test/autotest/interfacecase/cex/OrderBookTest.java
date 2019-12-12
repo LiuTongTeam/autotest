@@ -2,6 +2,7 @@ package io.cex.test.autotest.interfacecase.cex;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.jayway.jsonpath.JsonPath;
 import io.cex.test.autotest.interfacecase.BaseCase;
 import io.cex.test.framework.assertutil.AssertTool;
 import io.cex.test.framework.httputil.OkHttpClientManager;
@@ -75,5 +76,9 @@ public class OrderBookTest extends BaseCase {
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("code").toString());
+        //断言买订单不为空
+        AssertTool.assertEquals(JSON.parseArray(JsonPath.read(rspjson,"$.data.askList").toString()).size()>0,true);
+        //断言卖订单不为空
+        AssertTool.assertEquals(JSON.parseArray(JsonPath.read(rspjson,"$.data.bidList").toString()).size()>0,true);
     }
 }

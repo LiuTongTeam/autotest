@@ -17,7 +17,7 @@ import java.io.IOException;
 import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.lang;
 import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.symbolQuotationUrl;
 
-@Feature("交易对信息接口symbolQuotation")
+@Feature("symbolQuotation交易对信息接口")
 
 public class SymbolQuotationTest extends BaseCase {
     @Severity(SeverityLevel.CRITICAL)
@@ -31,6 +31,7 @@ public class SymbolQuotationTest extends BaseCase {
         Allure.addAttachment("入参：",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
+        AssertTool.assertEquals(JSON.parseArray(rspjson.getString("data")).size()>0,true);
     }
 
 }

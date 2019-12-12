@@ -16,6 +16,7 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +41,9 @@ public class SymbolLimitOrderStatTest extends BaseCase {
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
+        String totalAmount = JSON.parseObject(rspjson.get("data").toString()).getString("totalAmount");
+        //断言totalAmount大于0
+        AssertTool.assertEquals(new BigDecimal(totalAmount).compareTo(new BigDecimal(0)),1);
     }
 
     /**

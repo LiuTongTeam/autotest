@@ -28,7 +28,7 @@ public class DealDetailTest extends BaseCase {
     @Test(description = "DealDetail正常用例")
     public void dealDetail() throws IOException {
         //从数据库中随机获取一笔专用账户的订单编号
-        String sql = String.format("select order_no from order_info where user_no= (select user_no from member_user where email='%s') LIMIT 1;", presetUser);
+        String sql = String.format("select order_no from order_info where user_no= (select user_no from member_user where mobile_num='%s') LIMIT 1;", "15095998872");
         DataBaseManager dataBaseManager = new DataBaseManager();
         orderNo = JSON.parseObject(dataBaseManager.executeSingleQuery(sql, cexmysql).getString(0)).getString("order_no");
         JSONObject object = new JSONObject();
@@ -37,13 +37,14 @@ public class DealDetailTest extends BaseCase {
         jsonbody.put("lang", lang);
         jsonbody.put("data", object);
         HashMap header = dataInit();
-        header.put("CEXTOKEN", presetToken);
+        header.put("CEXTOKEN", orderToken);
         Response response = OkHttpClientManager.post(ip + dealDetailUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
+        AssertTool.assertEquals( JSON.parseArray(rspjson.get("data").toString()).size()>0,true);
     }
 
     //订单号为空，返回100006

@@ -2,6 +2,7 @@ package io.cex.test.autotest.interfacecase.cex;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.jayway.jsonpath.JsonPath;
 import io.cex.test.autotest.interfacecase.BaseCase;
 import io.cex.test.framework.assertutil.AssertTool;
 import io.cex.test.framework.httputil.OkHttpClientManager;
@@ -37,6 +38,11 @@ public class HelpCenterTest extends BaseCase {
         Allure.addAttachment("入参：",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
+        String totalRows = JsonPath.read(rspjson,"$.data.pagination.totalRows").toString();
+        //断言totalRows即总条数大于0
+        AssertTool.assertEquals(Integer.parseInt(totalRows)>0,true);
+        //断言当前页面list不为空
+        AssertTool.assertEquals(JSON.parseArray(JsonPath.read(rspjson,"$.data.list").toString()).size()>0,true);
     }
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "正常用例，没有token返回000000")
@@ -53,5 +59,10 @@ public class HelpCenterTest extends BaseCase {
         Allure.addAttachment("入参：",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
+        String totalRows = JsonPath.read(rspjson,"$.data.pagination.totalRows").toString();
+        //断言totalRows即总条数大于0
+        AssertTool.assertEquals(Integer.parseInt(totalRows)>0,true);
+        //断言当前页面list不为空
+        AssertTool.assertEquals(JSON.parseArray(JsonPath.read(rspjson,"$.data.list").toString()).size()>0,true);
     }
 }

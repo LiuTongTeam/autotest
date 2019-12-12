@@ -41,6 +41,7 @@ public class TradeSymbolInfoTest extends BaseCase {
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
+        AssertTool.isContainsExpect("\"symbol\":\"IDA/USDT\",",rspjson.getString("data"));
     }
 
     /**

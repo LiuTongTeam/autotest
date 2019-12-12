@@ -13,6 +13,7 @@ import okhttp3.Response;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
@@ -36,6 +37,9 @@ public class WithdrawInfoTest extends BaseCase {
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
+        String availableTotalAmount = JSON.parseObject(rspjson.get("data").toString()).getString("availableTotalAmount");
+        //断言totalAmount大于0
+        AssertTool.assertEquals(new BigDecimal(availableTotalAmount).compareTo(new BigDecimal(0)),1);
     }
     @Test(description = "异常用例：没有输入token")
     public void withdrawInfoError() throws IOException {

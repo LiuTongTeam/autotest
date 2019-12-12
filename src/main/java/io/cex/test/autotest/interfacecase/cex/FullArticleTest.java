@@ -23,7 +23,8 @@ public class FullArticleTest extends BaseCase {
     @Test(description = "正常用例，有token返回000000")
     public void fullArticleTest() throws IOException {
         JSONObject object = new JSONObject();
-        object.put("bizId", "1630489093291929602");
+        //boss-内容管理-帮助中心编号
+        object.put("bizId", "1631591491864391682");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
@@ -35,12 +36,14 @@ public class FullArticleTest extends BaseCase {
         Allure.addAttachment("入参：",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
+        AssertTool.isContainsExpect("1631591491864391682",rspjson.get("data").toString());
     }
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "正常用例，没有token返回000000")
     public void fullArticleTest1() throws IOException {
         JSONObject object = new JSONObject();
-        object.put("bizId", "1630489093291929602");
+        //boss-内容管理-帮助中心编号
+        object.put("bizId", "1631591491864391682");
         JSONObject jsonbody = new JSONObject();
         jsonbody.put("lang",lang);
         jsonbody.put("data",object);
@@ -50,6 +53,7 @@ public class FullArticleTest extends BaseCase {
         Allure.addAttachment("入参：",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
+        AssertTool.isContainsExpect("1631591491864391682",rspjson.get("data").toString());
     }
     @Test(description = "异常用例，bizId为空")
     public void fullArticleTestError() throws IOException {

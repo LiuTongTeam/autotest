@@ -86,6 +86,7 @@ public class WithdrawAddressTest extends BaseCase {
         Allure.addAttachment("入参：",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
+        AssertTool.assertEquals(JSON.parseArray(rspjson.getString("data")).size()>0,true);
         try {
             bizId = JsonFileUtil.jsonToMap(rspjson,new HashMap<String, Object>()).get("bizId").toString();
         }catch (Exception e){
