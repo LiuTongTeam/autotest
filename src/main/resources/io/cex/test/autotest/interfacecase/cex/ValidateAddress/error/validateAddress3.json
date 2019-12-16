@@ -1,0 +1,14 @@
+{
+  "comment": "currencyAddress与链不对应，返回100006",
+  "body": {
+    "chain": "ETH",
+    "currency": "USDT",
+    "currencyAddress": "mwC3LB9GCKyqoKzjw6pi167vrqeZfrK6xq",
+    "currencyAliasName": "USDT-ERC20",
+    "isLabelCoin": "0",
+    "labelContent": ""
+  },
+  "time":"60000",
+  "assert":"000000",
+  "assertString":"{\"isValid\":false}"
+}

@@ -54,10 +54,8 @@
             <class name="io.cex.test.autotest.interfacecase.cex.AddressTest">
                 <methods>
                     <include name="addressTestError1"/>
-                    <include name="addressTestError2"/>
-                    <include name="addressTestError3"/>
-                    <include name="addressTest"/>
-                    <include name="addressTestError4"/>
+                    <include name="addressErrorTest"/>
+                    <include name="addressRightTest"/>
                 </methods>
             </class>
             <class name="io.cex.test.autotest.interfacecase.cex.AddsymbolTest">
@@ -575,15 +573,21 @@
                     <include name="withdrawAddressError1"/>
                     <include name="withdrawAddressError2"/>
                     <include name="qwithdrawAddress"/>
+                    <include name="qwithdrawAddress1"/>
+                    <include name="qwithdrawAddress2"/>
                     <include name="dwithdrawAddress"/>
                     <include name="dwithdrawAddressError"/>
+                    <include name="dwithdrawAddressError1"/>
                     <include name="awithdrawAddress"/>
+                    <include name="awithdrawAddress1"/>
                 </methods>
             </class>
             <class name="io.cex.test.autotest.interfacecase.cex.WithdrawInfoTest">
                 <methods>
                     <include name="withdrawInfo"/>
                     <include name="withdrawInfoError"/>
+                    <include name="withdrawInfoError1"/>
+                    <include name="withdrawInfoError2"/>
                 </methods>
             </class>
             <class name="io.cex.test.autotest.interfacecase.cex.WithdrawTest">

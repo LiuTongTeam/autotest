@@ -38,7 +38,7 @@ public class BaseCase {
     //cex数据库连接信息
     public static String cexmysql = "jdbc:mysql://172.29.19.71:3306/cex?useUnicode=true&characterEncoding=UTF8&user=root&password=48rm@hd2o3EX";
     //持续下单用户使用的token(15095998872)
-    public static String orderToken = "pihavvm8dse50d8tav841uqnc37my7uru1wva73uf26uvrmam9tmh3exynwbc4mz_CEX";
+    public static String orderToken = "bm8zgb13gs1n9btxtfxe10e6aj3khtc1uupkvtn3cuszrn4qxp11rvcfjpu4mjf8_CEX";
 
 
     /**

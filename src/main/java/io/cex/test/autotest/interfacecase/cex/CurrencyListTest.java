@@ -22,8 +22,7 @@ public class CurrencyListTest extends BaseCase {
     @Test(description = "正常用例，返回000000")
     public void currencyListTest() throws IOException {
         JSONObject jsonbody = new JSONObject();
-        jsonbody.put("lang",lang);
-        Response response = OkHttpClientManager.post(ip+currencyListUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+currencyListUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());

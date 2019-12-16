@@ -1,0 +1,14 @@
+{
+  "comment": "currencyAddress为空，返回100006",
+  "body": {
+    "chain": "ETH",
+    "currency": "IDA",
+    "currencyAddress": "",
+    "currencyAliasName": "IDA",
+    "isLabelCoin": "0",
+    "labelContent": ""
+  },
+  "time":"60000",
+  "assert":"100006",
+  "assertString":"\"msg\":\"币种地址不可为空\""
+}

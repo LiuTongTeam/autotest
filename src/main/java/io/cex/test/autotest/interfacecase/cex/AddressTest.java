@@ -7,16 +7,20 @@ import io.cex.test.autotest.interfacecase.BaseCase;
 import io.cex.test.autotest.interfacecase.cex.tool.CexCommonOption;
 import io.cex.test.framework.assertutil.AssertTool;
 import io.cex.test.framework.httputil.OkHttpClientManager;
+import io.cex.test.framework.jsonutil.JsonFileUtil;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import okhttp3.Response;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.Map;
 
 import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
 
@@ -32,106 +36,72 @@ public class AddressTest extends BaseCase {
     //异常测试案例1 没有token
     @Test(description = "异常用例没有token，返回100006")
     public void addressTestError1() throws IOException {
-        JSONObject object = new JSONObject();
-        object.put("currency", depositCurrency);
-        object.put("currencyAddress", address);
-        object.put("isLabelCoin", "0");
-        object.put("labelContent", "");
         JSONObject jsonbody = new JSONObject();
-        jsonbody.put("data", object);
-        jsonbody.put("lang", lang);
-        Response response = OkHttpClientManager.post(ip+addressUrl, jsonbody.toJSONString(),
+        jsonbody.put("currencyAliasName", depositCurrency);
+        jsonbody.put("chain", depositCurrencyChain);
+        jsonbody.put("currency", depositCurrency);
+        jsonbody.put("currencyAddress", address);
+        jsonbody.put("isLabelCoin", "0");
+        jsonbody.put("labelContent", "");
+        Response response = OkHttpClientManager.post(ip_gateway+addressUrl, jsonbody.toJSONString(),
                 "application/json", BaseCase.dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect("100006",rspjson.get("code").toString());
     }
-    //异常测试案例2 币种为空
-    @Test(description = "币种为空，返回100006")
-    public void addressTestError2() throws IOException {
-        JSONObject object = new JSONObject();
-        object.put("currency", "");
-        object.put("currencyAddress", address);
-        object.put("isLabelCoin", "0");
-        object.put("labelContent", "");
-        JSONObject jsonbody = new JSONObject();
-        jsonbody.put("data", object);
-        jsonbody.put("lang", lang);
+
+    /**
+     * @desc 异常用例的数据驱动
+     * @param
+     **/
+    @DataProvider(parallel=true)
+    public Object[][] provideAddressTestErrorData(Method method){
+        String path = "./src/main/resources/io/cex/test/autotest/interfacecase/cex/ValidateAddress/error/";
+        HashMap<String, String>[][] arrymap = (HashMap<String, String>[][]) JsonFileUtil.jsonFileToArry(path);
+        return arrymap;
+    }
+    //异常测试案例
+    @Test(dataProvider = "provideAddressTestErrorData", description = "异常测试案例")
+    public void addressErrorTest(Map<?,?> param) throws IOException {
+        JSONObject jsonbody = JSON.parseObject(param.get("body").toString());
         HashMap header = dataInit();
         header.put("CEXTOKEN", presetToken);
-        Response response = OkHttpClientManager.post(ip+addressUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+addressUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
-        Allure.addAttachment("入参：",jsonbody.toJSONString());
+        Allure.addAttachment(param.get("comment").toString()+"入参",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
-        AssertTool.isContainsExpect("100006",rspjson.get("code").toString());
+        System.out.println("chu:"+rspjson.toJSONString());
+        AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("code").toString());
+
+
     }
-    //异常测试案例3 地址为空
-    @Test(description = "地址为空，返回100006")
-    public void addressTestError3() throws IOException {
-        JSONObject object = new JSONObject();
-        object.put("currency", depositCurrency);
-        object.put("currencyAddress", "");
-        object.put("isLabelCoin", "0");
-        object.put("labelContent", "");
-        JSONObject jsonbody = new JSONObject();
-        jsonbody.put("data", object);
-        jsonbody.put("lang", lang);
+
+    /**
+     * @desc 异常用例的数据驱动
+     * @param
+     **/
+    @DataProvider(parallel=true)
+    public Object[][] provideAddressTestRightData(Method method){
+        String path = "./src/main/resources/io/cex/test/autotest/interfacecase/cex/ValidateAddress/right";
+        HashMap<String, String>[][] arrymap = (HashMap<String, String>[][]) JsonFileUtil.jsonFileToArry(path);
+        return arrymap;
+    }
+    //正常测试案例
+    @Test(dataProvider = "provideAddressTestRightData", description = "正常测试案例")
+    public void addressRightTest(Map<?,?> param) throws IOException {
+        JSONObject jsonbody = JSON.parseObject(param.get("body").toString());
         HashMap header = dataInit();
         header.put("CEXTOKEN", presetToken);
-        Response response = OkHttpClientManager.post(ip+addressUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+addressUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
-        Allure.addAttachment("入参：",jsonbody.toJSONString());
+        Allure.addAttachment(param.get("comment").toString()+"入参",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
-        AssertTool.isContainsExpect("100006",rspjson.get("code").toString());
+        AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("code").toString());
+        AssertTool.isContainsExpect(param.get("assertString").toString(),rspjson.get("data").toString());
+
     }
-    //正常案例，正常输入，返回000000并且返回的data中isValid=true
-    @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "正常案例，正常输入，返回000000并且返回的data中isValid=true")
-    public void addressTest() throws IOException {
-        JSONObject object = new JSONObject();
-        object.put("currency", depositCurrency);
-        object.put("currencyAddress", address);
-        object.put("isLabelCoin", "0");
-        object.put("labelContent", "");
-        JSONObject jsonbody = new JSONObject();
-        jsonbody.put("data", object);
-        jsonbody.put("lang", lang);
-        HashMap header = dataInit();
-        header.put("CEXTOKEN", presetToken);
-        Response response = OkHttpClientManager.post(ip+addressUrl, jsonbody.toJSONString(),
-                "application/json", header);
-        JSONObject rspjson = resultDeal(response);
-        Allure.addAttachment("入参：",jsonbody.toJSONString());
-        Allure.addAttachment("出参：",rspjson.toJSONString());
-        AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
-        JSONObject a = JSON.parseObject(JSON.toJSONString(rspjson.get("data")));
-        AssertTool.isContainsExpect("true",a.get("isValid").toString());
-    }
-    //地址和币种不符合，返回000000并且返回的data中isValid=false
-      @Severity(SeverityLevel.CRITICAL)
-      @Test(description = "地址和币种不符合，返回000000并且返回的data中isValid=false")
-      public void addressTestError4() throws IOException {
-          JSONObject object = new JSONObject();
-          object.put("currency", currencyCoin);
-          object.put("currencyAddress", address);
-          object.put("isLabelCoin", "0");
-          object.put("labelContent", "");
-          JSONObject jsonbody = new JSONObject();
-          jsonbody.put("data", object);
-          jsonbody.put("lang", lang);
-          HashMap header = dataInit();
-          header.put("CEXTOKEN", presetToken);
-          Response response = OkHttpClientManager.post(ip+addressUrl, jsonbody.toJSONString(),
-                  "application/json", header);
-          JSONObject rspjson = resultDeal(response);
-          Allure.addAttachment("入参：",jsonbody.toJSONString());
-          Allure.addAttachment("出参：",rspjson.toJSONString());
-          AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
-          //JSONObject a = JSON.parseObject(JSON.toJSONString(rspjson.get("data")));
-          String isValid = JsonPath.read(rspjson,"$.data.isValid").toString();
-          AssertTool.isContainsExpect("false",isValid);
-      }
+
 }

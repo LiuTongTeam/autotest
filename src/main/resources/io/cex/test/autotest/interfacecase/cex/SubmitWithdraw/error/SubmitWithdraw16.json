@@ -3,7 +3,8 @@
   "body": {
     "amount":"0.12345",
     "currency":"EOS",
-    "isLabelCoin": true,
+    "labelContent": "",
+    "currencyAliasName":"EOS",
     "securityPwd":"f3d3d3667220886d7a1a3f1eb9335d91",
     "verifyCode1":"536478",
     "walletAddress":"yjt123454321",

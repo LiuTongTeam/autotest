@@ -94,23 +94,19 @@ public class SubmitWithdrawTest extends BaseCase{
     public void testSubmitWithdrawupt() throws IOException,InterruptedException {
         String address = CexCommonOption.getAddress(randomPhoneUser, pwd,"UPT");
         usertoken = userCexLogin(randomPhoneUser, pwd, area);
-        JSONObject object = new JSONObject();
-        object.put("amount", "13");
-        object.put("currency", "UPT");
-        object.put("isLabelCoin", false);
-        object.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
-        object.put("verifyCode1", "912121");
-        object.put("walletAddress", address);
         JSONObject jsonbody = new JSONObject();
-        jsonbody.put("data", object);
-        jsonbody.put("lang", "zh-CN");
+       jsonbody.put("amount", "13");
+       jsonbody.put("currency", "UPT");
+       jsonbody.put("currencyAliasName", "UPT");
+       jsonbody.put("labelContent", "");
+       jsonbody.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
+       jsonbody.put("verifyCode1", "912121");
+       jsonbody.put("walletAddress", address);
         HashMap header = dataInit();
         header.put("CEXTOKEN", presetToken);
-        System.out.println("rucan" + jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(ip + submitwithdrawUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + submitwithdrawUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
-        System.out.println("chucan" + rspjson.toJSONString());
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
@@ -120,23 +116,19 @@ public class SubmitWithdrawTest extends BaseCase{
     @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testSubmitWithdrawupt", description = "SubmitWithdraw新账户往外部提币")
     public void testSubmitWithdraw1() throws IOException, InterruptedException {
-        JSONObject object = new JSONObject();
-        object.put("amount", "10");
-        object.put("currency", "UPT");
-        object.put("isLabelCoin", false);
-        object.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
-        object.put("verifyCode1", "912121");
-        object.put("walletAddress", "0x274cC789096337D12eB5A17159845CBf3ebB8610");
         JSONObject jsonbody = new JSONObject();
-        jsonbody.put("data", object);
-        jsonbody.put("lang", "zh-CN");
+        jsonbody.put("amount", "10");
+        jsonbody.put("currency", "UPT");
+        jsonbody.put("currencyAliasName", "UPT");
+        jsonbody.put("labelContent", "");
+        jsonbody.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
+        jsonbody.put("verifyCode1", "912121");
+        jsonbody.put("walletAddress", "0x274cC789096337D12eB5A17159845CBf3ebB8610");
         HashMap header = dataInit();
         header.put("CEXTOKEN", usertoken);
-        System.out.println("rucan" + jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(ip + submitwithdrawUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + submitwithdrawUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
-        System.out.println("chucan" + rspjson.toJSONString());
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
@@ -155,23 +147,19 @@ public class SubmitWithdrawTest extends BaseCase{
     public void testSubmitWithdraw2() throws IOException,InterruptedException {
         String address = CexCommonOption.getAddress(randomPhoneUser, pwd,"UPT");
         usertoken = userCexLogin(randomPhoneUser, pwd, area);
-        JSONObject object = new JSONObject();
-        object.put("amount", "23");
-        object.put("currency", "UPT");
-        object.put("isLabelCoin", false);
-        object.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
-        object.put("verifyCode1", "912121");
-        object.put("walletAddress", address);
         JSONObject jsonbody = new JSONObject();
-        jsonbody.put("data", object);
-        jsonbody.put("lang", "zh-CN");
+        jsonbody.put("amount", "23");
+        jsonbody.put("currency", "UPT");
+        jsonbody.put("currencyAliasName", "UPT");
+        jsonbody.put("labelContent", "");
+        jsonbody.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
+        jsonbody.put("verifyCode1", "912121");
+        jsonbody.put("walletAddress", address);
         HashMap header = dataInit();
         header.put("CEXTOKEN", presetToken);
-        System.out.println("rucan" + jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(ip + submitwithdrawUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + submitwithdrawUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
-        System.out.println("chucan" + rspjson.toJSONString());
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
@@ -235,23 +223,19 @@ public class SubmitWithdrawTest extends BaseCase{
     public void testSubmitWithdraw3() throws IOException,InterruptedException {
         String address = CexCommonOption.getAddress(randomPhoneUser, pwd,"NEO");
         usertoken = userCexLogin(randomPhoneUser, pwd, area);
-        JSONObject object = new JSONObject();
-        object.put("amount", "1");
-        object.put("currency", "NEO");
-        object.put("isLabelCoin", false);
-        object.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
-        object.put("verifyCode1", "912121");
-        object.put("walletAddress", address);
         JSONObject jsonbody = new JSONObject();
-        jsonbody.put("data", object);
-        jsonbody.put("lang", "zh-CN");
+        jsonbody.put("amount", "1");
+        jsonbody.put("currency", "NEO");
+        jsonbody.put("currencyAliasName", "NEO");
+        jsonbody.put("labelContent", "");
+        jsonbody.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
+        jsonbody.put("verifyCode1", "912121");
+        jsonbody.put("walletAddress", address);
         HashMap header = dataInit();
         header.put("CEXTOKEN", presetToken);
-        System.out.println("rucan" + jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(ip + submitwithdrawUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + submitwithdrawUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
-        System.out.println("chucan" + rspjson.toJSONString());
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
@@ -261,23 +245,19 @@ public class SubmitWithdrawTest extends BaseCase{
     @Severity(SeverityLevel.CRITICAL)
     @Test( dependsOnMethods = "testSubmitWithdraw3",description = "SubmitWithdraw从新账户将NEO还给专用账户")
     public void testSubmitWithdrawneo() throws IOException,InterruptedException {
-        JSONObject object = new JSONObject();
-        object.put("amount", "1");
-        object.put("currency", "NEO");
-        object.put("isLabelCoin", false);
-        object.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
-        object.put("verifyCode1", "912121");
-        object.put("walletAddress", "AWgnvpuC9Rc9Su635r94bhZu5ty8dbqdbA");
         JSONObject jsonbody = new JSONObject();
-        jsonbody.put("data", object);
-        jsonbody.put("lang", "zh-CN");
+        jsonbody.put("amount", "1");
+        jsonbody.put("currency", "NEO");
+        jsonbody.put("currencyAliasName", "NEO");
+        jsonbody.put("labelContent", "");
+        jsonbody.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
+        jsonbody.put("verifyCode1", "912121");
+        jsonbody.put("walletAddress", "AWgnvpuC9Rc9Su635r94bhZu5ty8dbqdbA");
         HashMap header = dataInit();
         header.put("CEXTOKEN", presetToken);
-        System.out.println("rucan" + jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(ip + submitwithdrawUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + submitwithdrawUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
-        System.out.println("chucan" + rspjson.toJSONString());
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
@@ -291,24 +271,19 @@ public class SubmitWithdrawTest extends BaseCase{
         String address = CexCommonOption.getAddress(randomPhoneUser, pwd,"EOS");
         String label = CexCommonOption.getLabel(randomPhoneUser, pwd,"EOS");
         usertoken = userCexLogin(randomPhoneUser, pwd, area);
-        JSONObject object = new JSONObject();
-        object.put("amount", "0.1");
-        object.put("currency", "EOS");
-        object.put("isLabelCoin", true);
-        object.put("labelContent", label);
-        object.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
-        object.put("verifyCode1", "912121");
-        object.put("walletAddress", address);
         JSONObject jsonbody = new JSONObject();
-        jsonbody.put("data", object);
-        jsonbody.put("lang", "zh-CN");
+        jsonbody.put("amount", "0.1");
+        jsonbody.put("currency", "EOS");
+        jsonbody.put("currencyAliasName", "EOS");
+        jsonbody.put("labelContent", label);
+        jsonbody.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
+        jsonbody.put("verifyCode1", "912121");
+        jsonbody.put("walletAddress", address);
         HashMap header = dataInit();
         header.put("CEXTOKEN", presetToken);
-        System.out.println("rucan" + jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(ip + submitwithdrawUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + submitwithdrawUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
-        System.out.println("chucan" + rspjson.toJSONString());
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
@@ -318,24 +293,20 @@ public class SubmitWithdrawTest extends BaseCase{
     @Severity(SeverityLevel.CRITICAL)
     @Test( dependsOnMethods = "testSubmitWithdraw4",description = "SubmitWithdraw从新账户将EOS还给专用账户")
     public void testSubmitWithdraweos() throws IOException,InterruptedException {
-        JSONObject object = new JSONObject();
-        object.put("amount", "0.1");
-        object.put("currency", "EOS");
-        object.put("isLabelCoin", true);
-        object.put("labelContent", "100085097");
-        object.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
-        object.put("verifyCode1", "912121");
-        object.put("walletAddress", "yjt123454321");
         JSONObject jsonbody = new JSONObject();
-        jsonbody.put("data", object);
-        jsonbody.put("lang", "zh-CN");
+        jsonbody.put("amount", "0.1");
+        jsonbody.put("currency", "EOS");
+        jsonbody.put("currencyAliasName", "EOS");
+        jsonbody.put("labelContent", "100085097");
+        jsonbody.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
+        jsonbody.put("verifyCode1", "912121");
+        jsonbody.put("walletAddress", "yjt123454321");
         HashMap header = dataInit();
         header.put("CEXTOKEN", presetToken);
         System.out.println("rucan" + jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(ip + submitwithdrawUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + submitwithdrawUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
-        System.out.println("chucan" + rspjson.toJSONString());
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("000000", rspjson.get("code").toString());
@@ -362,14 +333,11 @@ public class SubmitWithdrawTest extends BaseCase{
 
     @Test(dataProvider = "SubmitWithdrawErrorData",description = "SubmitWithdraw异常用例")
     public void testDepthStepError(Map<?,?> param) throws IOException {
-        JSONObject object = JSON.parseObject(param.get("body").toString());
-        JSONObject jsonbody = new JSONObject();
-        jsonbody.put("lang",lang);
-        jsonbody.put("data",object);
+        JSONObject jsonbody = JSON.parseObject(param.get("body").toString());
         HashMap header = dataInit();
         header.put("CEXTOKEN", presetToken);
         Allure.addAttachment(param.get("comment").toString()+"入参",jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(ip+submitwithdrawUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+submitwithdrawUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：",rspjson.toJSONString());
@@ -381,20 +349,17 @@ public class SubmitWithdrawTest extends BaseCase{
     public void testSubmitWithdrawError1() throws IOException {
         amount = new BigDecimal(queryCexAsset(presetToken,Coin).get("availableAmount").toString());
         amountnew = amount.add(num);
-        JSONObject object = new JSONObject();
-        object.put("amount", amountnew);
-        object.put("currency", "UPT");
-        object.put("isLabelCoin", false);
-        object.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
-        object.put("verifyCode1", "912121");
-        object.put("walletAddress", "0x274cC789096337D12eB5A17159845CBf3ebB8610");
         JSONObject jsonbody = new JSONObject();
-        jsonbody.put("data", object);
-        jsonbody.put("lang", "zh-CN");
+        jsonbody.put("amount", amountnew);
+        jsonbody.put("currency", "UPT");
+        jsonbody.put("currencyAliasName", "UPT");
+        jsonbody.put("labelContent", "");
+        jsonbody.put("securityPwd", "f3d3d3667220886d7a1a3f1eb9335d91");
+        jsonbody.put("verifyCode1", "912121");
+        jsonbody.put("walletAddress", "0x274cC789096337D12eB5A17159845CBf3ebB8610");
         HashMap header = dataInit();
         header.put("CEXTOKEN", presetToken);
-        System.out.println("rucan" + jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(ip + submitwithdrawUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway + submitwithdrawUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         System.out.println("chucan" + rspjson.toJSONString());

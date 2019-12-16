@@ -1,0 +1,14 @@
+{
+  "comment": "currencyAliasName不对应，返回100006",
+  "body": {
+    "chain": "ETH",
+    "currency": "AAA",
+    "currencyAddress": "0x863b065db8f23f34feedb2c836ede0e38b9c2e6f",
+    "currencyAliasName": "USDT-ERC2",
+    "isLabelCoin": "0",
+    "labelContent": ""
+  },
+  "time":"60000",
+  "assert":"000000",
+  "assertString":"{\"isValid\":true}"
+}

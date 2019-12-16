@@ -1,7 +1,7 @@
 {
   "comment": "地址输入错误",
   "body": {
-    "currency": "ETH",
+    "currencyAliasName": "ETH",
     "withdrawAddr":  "11111111111111 ",
     "label":  ""
   },

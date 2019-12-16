@@ -35,19 +35,16 @@ public class WithdrawTest extends BaseCase {
     @Severity(SeverityLevel.CRITICAL)
     @Test(dataProvider = "provideWithdrawData",description = "正常输入各种参数，返回成功")
     public void testwithdraw(Map<?,?> param) throws IOException {
-        JSONObject object = JSON.parseObject(param.get("body").toString());
-        JSONObject jsonbody = new JSONObject();
-        jsonbody.put("lang",lang);
-        jsonbody.put("data",object);
+        JSONObject jsonbody = JSON.parseObject(param.get("body").toString());
         HashMap header = dataInit();
         header.put("CEXTOKEN", presetToken);
         Allure.addAttachment(param.get("comment").toString()+"入参",jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(ip+qwithdrawUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+qwithdrawUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("code").toString());
-        if(!object.getString("timeType").equals("1")){
+        if(!jsonbody.getString("timeType").equals("1")){
             String totalRows = JsonPath.read(rspjson,"$.data.pagination.totalRows").toString();
             //断言totalRows即总条数大于0
             AssertTool.assertEquals(Integer.parseInt(totalRows)>0,true);
@@ -59,15 +56,12 @@ public class WithdrawTest extends BaseCase {
     //没有token，返回100006
     @Test(description = "withdraw异常用例1")
     public void testwithdrawError1() throws IOException {
-        JSONObject object = new JSONObject();
-        object.put("timeType", "3");
-        object.put("pageRows", "10");
-        object.put("currPage", "1");
-        object.put("currency", "");
         JSONObject jsonbody = new JSONObject();
-        jsonbody.put("lang", lang);
-        jsonbody.put("data", object);
-        Response response = OkHttpClientManager.post(ip + qwithdrawUrl, jsonbody.toJSONString(),
+        jsonbody.put("timeType", "3");
+        jsonbody.put("pageRows", "10");
+        jsonbody.put("currPage", "1");
+        jsonbody.put("currency", "");
+        Response response = OkHttpClientManager.post(ip_gateway + qwithdrawUrl, jsonbody.toJSONString(),
                 "application/json", dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：", jsonbody.toJSONString());

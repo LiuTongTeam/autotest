@@ -1,0 +1,9 @@
+{
+  "comment": "查询USDT",
+  "body": {
+    "currencyAliasName": "USDT",
+    "withdrawAddr":  "mwC3LB9GCKyqoKzjw6pi167vrqeZfrK6xq",
+    "label":  ""
+  },
+  "assert":"true"
+}

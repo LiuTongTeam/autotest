@@ -1,7 +1,7 @@
 {
   "comment": "提币地址为外部地址",
   "body": {
-    "currency": "ETH",
+    "currencyAliasName": "ETH",
     "withdrawAddr":  "0x274cC789096337D12eB5A17159845CBf3ebB8610",
     "label":  ""
   },

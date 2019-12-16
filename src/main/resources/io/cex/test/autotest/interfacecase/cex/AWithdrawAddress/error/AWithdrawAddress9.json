@@ -1,0 +1,13 @@
+{
+  "comment": "添加提币地址币种地址不正确",
+  "body": {
+    "labelContent": "",
+    "chain": "ETH",
+    "addressRemark": "lxm",
+    "currencyAliasName": "ETH",
+    "securityPwd": "f3d3d3667220886d7a1a3f1eb9335d91",
+    "currencyAddress": "0x863b065db8f23f34feedb2c836ede0e38b9",
+    "currency": "ETH"
+  },
+  "assert":"100107"
+}

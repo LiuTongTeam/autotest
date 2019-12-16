@@ -255,11 +255,8 @@ public class CexCommonOption {
      **/
     public static String getAddress(String user ,String pwd,String currency){
         String address = null;
-        JSONObject object = new JSONObject();
-        object.put("currency",currency);
         JSONObject jsonbody = new JSONObject();
-        jsonbody.put("data",object);
-        jsonbody.put("lang",lang);
+        jsonbody.put("currencyAliasName",currency);
         HashMap header = dataInit();
         String token = null;
         if (user.equals(presetUser)){
@@ -270,7 +267,7 @@ public class CexCommonOption {
         header.put("CEXTOKEN",token);
         Allure.addAttachment("获取充币地址入参：",jsonbody.toJSONString());
         try {
-            Response response = OkHttpClientManager.post(ip+rechargeAddrUrl,jsonbody.toJSONString(),"application/json",header);
+            Response response = OkHttpClientManager.post(ip_gateway+rechargeAddrUrl,jsonbody.toJSONString(),"application/json",header);
             JSONObject rspjson = resultDeal(response);
             Allure.addAttachment("获取充币地址出参：",rspjson.toJSONString());
             if (response.code()==200){
@@ -302,11 +299,8 @@ public class CexCommonOption {
      * @return 标签
      **/
         public static String getLabel(String user ,String pwd,String currency){
-        JSONObject object = new JSONObject();
-        object.put("currency",currency);
         JSONObject jsonbody = new JSONObject();
-        jsonbody.put("data",object);
-        jsonbody.put("lang",lang);
+        jsonbody.put("currencyAliasName",currency);
         HashMap header = dataInit();
         String token = null;
         if (user.equals(presetUser)){
@@ -317,7 +311,7 @@ public class CexCommonOption {
         header.put("CEXTOKEN",token);
         Allure.addAttachment("获取币种标签入参：",jsonbody.toJSONString());
         try {
-            Response response = OkHttpClientManager.post(ip+rechargeAddrUrl,jsonbody.toJSONString(),"application/json",header);
+            Response response = OkHttpClientManager.post(ip_gateway+rechargeAddrUrl,jsonbody.toJSONString(),"application/json",header);
             JSONObject rspjson = resultDeal(response);
             Allure.addAttachment("获取币种标签出参：",rspjson.toJSONString());
             if (response.code()==200){
@@ -352,22 +346,21 @@ public class CexCommonOption {
      * @return 响应码
      **/
     public static String withDraw(String securityPwd, String walletAddress,String token, String amount,String currency){
-        JSONObject object = new JSONObject();
-        object.put("amount",amount);
-        object.put("currency",currency);
-        object.put("verifyCode1","912121");
-        object.put("walletAddress",walletAddress);
-        object.put("securityPwd",securityPwd);
-        object.put("verifyCode2","");
         JSONObject jsonbody = new JSONObject();
-        jsonbody.put("lang",lang);
-        jsonbody.put("data",object);
+        jsonbody.put("amount",amount);
+        jsonbody.put("currency",currency);
+        jsonbody.put("verifyCode1","912121");
+        jsonbody.put("walletAddress",walletAddress);
+        jsonbody.put("securityPwd",securityPwd);
+        jsonbody.put("verifyCode2","");
+        jsonbody.put("currencyAliasName", currency);
+        jsonbody.put("labelContent", "");
         HashMap header = dataInit();
         Allure.addAttachment("提币入参：",jsonbody.toJSONString());
         header.put("CEXTOKEN",token);
 
         try {
-            Response response = OkHttpClientManager.post(ip+withdrawUrl,jsonbody.toJSONString(),"application/json",header);
+            Response response = OkHttpClientManager.post(ip_gateway+submitwithdrawUrl,jsonbody.toJSONString(),"application/json",header);
             JSONObject rspjson = resultDeal(response);
             Allure.addAttachment("提币出参：",rspjson.toJSONString());
             if (response.code()==200){
@@ -386,6 +379,48 @@ public class CexCommonOption {
         return null;
     }
 
+    /**
+     * @desc 提币-带币种别名
+     * @param securityPwd 资金密码
+     * @param walletAddress 提币地址
+     * @param amount 提币数量
+     * @param currency 币种
+     * @param token CEX token
+     * @return 响应码
+     **/
+    public static String withDraw(String securityPwd, String walletAddress,String token, String amount,String currency,String currencyAliasName){
+        JSONObject jsonbody = new JSONObject();
+        jsonbody.put("amount",amount);
+        jsonbody.put("currency",currency);
+        jsonbody.put("verifyCode1","912121");
+        jsonbody.put("walletAddress",walletAddress);
+        jsonbody.put("securityPwd",securityPwd);
+        jsonbody.put("verifyCode2","");
+        jsonbody.put("currencyAliasName", currencyAliasName);
+        jsonbody.put("labelContent", "");
+        HashMap header = dataInit();
+        Allure.addAttachment("提币入参：",jsonbody.toJSONString());
+        header.put("CEXTOKEN",token);
+
+        try {
+            Response response = OkHttpClientManager.post(ip_gateway+submitwithdrawUrl,jsonbody.toJSONString(),"application/json",header);
+            JSONObject rspjson = resultDeal(response);
+            Allure.addAttachment("提币出参：",rspjson.toJSONString());
+            if (response.code()==200){
+                log.info("-------------Withdraw response is:"+rspjson);
+                return rspjson.get("code").toString();
+            }else {
+                String errorMsg = rspjson.getString("error");
+                log.error("----------------Server connect failed"+errorMsg+"\n");
+                Allure.addAttachment("提币出错：",errorMsg);
+            }
+
+        }catch (IOException e){
+            e.printStackTrace();
+            return null;
+        }
+        return null;
+    }
 
 
     /**

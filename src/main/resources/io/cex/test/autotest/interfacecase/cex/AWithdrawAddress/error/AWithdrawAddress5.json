@@ -1,0 +1,13 @@
+{
+  "comment": "提币地址currencyAddress为空",
+  "body": {
+    "labelContent": "",
+    "chain": "ETH",
+    "addressRemark": "lxm",
+    "currencyAliasName": "IDA",
+    "securityPwd": "f3d3d3667220886d7a1a3f1eb9335d91",
+    "currencyAddress": "",
+    "currency": "IDA"
+  },
+  "assert":"100006"
+}

@@ -55,18 +55,13 @@ public class dealOrderListTest extends BaseCase {
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("code").toString());
-        String totalRows = JsonPath.read(rspjson,"$.data.pagination.totalRows").toString();
-        //断言totalRows即总条数大于0
-        AssertTool.assertEquals(Integer.parseInt(totalRows)>0,true);
-        //断言当前页面list不为空
-        AssertTool.assertEquals(JSON.parseArray(JsonPath.read(rspjson,"$.data.list").toString()).size()>0,true);
-    }
+        }
     /**
      * 检查返回是否成功
      */
     @DataProvider(parallel=true)
     public Object[][] providedealOrderListData(Method method){
-        String path = "./src/main/resources/io/cex/test/autotest/interfacecase/cex/dealList/dl1.json";
+        String path = "./src/main/resources/io/cex/test/autotest/interfacecase/cex/dealOrderList/dl1.json";
         HashMap<String, String>[][] arrymap = (HashMap<String, String>[][]) JsonFileUtil.jsonFileToArry(path);
         return arrymap;
     }
@@ -87,6 +82,13 @@ public class dealOrderListTest extends BaseCase {
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：",rspjson.toJSONString());
+        System.out.println("chucan:"+rspjson.toJSONString());
         AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("code").toString());
+        String totalRows = JsonPath.read(rspjson,"$.data.pagination.totalRows").toString();
+        //断言totalRows即总条数大于0
+        AssertTool.assertEquals(Integer.parseInt(totalRows)>0,true);
+        //断言当前页面list不为空
+        AssertTool.assertEquals(JSON.parseArray(JsonPath.read(rspjson,"$.data.list").toString()).size()>0,true);
+
     }
 }

@@ -3,7 +3,8 @@
   "body": {
     "amount":"4",
     "currency":"UPT",
-    "isLabelCoin": false,
+    "labelContent": "",
+    "currencyAliasName":"UPT",
     "securityPwd":"f3d3d3667220886d7a1a3f1eb9335d91",
     "verifyCode1":" ",
     "walletAddress":"0x274cC789096337D12eB5A17159845CBf3ebB8610"

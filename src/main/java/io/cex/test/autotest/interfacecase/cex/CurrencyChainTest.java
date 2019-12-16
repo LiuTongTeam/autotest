@@ -24,14 +24,13 @@ public class CurrencyChainTest extends BaseCase {
     @Test(description = "输入正确的参数，成功返回交易对信息")
     public void currencyChainTest() throws IOException {
         JSONObject jsonbody = new JSONObject();
-        jsonbody.put("lang",lang);
-        Response response = OkHttpClientManager.post(ip+currencyChainInfoUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+currencyChainInfoUrl, jsonbody.toJSONString(),
                 "application/json", BaseCase.dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
         Allure.addAttachment("出参：",rspjson.toJSONString());
         AssertTool.isContainsExpect("000000",rspjson.get("code").toString());
-        AssertTool.isContainsExpect("{\"chain\":\"ETH\",\"currency\":\"ETH\"}",rspjson.get("data").toString());
+        AssertTool.isContainsExpect("\"chain\":\"ETH\",\"chainAliasName\":\"ETH\"",rspjson.get("data").toString());
 
     }
 

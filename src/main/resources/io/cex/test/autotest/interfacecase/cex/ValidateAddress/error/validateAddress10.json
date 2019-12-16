@@ -1,0 +1,14 @@
+{
+  "comment": "地址为标签币，标签错误，返回100006",
+  "body": {
+    "chain": "EOS",
+    "currency": "EOS",
+    "currencyAddress": "yjt123454321",
+    "currencyAliasName": "EOS",
+    "isLabelCoin": "1",
+    "labelContent": "1000848"
+  },
+  "time":"60000",
+  "assert":"000000",
+  "assertString":"{\"isValid\":true}"
+}

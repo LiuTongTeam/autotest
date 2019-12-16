@@ -41,17 +41,15 @@ public class CheckWithdrawAddressTest extends BaseCase {
      **/
     @Test(dataProvider = "provideCheckWithdrawAddressErrorData",description = "CheckWithdrawAddress异常用例")
     public void testCheckWithdrawAddressError(Map<?,?> param) throws IOException {
-        JSONObject object = JSON.parseObject(param.get("body").toString());
-        JSONObject jsonbody = new JSONObject();
-        jsonbody.put("lang",lang);
-        jsonbody.put("data",object);
+        JSONObject jsonbody = JSON.parseObject(param.get("body").toString());
         HashMap header = dataInit();
         header.put("CEXTOKEN", presetToken);
         Allure.addAttachment(param.get("comment").toString()+"入参",jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(ip+checkwithdrawaddressUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+checkwithdrawaddressUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：",rspjson.toJSONString());
+        System.out.println("out:"+rspjson.toJSONString());
         AssertTool.isContainsExpect(param.get("assert").toString(),rspjson.get("code").toString());
     }
 
@@ -59,14 +57,11 @@ public class CheckWithdrawAddressTest extends BaseCase {
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "不输token，返回参数异常")
     public void testCheckWithdrawAddressList() throws IOException {
-        JSONObject object = new JSONObject();
-        object.put("currency","IDA");
-        object.put( "withdrawAddr","0xd9a99030385cbd069f7afd9d9eda8c0c87950a57");
-        object.put( "label", " ");
         JSONObject jsonbody = new JSONObject();
-        jsonbody.put("data",object);
-        jsonbody.put("lang",lang);
-        Response response = OkHttpClientManager.post(ip+checkwithdrawaddressUrl, jsonbody.toJSONString(),
+        jsonbody.put("currencyAliasName","IDA");
+        jsonbody.put( "withdrawAddr","0xd9a99030385cbd069f7afd9d9eda8c0c87950a57");
+        jsonbody.put( "label", " ");
+        Response response = OkHttpClientManager.post(ip_gateway+checkwithdrawaddressUrl, jsonbody.toJSONString(),
                 "application/json", BaseCase.dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
@@ -86,14 +81,11 @@ public class CheckWithdrawAddressTest extends BaseCase {
     @Severity(SeverityLevel.CRITICAL)
     @Test(dataProvider = "provideCheckWithdrawAddressData",description = "检查返回是否成功")
     public void testCheckWithdrawAddressData(Map<?,?> param) throws IOException {
-        JSONObject object = JSON.parseObject(param.get("body").toString());
-        JSONObject jsonbody = new JSONObject();
-        jsonbody.put("lang",lang);
-        jsonbody.put("data",object);
+        JSONObject jsonbody = JSON.parseObject(param.get("body").toString());
         HashMap header = dataInit();
         header.put("CEXTOKEN",presetToken);
         Allure.addAttachment(param.get("comment").toString()+"入参",jsonbody.toJSONString());
-        Response response = OkHttpClientManager.post(ip+checkwithdrawaddressUrl, jsonbody.toJSONString(),
+        Response response = OkHttpClientManager.post(ip_gateway+checkwithdrawaddressUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("出参：",rspjson.toJSONString());
