@@ -303,7 +303,6 @@ public class SubmitWithdrawTest extends BaseCase{
         jsonbody.put("walletAddress", "yjt123454321");
         HashMap header = dataInit();
         header.put("CEXTOKEN", presetToken);
-        System.out.println("rucan" + jsonbody.toJSONString());
         Response response = OkHttpClientManager.post(ip_gateway + submitwithdrawUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
@@ -362,7 +361,6 @@ public class SubmitWithdrawTest extends BaseCase{
         Response response = OkHttpClientManager.post(ip_gateway + submitwithdrawUrl, jsonbody.toJSONString(),
                 "application/json", header);
         JSONObject rspjson = resultDeal(response);
-        System.out.println("chucan" + rspjson.toJSONString());
         Allure.addAttachment("入参：", jsonbody.toJSONString());
         Allure.addAttachment("出参：", rspjson.toJSONString());
         AssertTool.isContainsExpect("100113", rspjson.get("code").toString());
