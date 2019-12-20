@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import io.cex.test.autotest.interfacecase.BaseCase;
 import io.cex.test.autotest.interfacecase.cex.tool.CexCommonOption;
 import io.cex.test.framework.common.FileUtil;
+import io.cex.test.framework.common.RandomUtil;
 import io.cex.test.framework.dbutil.DataBaseManager;
 import io.cex.test.framework.httputil.OkHttpClientManager;
 import io.cex.test.framework.jsonutil.JsonFileUtil;
@@ -153,7 +154,7 @@ public class C2CCommonOption {
         HashMap header = BaseCase.dataInit();
         header.put("CEXTOKEN", token);
         //从服务器获取图片资源
-        File file = FileUtil.getFileFromWeb(fileUrl+fileName);
+        File file = FileUtil.getFileFromWeb(fileUrl+fileName, RandomUtil.generateString(5));
         try {
             //调用上传图片接口，获取图片ID
             Response response = OkHttpClientManager.post(c2cip+url,
@@ -179,6 +180,8 @@ public class C2CCommonOption {
         }catch (IOException e){
             e.printStackTrace();
             return id;
+        }finally {
+            file.delete();
         }
 
     }

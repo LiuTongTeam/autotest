@@ -15,6 +15,6 @@
         需要填写正确的xpath语法格式。
         Desc:元素的描述，元素的中文描述信息-->
         <locator type="xpath" timeout="3" value="/html/body/div[1]/div/div[1]/div/div[2]/p[3]"  desc="登录">cex_login</locator>
-        <locator type="xpath" timeout="3" value="/html/body/div[1]/div/div[1]/div/div[2]/p[4]"  desc="注册">cex_register</locator>
+        <locator type="xpath" timeout="3" value="/html/body/div[22]/div/div[1]/div/div[2]/p[4]"  desc="注册">cex_register</locator>
     </page>
 </map>

@@ -7,7 +7,7 @@ public class CexConfig {
     public static String presetUserPwd = "afdd0b4ad2ec172c586e2150770fbf9e";
     //加密后的密码，对应明文：Lxm499125
     public static String presetUsersecurityPwd = "f3d3d3667220886d7a1a3f1eb9335d91";
-    public static String presetToken = null;
+    public static String presetToken;
     public static String cexpassport = "1629310746677555201.123";
     //提供给regandlogin接口邀请绑定的passport
     public static final String pwd = "afdd0b4ad2ec172c586e2150770fbf9e";
@@ -63,7 +63,7 @@ public class CexConfig {
     public static final String batchChannelTokenUrl = "/user/query/batchChannelToken";
     public static final String userAuthInfoUrl = "/app/userCenter/user/query/userAuthInfo";
     public static final String authAuditReasonUrl = "/app/userCenter/user/query/authAuditReason";
-    public static final String currencyInfoUrl = "/currency/query/currencyInfo";
+    public static final String currencyInfoUrl = "/app/cb/currency/queryInfo";
     public static final String getSecurityUrl = "/app/userCenter/user/query/getSecurity";
     public static final String awithdrawAddressUrl = "/app/cb/user/withdraw/add/withdrawAddress";
     public static final String qwithdrawAddressUrl = "/app/cb/user/withdraw/query/withdrawAddress";

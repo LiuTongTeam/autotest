@@ -3,6 +3,7 @@ package io.cex.test.autotest.interfacecase;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import io.cex.test.autotest.interfacecase.boss.tool.BossCommonOption;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import org.testng.annotations.BeforeSuite;
@@ -16,7 +17,7 @@ import java.util.Properties;
 
 import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
 import static io.cex.test.autotest.interfacecase.cex.tool.CexCommonOption.userCexLogin;
-
+import static io.cex.test.autotest.interfacecase.boss.tool.BossConfig.*;
 
 /**
  * @author shenqingyan
@@ -69,13 +70,14 @@ public class BaseCase {
             log.info("获取到c2cip地址为："+c2cip);
             c2cmysql = properties.getProperty("c2cmysql");
             log.info("获取到c2cmysql连接信息为："+c2cmysql);
-            presetToken = userCexLogin(presetUser,presetUserPwd,"86");
-            log.info("------------预置账户token:"+presetToken);
         }catch (IOException e){
             e.printStackTrace();
             log.error("------------未获取到properties配置文件，默认使用测试环境信息");
+        }finally {
             presetToken = userCexLogin(presetUser,presetUserPwd,"86");
             log.info("------------预置账户token:"+presetToken);
+            bossToken = BossCommonOption.userBossLogin(bossUserName,bossLoginPwd);
+            log.info("------------BOSS token:"+presetToken);
         }
     }
     /**

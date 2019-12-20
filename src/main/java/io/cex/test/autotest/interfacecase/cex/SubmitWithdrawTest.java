@@ -175,7 +175,7 @@ public class SubmitWithdrawTest extends BaseCase{
         log.info("------withdraw_no is:"+withdraw_seq_no+"\n");
         //boss登陆token放入header
         HashMap header = dataInit();
-        header.put("Boss-Token", BossCommonOption.userBossLogin(bossUserName,bossLoginPwd));
+        header.put("Boss-Token", bossToken);
         log.info("-----boss token is :"+header.get("Boss-Token").toString());
         //组装初审接口入参
         JSONObject object = new JSONObject();
@@ -196,7 +196,7 @@ public class SubmitWithdrawTest extends BaseCase{
     @Test(dependsOnMethods = "testauthfirstTrial", description = "提币复审通过")
     public void testauthreviewing() throws IOException,InterruptedException{
         HashMap header = dataInit();
-        header.put("Boss-Token", BossCommonOption.userBossLogin(bossUserName,bossLoginPwd));
+        header.put("Boss-Token", bossToken);
         log.info("-----boss token is :"+header.get("Boss-Token").toString());
         //组装复审接口入参
         JSONObject object = new JSONObject();

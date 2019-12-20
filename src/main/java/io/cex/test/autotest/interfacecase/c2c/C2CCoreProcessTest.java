@@ -373,15 +373,15 @@ public class C2CCoreProcessTest extends BaseCase {
     @Severity(SeverityLevel.CRITICAL)
     @Test(dependsOnMethods = "testMerchantDisablePayMethod", description = "充值")
     public void testDeposit() throws InterruptedException{
-        String address1 = CexCommonOption.getAddress(randomPhoneMerchant,pwd,currencyCoin);
-        String rspCode1 = withDraw(presetUsersecurityPwd,address1,presetToken,amount,currencyCoin);
+        String address1 = CexCommonOption.getAddress(randomPhoneMerchant,pwd,"USDT-ERC20");
+        String rspCode1 = withDraw(presetUsersecurityPwd,address1,presetToken,amount,currencyCoin,"USDT-ERC20");
         AssertTool.isContainsExpect("000000",rspCode1);
         String sql1 = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhoneMerchant,"USDT");
         log.info("--------Deposit sql is:"+sql1);
         Thread.sleep(30000);
         AssertTool.isContainsExpect("{\"amount\":\"100.000000000000000000000000000000\"}",cexmysql,sql1);
-        String address2 = CexCommonOption.getAddress(randomPhoneUser,pwd,currencyCoin);
-        String rspCode2 = withDraw(presetUsersecurityPwd,address2,presetToken,amount,currencyCoin);
+        String address2 = CexCommonOption.getAddress(randomPhoneUser,pwd,"USDT-ERC20");
+        String rspCode2 = withDraw(presetUsersecurityPwd,address2,presetToken,amount,currencyCoin,"USDT-ERC20");
         AssertTool.isContainsExpect("000000",rspCode2);
         String sql2 = String.format("SELECT amount FROM account_info WHERE user_no = (SELECT user_no from member_user WHERE mobile_num = '%s') and currency = '%s';\n",randomPhoneUser,"USDT");
         log.info("--------Deposit sql is:"+sql2);
@@ -954,12 +954,12 @@ public class C2CCoreProcessTest extends BaseCase {
     @Test(dependsOnMethods = "testUserTransferOut", description = "提币")
     public void testReturnDeposit() throws InterruptedException{
         //获取预置用户地址
-        String address = CexCommonOption.getAddress(presetUser,presetUserPwd,currencyCoin);
+        String address = CexCommonOption.getAddress(presetUser,presetUserPwd,"USDT-ERC20");
         //用户归还
-        String rspCode2 = withDraw(presetUsersecurityPwd,address,usertoken,userReturnAmount,currencyCoin);
+        String rspCode2 = withDraw(presetUsersecurityPwd,address,usertoken,userReturnAmount,currencyCoin,"USDT-ERC20");
         AssertTool.isContainsExpect("000000",rspCode2);
         //商户归还
-        String rspCode1 = withDraw(presetUsersecurityPwd,address,merchanttoken,merchantReturnAmount,currencyCoin);
+        String rspCode1 = withDraw(presetUsersecurityPwd,address,merchanttoken,merchantReturnAmount,currencyCoin,"USDT-ERC20");
         AssertTool.isContainsExpect("000000",rspCode1);
     }
 

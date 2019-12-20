@@ -49,7 +49,7 @@ public class BossCommonOption {
      **/
     public static void firstTrial(String certificateNo){
         HashMap header = dataInit();
-        header.put("Boss-Token", BossCommonOption.userBossLogin(bossUserName,bossLoginPwd));
+        header.put("Boss-Token", bossToken);
         log.info("------boss token is :"+header.get("Boss-Token").toString());
         //组装初审接口入参
         JSONObject object = new JSONObject();
@@ -87,7 +87,7 @@ public class BossCommonOption {
      **/
     public static void firstTrial(String certificateNo,String failureMsg){
         HashMap header = dataInit();
-        header.put("Boss-Token", BossCommonOption.userBossLogin(bossUserName,bossLoginPwd));
+        header.put("Boss-Token", bossToken);
         log.info("------boss token is :"+header.get("Boss-Token").toString());
         //组装初审接口入参
         JSONObject object = new JSONObject();
@@ -126,7 +126,7 @@ public class BossCommonOption {
      **/
     public static void cexReviewing(String certificateNo){
         HashMap header = BaseCase.dataInit();
-        header.put("Boss-Token",BossCommonOption.userBossLogin(bossUserName,bossLoginPwd));
+        header.put("Boss-Token",bossToken);
         log.info("------boss token is :"+header.get("Boss-Token").toString());
         //组装复审接口入参
         JSONObject object = new JSONObject();

@@ -121,7 +121,7 @@ public class CexCommonOption {
         iheader.put("Lang",lang);
         iheader.put("CEXTOKEN",token);
         //从服务器获取图片资源
-        File file = FileUtil.getFileFromWeb(fileUrl+fileName);
+        File file = FileUtil.getFileFromWeb(fileUrl+fileName,RandomUtil.generateString(6));
         try {
             //调用上传图片接口，获取图片ID
             Response response = OkHttpClientManager.post(ip+upLoadFileUrl,
@@ -147,7 +147,10 @@ public class CexCommonOption {
 
         }catch (IOException e){
             e.printStackTrace();
+            Allure.addAttachment("上传文件出错：",e.getMessage());
             return id;
+        }finally {
+            file.delete();
         }
 
     }
@@ -250,13 +253,13 @@ public class CexCommonOption {
      * @desc 获取用户对应currency的充币地址
      * @param  user 用户名
      * @param pwd 密码
-     * @param currency 币种
+     * @param currencyAliasName 币种别名
      * @return 地址
      **/
-    public static String getAddress(String user ,String pwd,String currency){
+    public static String getAddress(String user ,String pwd,String currencyAliasName){
         String address = null;
         JSONObject jsonbody = new JSONObject();
-        jsonbody.put("currencyAliasName",currency);
+        jsonbody.put("currencyAliasName",currencyAliasName);
         HashMap header = dataInit();
         String token = null;
         if (user.equals(presetUser)){

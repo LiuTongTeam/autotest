@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BossConfig {
 
+    public static String bossToken;
     //boss接口url
     public static final String bossLoginUrl = "/boss/account/login";
     public static final String firstTrial = "/boss/cex/userAuth/firstTrial";

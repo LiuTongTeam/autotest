@@ -22,12 +22,9 @@ import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.currencyInfo
 public class CurrencyInfoTest extends BaseCase {
     @Test(description = "输入错误的币种，返回100006")
     public void currencyInfoTestError() throws IOException {
-        JSONObject object = new JSONObject();
-        object.put("currency", "IDAR");
         JSONObject jsonbody = new JSONObject();
-        jsonbody.put("data", object);
-        jsonbody.put("lang", lang);
-        Response response = OkHttpClientManager.post(ip+currencyInfoUrl, jsonbody.toJSONString(),
+        jsonbody.put("currency", "IDAR");
+        Response response = OkHttpClientManager.post(ip_gateway+currencyInfoUrl, jsonbody.toJSONString(),
                 "application/json", BaseCase.dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
@@ -37,12 +34,9 @@ public class CurrencyInfoTest extends BaseCase {
 
     @Test(description = "输入空的币种，返回100006")
     public void currencyInfoTestError1() throws IOException {
-        JSONObject object = new JSONObject();
-        object.put("currency", "");
         JSONObject jsonbody = new JSONObject();
-        jsonbody.put("data", object);
-        jsonbody.put("lang", lang);
-        Response response = OkHttpClientManager.post(ip+currencyInfoUrl, jsonbody.toJSONString(),
+        jsonbody.put("currency", "");
+        Response response = OkHttpClientManager.post(ip_gateway+currencyInfoUrl, jsonbody.toJSONString(),
                 "application/json", BaseCase.dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());
@@ -52,12 +46,9 @@ public class CurrencyInfoTest extends BaseCase {
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "正常用例，返回000000")
     public void currencyInfoTest() throws IOException {
-        JSONObject object = new JSONObject();
-        object.put("currency", "IDA");
         JSONObject jsonbody = new JSONObject();
-        jsonbody.put("data", object);
-        jsonbody.put("lang", lang);
-        Response response = OkHttpClientManager.post(ip+currencyInfoUrl, jsonbody.toJSONString(),
+        jsonbody.put("currency", "IDA");
+        Response response = OkHttpClientManager.post(ip_gateway+currencyInfoUrl, jsonbody.toJSONString(),
                 "application/json", BaseCase.dataInit());
         JSONObject rspjson = resultDeal(response);
         Allure.addAttachment("入参：",jsonbody.toJSONString());

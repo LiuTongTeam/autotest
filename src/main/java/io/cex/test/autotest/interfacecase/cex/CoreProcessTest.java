@@ -141,7 +141,7 @@ public class CoreProcessTest extends BaseCase {
     public void testFirstTrial() throws IOException{
         //boss登陆token放入header
         HashMap header = dataInit();
-        header.put("Boss-Token", BossCommonOption.userBossLogin(bossUserName,bossLoginPwd));
+        header.put("Boss-Token", bossToken);
         log.info("-----boss token is :"+header.get("Boss-Token").toString());
         //组装初审接口入参
         JSONObject object = new JSONObject();
@@ -162,7 +162,7 @@ public class CoreProcessTest extends BaseCase {
     @Test(dependsOnMethods = "testFirstTrial", description = "身份认证复审通过")
     public void testReviewing() throws IOException{
         HashMap header = dataInit();
-        header.put("Boss-Token", BossCommonOption.userBossLogin(bossUserName,bossLoginPwd));
+        header.put("Boss-Token", bossToken);
         log.info("-----boss token is :"+header.get("Boss-Token").toString());
         //组装复审接口入参
         JSONObject object = new JSONObject();
