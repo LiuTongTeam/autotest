@@ -56,6 +56,8 @@ public class BaseCase {
             properties.load(inputStream);
             ip = properties.getProperty("cexip");
             log.info("获取到ip地址为："+ip);
+            ip_gateway = properties.getProperty("ip_gateway");
+            log.info("获取到ip地址为："+ip_gateway);
             orderToken = properties.getProperty("orderToken");
             log.info("获取到下单用户token为："+orderToken);
             cexmysql = properties.getProperty("cexmysql");

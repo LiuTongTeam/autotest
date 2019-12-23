@@ -11,10 +11,7 @@ import io.cex.test.framework.dbutil.DataBaseManager;
 import io.cex.test.framework.httputil.OkHttpClientManager;
 import io.cex.test.framework.jsonutil.JsonFileUtil;
 import io.cex.test.framework.testng.Retry;
-import io.qameta.allure.Allure;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import org.testng.annotations.DataProvider;
@@ -35,9 +32,8 @@ import static io.cex.test.autotest.interfacecase.cex.tool.CexConfig.*;
 
 
 
-@Feature("SubmitWithdraw提交提币请求接口")
+@Epic("SubmitWithdraw提交提币请求接口")
 @Slf4j
-
 public class SubmitWithdrawTest extends BaseCase{
     //注册新账户用于提币
     private String usertoken = null;
