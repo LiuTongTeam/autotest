@@ -15,6 +15,20 @@
         需要填写正确的xpath语法格式。
         Desc:元素的描述，元素的中文描述信息-->
         <locator type="xpath" timeout="3" value="/html/body/div[1]/div/div[1]/div/div[2]/p[3]"  desc="登录">cex_login</locator>
-        <locator type="xpath" timeout="3" value="/html/body/div[22]/div/div[1]/div/div[2]/p[4]"  desc="注册">cex_register</locator>
+        <locator type="cssSelector" timeout="3" value="p.text-size-14:nth-child(2) > span:nth-child(2)"  desc="邮箱登录">cex_mail_login</locator>
+        <locator type="xpath" timeout="3" value="/html/body/div[1]/div/div[2]/div[2]/form/div[1]/div/div/input"  desc="邮箱输入">mail_input</locator>
+        <locator type="xpath" timeout="3" value="/html/body/div[1]/div/div[2]/div[2]/form/div[2]/div/div/input"  desc="密码输入">pwd_input</locator>
+        <locator type="xpath" timeout="3" value="/html/body/div[1]/div/div[2]/div[2]/form/div[3]"  desc="点击登陆">login_button</locator>
+        <locator type="xpath" timeout="3" value="/html/body/div[1]/div/div[2]/div[3]/div/div[1]/div/div/form/div[1]/div/div/input"  desc="输入邮箱验证码">email_code_input</locator>
+        <locator type="xpath" timeout="3" value="/html/body/div[1]/div/div[2]/div[3]/div/div[1]/div/div/form/div[2]/div/button"  desc="确定">email_code_confirm_button</locator>
+    </page>
+    <page pagename="io.cex.test.autotest.uicase.pageobj.web.WithdrawPage" value="" desc="提币页">
+        <locator type="xpath" timeout="3" value="/html/body/div[1]/div/div[1]/div/div[2]/div[1]/p/span"  desc="资产管理">asset_manage</locator>
+        <locator type="xpath" timeout="3" value="/html/body/div[1]/div/div[1]/div/div[2]/div[1]/ul/li[3]"  desc="提币">withdraw</locator>
+        <locator type="xpath" timeout="3" value="/html/body/div[1]/div/div[2]/div/div[2]/div[1]/div[1]/div[1]/div/div/input"  desc="选择币种">currency_select</locator>
+        <locator type="xpath" timeout="3" value="/html/body/div[1]/div/div[2]/div/div[2]/div[1]/div[2]/form/div[1]/div/div/div/span/span/i"  desc="选择地址">chose_addr</locator>
+        <locator type="cssSelector" timeout="3" value=".text-color-link"  desc="点击地址">click_addr</locator>
+        <locator type="xpath" timeout="3" value="/html/body/div[1]/div/div[2]/div/div[2]/div[1]/div[2]/form/div[3]/div/div/div/input"  desc="输入数量">amount_input</locator>
+        <locator type="xpath" timeout="3" value="/html/body/div[1]/div/div[2]/div/div[2]/div[1]/div[2]/form/div[5]/div/button"  desc="确认提交">submit_click</locator>
     </page>
 </map>
