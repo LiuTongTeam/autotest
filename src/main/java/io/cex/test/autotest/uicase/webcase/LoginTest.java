@@ -68,8 +68,8 @@ public class LoginTest extends WebBaseCase {
         Allure.addAttachment("1","点击资产管理");
         webElementAction.click(withdrawPage.asset_manage());
         Allure.addAttachment("1","点击提币");
-        webElementAction.click(withdrawPage.withdraw());
-        Allure.addAttachment("1","选择币种");
+        /*webElementAction.click(withdrawPage.withdraw());
+        Allure.addAttachment("1","选择币种");*/
         webElementAction.selectByIndex(withdrawPage.currency_select(),0);
         Thread.sleep(2000);
         Allure.addAttachment("2","点击选择地址按钮");
