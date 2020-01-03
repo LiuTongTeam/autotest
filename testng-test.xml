@@ -4,6 +4,13 @@
     <parameter name="file" value="test-application.properties"></parameter>
     <test verbose="2" preserve-order="true" name="C:/code/autotest/autotest">
         <classes>
+            <class name="io.cex.test.autotest.interfacecase.cex.CheckLoginTest">
+                <methods>
+                    <include name="testCheckLoginError"/>
+                    <include name="testCheckLogin"/>
+                </methods>
+            </class>
+            <!--
             <class name="io.cex.test.autotest.interfacecase.c2c.C2CCoreProcessTest">
                 <methods>
                     <include name="testRegistAndLogin"/>
@@ -121,12 +128,7 @@
                     <include name="testCheckEmailData"/>
                 </methods>
             </class>
-            <class name="io.cex.test.autotest.interfacecase.cex.CheckLoginTest">
-                <methods>
-                    <include name="testCheckLoginError"/>
-                    <include name="testCheckLogin"/>
-                </methods>
-            </class>
+
             <class name="io.cex.test.autotest.interfacecase.cex.CheckMobileTest">
                 <methods>
                     <include name="testCheckMobileError"/>
@@ -620,6 +622,7 @@
                     <include name="securityPwdTestError"/>
                 </methods>
             </class>
+             -->
         </classes>
     </test>
 </suite>
