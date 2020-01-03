@@ -96,6 +96,7 @@
         </plugins>
     </build>
     <!-- 仓库地址 -->
+    <!--
     <distributionManagement>
         <repository>
             <id>nexus-releases</id>
@@ -145,4 +146,5 @@
         </repository>
 
     </repositories>
+    -->
 </project>
