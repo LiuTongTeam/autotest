@@ -17,7 +17,7 @@
         <dependency>
             <groupId>io.cex.test</groupId>
             <artifactId>test-framework</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
